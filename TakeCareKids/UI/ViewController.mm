@@ -24,7 +24,7 @@
 	// Do any additional setup after loading the view, typically from a nib.
     
     //启动BMKMapManager
-    _mapManager = [[BMKMapManager alloc]init];
+    _mapManager = [[BMKMapManager alloc] init];
     BOOL ret = [_mapManager start:@"2772BD5CAFF652491F65707D6D5E9ABEBF3639CC" generalDelegate:self];
     if (!ret) {
         NSLog(@"manager start failed!");
