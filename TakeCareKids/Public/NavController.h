@@ -2,7 +2,7 @@
 //  NavController.h
 //  INCITY
 //
-//  Created by Tom on 8/11/12.
+//  Created by Jeffrey Ma on 8/11/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 

@@ -2,7 +2,7 @@
 //  BaseViewController.h
 //  DuoTin
 //
-//  Created by Tom  on 11/2/12.
+//  Created by Jeffrey Ma  on 11/2/12.
 //  Copyright (c) 2012 LionTeam. All rights reserved.
 //
 

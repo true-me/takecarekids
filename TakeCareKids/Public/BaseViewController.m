@@ -2,12 +2,11 @@
 //  BaseViewController.m
 //  DuoTin
 //
-//  Created by Tom  on 11/2/12.
+//  Created by Jeffrey Ma  on 11/2/12.
 //  Copyright (c) 2012 LionTeam. All rights reserved.
 //
 
 #import "BaseViewController.h"
-//#import "DTPlayer.h"
 
 
 @interface BaseViewController ()
@@ -75,7 +74,7 @@
         sendLabel.shadowOffset = CGSizeMake(0.0f, 0.9f);
         sendLabel.backgroundColor = [UIColor clearColor];
         sendLabel.textAlignment = UITextAlignmentCenter;
-        sendLabel.text = @"正在播放";
+        sendLabel.text = @"注册";
         [sendButton addSubview:sendLabel];
         [sendLabel release];
         
@@ -97,7 +96,8 @@
     }
 }
 
-- (void) clickNowPlayingButton:(id)sender {
+- (void) clickNowPlayingButton:(id)sender
+{
     
 //    UINavigationController *navController = self.navigationController;    
 ////    DTPlayer *player = [[DTPlayer alloc] initWithModel:modelOne];
