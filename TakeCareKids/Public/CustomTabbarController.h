@@ -8,18 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import "EGOImageView.h"
-#import "MainController.h"
-#import "MallCenterController.h"
-#import "WOCenterController.h"
-#import "ELivingCenterController.h"
-#import "MoreController.h"
+#import "ViewController.h"
+#import "QieziViewController.h"
+#import "BMViewController.h"
+#import "FirstViewController.h"
 #import "NavController.h"
 
 @interface CustomTabbarController : UITabBarController<UITabBarControllerDelegate, EGOImageViewDelegate>
 {
     NSString *coverURL;
-    MainController *mainController;
+    QieziViewController *mainController;
 }
 @property(retain, nonatomic) NSString *coverURL;
-@property(retain, nonatomic) MainController *mainController;
+@property(retain, nonatomic) QieziViewController *mainController;
 @end

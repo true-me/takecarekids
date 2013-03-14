@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BMapKit.h"
+#import "CustomTabbarController.h"
 #import "ViewController.h"
+#import "QieziViewController.h"
 #import "BMViewController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate>
@@ -15,5 +18,5 @@
 @property (strong, nonatomic) UIWindow *window;
 
 @property (strong, nonatomic) UITabBarController *tabBarController;
-
+@property (strong, nonatomic) CustomTabbarController *customTabbarController;
 @end

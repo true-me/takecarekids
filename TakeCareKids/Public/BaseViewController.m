@@ -29,11 +29,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
+//    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
     // Do any additional setup after loading the view from its nib.
     
-    [self customizeBackButton];
-    [self customizeNowPlayingButton];
+//    [self customizeBackButton];
+//    [self customizeNowPlayingButton];
 }
 
 -(void)customizeBackButton
@@ -178,4 +178,20 @@
     [label release];
 
 }
+
+-(void)setUpLeftButton:(UIButton *)btn
+{
+    UIBarButtonItem *sendButtonItem=[[UIBarButtonItem alloc] initWithCustomView:btn];
+    self.navigationItem.leftBarButtonItem = sendButtonItem;
+    [sendButtonItem release];
+}
+
+-(void)setUpRightButton:(UIButton *)btn
+{
+    UIBarButtonItem *sendButtonItem=[[UIBarButtonItem alloc] initWithCustomView:btn];
+    self.navigationItem.rightBarButtonItem = sendButtonItem;
+    [sendButtonItem release];
+}
+
+
 @end

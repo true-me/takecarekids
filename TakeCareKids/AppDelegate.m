@@ -7,31 +7,41 @@
 //
 
 #import "AppDelegate.h"
-
 #import "FirstViewController.h"
-
 #import "SecondViewController.h"
 
 @implementation AppDelegate
-
+@synthesize tabBarController;
+@synthesize customTabbarController;
 - (void)dealloc
 {
     [_window release];
-    [_tabBarController release];
+    [tabBarController release];
     [super dealloc];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+
+
+    
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
-    UIViewController *viewController1 = [[[FirstViewController alloc] initWithNibName:@"FirstViewController" bundle:nil] autorelease];
-    UIViewController *viewController2 = [[[SecondViewController alloc] initWithNibName:@"SecondViewController" bundle:nil] autorelease];
-    ViewController *viewController3 = [[[ViewController alloc] initWithNibName:@"ViewController" bundle:nil] autorelease];
-    BMViewController *viewController4 = [[[BMViewController alloc] initWithNibName:@"BMViewController" bundle:nil] autorelease];
-    self.tabBarController = [[[UITabBarController alloc] init] autorelease];
-    self.tabBarController.viewControllers = @[viewController1, viewController2, viewController3, viewController4];
-    self.window.rootViewController = self.tabBarController;
+    
+//    UIViewController *viewController1 = [[[FirstViewController alloc] initWithNibName:@"FirstViewController" bundle:nil] autorelease];
+//    UIViewController *viewController2 = [[[SecondViewController alloc] initWithNibName:@"SecondViewController" bundle:nil] autorelease];
+//    QieziViewController *viewController3 = [[[QieziViewController alloc] initWithNibName:@"ViewController" bundle:nil] autorelease];
+//    BMViewController *viewController4 = [[[BMViewController alloc] initWithNibName:@"BMViewController" bundle:nil] autorelease];
+//    self.tabBarController = [[[UITabBarController alloc] init] autorelease];
+//    self.tabBarController.viewControllers = @[viewController1, viewController2, viewController3, viewController4];
+//    self.window.rootViewController = self.tabBarController;
+    
+    // 地图
+    self.customTabbarController = [[[CustomTabbarController alloc] init] autorelease];
+    //    self.customTabbarController.viewControllers = [NSArray arrayWithObjects:nav1, nav2,nav3,nav4,nav5,nil];
+    self.customTabbarController.selectedIndex = 0;
+    self.window.rootViewController = self.customTabbarController;
+    
     [self.window makeKeyAndVisible];
     return YES;
 }

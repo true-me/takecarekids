@@ -77,6 +77,8 @@ BOOL isRetina = FALSE;
 @synthesize pathArray;
 @synthesize lbl;
 @synthesize mapManager;
+@synthesize routeLine;
+@synthesize routeLineView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -137,6 +139,33 @@ BOOL isRetina = FALSE;
     BMKCoordinateRegion adjustedRegion = [self.mapView regionThatFits:viewRegion];
 //  
     [self.mapView setRegion:adjustedRegion animated:YES];
+    
+    
+    NSMutableArray *arr = [[NSMutableArray alloc] init];
+    self.pathArray = arr;  //用来记录路线信息的，以后会用到
+    [arr release];
+//    CLLocation *location = [[CLLocation alloc] initWithLatitude:coordinate.latitude
+//                                                      longitude:coordinate.longitude];
+//    [self.pathArray addObject:location];
+//    [location release];
+//    
+//    coordinate.latitude = 34.23654;         //纬度
+//    coordinate.longitude = 108.89258;      //经度
+//    CLLocation *location1 = [[CLLocation alloc] initWithLatitude:coordinate.latitude
+//                                                      longitude:coordinate.longitude];
+//    [self.pathArray addObject:location1];
+//    [location1 release];
+//    
+//    coordinate.latitude = 34.27564;         //纬度
+//    coordinate.longitude = 108.89258;      //经度
+//    CLLocation *location2 = [[CLLocation alloc] initWithLatitude:coordinate.latitude
+//                                                       longitude:coordinate.longitude];
+//    [self.pathArray addObject:location2];
+//    [location2 release];
+//    
+//    [self configureRoutes];
+    
+    
 //[self.mapView setCenterCoordinate:coordinate animated:YES];
 //
 
@@ -180,35 +209,66 @@ BOOL isRetina = FALSE;
 
 -(void)mapView:(BMKMapView *)mapView didUpdateUserLocation:(BMKUserLocation *)userLocation
 {
-    NSLog(@"!latitude!!!  %f",userLocation.location.coordinate.latitude);//获取经度
-    
-    NSLog(@"!longtitude!!!  %f",userLocation.location.coordinate.longitude);//获取纬度
-    
-    localLatitude=userLocation.location.coordinate.latitude;//把获取的地理信息记录下来
-    
-    localLongitude=userLocation.location.coordinate.longitude;
-    
-    CLGeocoder *Geocoder=[[CLGeocoder alloc]init];//CLGeocoder用法参加之前博客
-    
-    CLGeocodeCompletionHandler handler = ^(NSArray *place, NSError *error) {
-        
-        for (CLPlacemark *placemark in place)
-        {
-            
-            cityStr=placemark.thoroughfare;
-            cityName=placemark.locality;
 
-            NSLog(@"%@, %@, %@, %@", placemark.locality, placemark.subLocality
-                            , placemark.thoroughfare, placemark.subThoroughfare);//获取街道地址
-            break;
-            
-        }
-        
-    };
+    CLLocation *location = [[CLLocation alloc] initWithLatitude:userLocation.coordinate.latitude
+                                                      longitude:userLocation.coordinate.longitude];
+    // check the zero point
+    if  (userLocation.coordinate.latitude == 0.0f ||
+         userLocation.coordinate.longitude == 0.0f)
+        return;
     
-    CLLocation *loc = [[CLLocation alloc] initWithLatitude:userLocation.location.coordinate.latitude longitude:userLocation.location.coordinate.longitude];
+    // check the move distance
+    if (self.pathArray.count > 0)
+    {
+        CLLocationDistance distance = [location distanceFromLocation:_currentLocation];
+        if (distance < 5)
+            return;
+    }
     
-    [Geocoder reverseGeocodeLocation:loc completionHandler:handler];
+    if (nil == self.pathArray) {
+        self.pathArray = [[NSMutableArray alloc] init];
+    }
+    
+    [self.pathArray addObject:location];
+    _currentLocation = location;
+    
+    NSLog(@"points: %@", self.pathArray);
+    
+    [self configureRoutes];
+    
+//    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(userLocation.coordinate.latitude, userLocation.coordinate.longitude);
+//    [self.mapView setCenterCoordinate:coordinate animated:YES];
+//    return;
+//    
+//    NSLog(@"!latitude!!!  %f",userLocation.location.coordinate.latitude);//获取经度
+//    
+//    NSLog(@"!longtitude!!!  %f",userLocation.location.coordinate.longitude);//获取纬度
+//    
+//    localLatitude=userLocation.location.coordinate.latitude;//把获取的地理信息记录下来
+//    
+//    localLongitude=userLocation.location.coordinate.longitude;
+//    
+//    CLGeocoder *Geocoder=[[CLGeocoder alloc]init];//CLGeocoder用法参加之前博客
+//    
+//    CLGeocodeCompletionHandler handler = ^(NSArray *place, NSError *error) {
+//        
+//        for (CLPlacemark *placemark in place)
+//        {
+//            
+//            cityStr=placemark.thoroughfare;
+//            cityName=placemark.locality;
+//
+//            NSLog(@"%@, %@, %@, %@", placemark.locality, placemark.subLocality
+//                            , placemark.thoroughfare, placemark.subThoroughfare);//获取街道地址
+//            break;
+//            
+//        }
+//        
+//    };
+//    
+//    CLLocation *loc = [[CLLocation alloc] initWithLatitude:userLocation.location.coordinate.latitude longitude:userLocation.location.coordinate.longitude];
+//    
+//    [Geocoder reverseGeocodeLocation:loc completionHandler:handler];
 }
 
 
@@ -221,5 +281,103 @@ BOOL isRetina = FALSE;
 - (void)mapView:(BMKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
 {
     
+}
+
+- (void)configureRoutes
+{
+    // define minimum, maximum points
+	BMKMapPoint northEastPoint = BMKMapPointMake(0.f, 0.f);
+	BMKMapPoint southWestPoint = BMKMapPointMake(0.f, 0.f);
+	
+	// create a c array of points.
+    //    NSMutableArray *mapPointarr = [NSMutableArray arrayWithObjects:<#(const id *)#> count:<#(NSUInteger)#>
+    BMKMapPoint* pointArray = malloc(sizeof(CLLocationCoordinate2D) * self.pathArray.count);
+    
+	// for(int idx = 0; idx < pointStrings.count; idx++)
+    for(int idx = 0; idx < self.pathArray.count; idx++)
+	{
+        CLLocation *location = [self.pathArray objectAtIndex:idx];
+        CLLocationDegrees latitude  = location.coordinate.latitude;
+		CLLocationDegrees longitude = location.coordinate.longitude;
+        
+		// create our coordinate and add it to the correct spot in the array
+		CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(latitude, longitude);
+//		MKMapPoint point = MKMapPointForCoordinate(coordinate);
+        BMKMapPoint point = BMKMapPointForCoordinate(coordinate);
+		
+		// if it is the first point, just use them, since we have nothing to compare to yet.
+		if (idx == 0) {
+			northEastPoint = point;
+			southWestPoint = point;
+		} else {
+			if (point.x > northEastPoint.x)
+				northEastPoint.x = point.x;
+			if(point.y > northEastPoint.y)
+				northEastPoint.y = point.y;
+			if (point.x < southWestPoint.x)
+				southWestPoint.x = point.x;
+			if (point.y < southWestPoint.y)
+				southWestPoint.y = point.y;
+		}
+        
+		pointArray[idx] = point;
+	}
+	
+    if (self.routeLine) {
+        [self.mapView removeOverlay:self.routeLine];
+    }
+    
+    self.routeLine = [BMKPolyline polylineWithPoints:pointArray count:self.pathArray.count];
+    
+    // add the overlay to the map
+	if (nil != self.routeLine) {
+		[self.mapView addOverlay:self.routeLine];
+	}
+    
+    // clear the memory allocated earlier for the points
+	free(pointArray);
+    
+    /*
+     double width = northEastPoint.x - southWestPoint.x;
+     double height = northEastPoint.y - southWestPoint.y;
+     
+     _routeRect = MKMapRectMake(southWestPoint.x, southWestPoint.y, width, height);
+     
+     // zoom in on the route.
+     [self.mapView setVisibleMapRect:_routeRect];
+     */
+}
+
+
+#pragma mark
+#pragma mark MKMapViewDelegate
+- (void)mapView:(BMKMapView *)mapView didAddOverlayViews:(NSArray *)overlayViews
+{
+    NSLog(@"%@ ----- %@", self, NSStringFromSelector(_cmd));
+    NSLog(@"overlayViews: %@", overlayViews);
+}
+
+- (BMKOverlayView *)mapView:(BMKMapView *)mapView viewForOverlay:(id <BMKOverlay>)overlay
+{
+    NSLog(@"%@ ----- %@", self, NSStringFromSelector(_cmd));
+    
+	BMKOverlayView* overlayView = nil;
+	
+	if(overlay == self.routeLine)
+	{
+		//if we have not yet created an overlay view for this overlay, create it now.
+        if (self.routeLineView) {
+            [self.routeLineView removeFromSuperview];
+        }
+        
+        self.routeLineView = [[BMKPolylineView alloc] initWithPolyline:self.routeLine];
+        self.routeLineView.fillColor = [UIColor redColor];
+        self.routeLineView.strokeColor = [UIColor redColor];
+        self.routeLineView.lineWidth = 10;
+        
+		overlayView = self.routeLineView;
+	}
+	
+	return overlayView;
 }
 @end

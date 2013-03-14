@@ -33,6 +33,8 @@
     //创建一张百度地图
     BMKMapView* mapView = [[BMKMapView alloc]initWithFrame:CGRectMake(0, 0, 320, 480)];
     [self.view addSubview:mapView];
+    
+
 }
 
 - (void)viewDidUnload

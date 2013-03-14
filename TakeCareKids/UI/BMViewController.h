@@ -10,6 +10,7 @@
 #import "math.h"
 #import "BMapKit.h"
 
+
 @interface BMViewController : UIViewController<BMKGeneralDelegate, BMKMapViewDelegate,BMKSearchDelegate>
 {
     BMKMapManager *mapManager;       
@@ -25,6 +26,12 @@
     NSMutableArray *pathArray;
     
     UITextField *lbl;
+    
+    BMKPolyline* routeLine;
+    BMKPolylineView* routeLineView;
+    
+    // current location
+    CLLocation* _currentLocation;
 }
 @property(nonatomic, retain) BMKMapManager* mapManager;
 
@@ -41,4 +48,6 @@
 @property(nonatomic, assign) BOOL localJudge;
 @property(nonatomic, retain) UITextField *lbl;
 
+@property (nonatomic, retain) BMKPolyline* routeLine;
+@property (nonatomic, retain) BMKPolylineView* routeLineView;
 @end

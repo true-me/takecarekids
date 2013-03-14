@@ -11,6 +11,10 @@
 
 @interface BaseViewController : UIViewController
 - (void) setUpTitleView:(NSString*) title;
+
+- (void) setUpLeftButton:(UIButton*) btn;
+- (void) setUpRightButton:(UIButton*) btn;
+
 - (void) setUpSecondTitleView:(NSString*) title;
 - (void) didTapBackButton:(id)sender;
 - (void) clickNowPlayingButton:(id)sender;
