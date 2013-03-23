@@ -18,7 +18,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.title = NSLocalizedString(@"家长管理", @"家长管理");
+        //self.title = NSLocalizedString(@"家长管理", @"家长管理");
         //self.tabBarItem.image = [UIImage imageNamed:@"家长管理"];
     }
     return self;
