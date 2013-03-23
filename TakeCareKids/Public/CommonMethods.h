@@ -42,7 +42,7 @@
 
 #define OC(str) [NSString stringWithCString:(str) encoding:NSUTF8StringEncoding]
 
-#define TEXT_COLOR	 [UIColor colorWithRed:136.0/255.0 green:136.0/255.0 blue:136.0/255.0 alpha:1.0]
+//#define TEXT_COLOR	 [UIColor colorWithRed:136.0/255.0 green:136.0/255.0 blue:136.0/255.0 alpha:1.0]
 #define TITLE_COLOR	 [UIColor colorWithRed:68.0/255.0 green:68.0/255.0 blue:68.0/255.0 alpha:1.0]
 #define GRAY_COLOR	 [UIColor colorWithRed:181.0/255.0 green:167.0/255.0 blue:154.0/255.0 alpha:1.0]
 

@@ -9,11 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "math.h"
 #import "BaseViewController.h"
+#import "LoginController.h"
+#import "loginDelegate.h"
 #import "BMapKit.h"
 
 @interface QieziViewController : BaseViewController
-<BMKMapViewDelegate, BMKSearchDelegate, BMKGeneralDelegate>
+<BMKMapViewDelegate, BMKSearchDelegate, BMKGeneralDelegate, loginDelegate>
 {
+    UIToolbar *toolbar;
     BMKMapView* mView;
     BMKSearch* _search;
     CLLocation *location;
@@ -25,6 +28,9 @@
     
     BMKPolyline *routeLine;
     BMKPolylineView *routeLineView;
+    
+    BMKPolygon *polygon;
+    BMKPolygonView *polygonView;
 
     // current location
     CLLocation* currentLocation;
@@ -33,6 +39,7 @@
     BOOL stopRoute;
 }
 
+@property (nonatomic, retain) UIToolbar *toolbar;
 @property (nonatomic, retain) BMKSearch *_search;
 @property (nonatomic, retain) BMKMapView *mView;
 @property (nonatomic, retain) CLLocation *location;
@@ -41,6 +48,10 @@
 @property (nonatomic, retain) NSMutableArray *routePointsArr;
 @property (nonatomic, retain) BMKPolyline *routeLine;
 @property (nonatomic, retain) BMKPolylineView *routeLineView;
+
+@property (nonatomic, retain) BMKPolygon *polygon;
+@property (nonatomic, retain) BMKPolygonView *polygonView;
+
 @property (nonatomic, retain) CLLocation *currentLocation;
 @property (nonatomic, assign) BOOL isRouting;
 @property (nonatomic, assign) BOOL stopRoute;

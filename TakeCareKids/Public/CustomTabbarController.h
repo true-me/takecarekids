@@ -13,6 +13,9 @@
 #import "BMViewController.h"
 #import "FirstViewController.h"
 #import "NavController.h"
+#import "TableDemoViewController.h"
+#import "HomeRefreshableViewController.h"
+#import "RefreshTableViewController.h"
 
 @interface CustomTabbarController : UITabBarController<UITabBarControllerDelegate, EGOImageViewDelegate>
 {

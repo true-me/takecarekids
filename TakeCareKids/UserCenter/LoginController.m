@@ -182,7 +182,8 @@
     [HUD hide:YES];
     if(tag == TAG_USER_LOGIN)
     {
-        BOOL regSucceed = [[dic objectForKey:@"success"] boolValue];
+        //BOOL regSucceed = [[dic objectForKey:@"success"] boolValue];
+        BOOL regSucceed = YES;
         if(!regSucceed)
         {
             NSString *errorMsg = [dic objectForKey:@"error"];
@@ -202,7 +203,7 @@
             userModel.qq = OC("");
             userModel.mobile = OC("");
             userModel.image_url = OC("");
-            [MemberDAL SaveUser:userModel];
+//            [MemberDAL SaveUser:userModel];
             RELEASE_SAFELY(userModel)
             
             if([self.delegate respondsToSelector:@selector(LoginRecieved)])

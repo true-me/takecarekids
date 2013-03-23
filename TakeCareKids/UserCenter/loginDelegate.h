@@ -9,5 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @protocol loginDelegate <NSObject>
+@optional
 -(void)LoginRecieved;
+-(void)LoginCompleted;
 @end
