@@ -62,6 +62,7 @@
 	QieziViewController *vc1 = [[QieziViewController alloc] init];
     self.mainController = vc1;
     vc1.tabBarItem.tag = 1;
+    vc1.tabBarItem.title = @"轨迹地图";
     if (version >= 5.0)
     {
         [vc1.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tab-home.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"tab-home.png"]];
@@ -82,6 +83,7 @@
     //Mall Center Controller
 	FirstViewController *vc2 = [[FirstViewController alloc] init];
     vc2.tabBarItem.tag = 2;
+    vc2.tabBarItem.title = @"个人中心";
     if (version >= 5.0)
     {
         [vc2.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tab-route.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"tab-route.png"]];
@@ -110,20 +112,20 @@
 //	[nav3 release];
 //	[vc3 release];
     
-    HomeRefreshableViewController *vc4 = [[HomeRefreshableViewController alloc] init];
-    vc4.tabBarItem.tag = 4;
-    if (version >= 5.0)
-    {
-        [vc4.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tab-route.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"tab-route.png"]];
-    }
-    else
-    {
-        vc4.tabBarItem = [[[CustomTabBarItem alloc] initWithTitle:@"" normalImage:[UIImage imageNamed:@"tab-route.png"] highlightedImage:[UIImage imageNamed:@"tab-route.png"] tag:2] autorelease];
-    }
-	NavController *nav4 = [[NavController alloc] initWithRootViewController:vc4];
-	[arrViewsArray addObject:nav4];
-	[nav4 release];
-	[vc4 release];
+//    HomeRefreshableViewController *vc4 = [[HomeRefreshableViewController alloc] init];
+//    vc4.tabBarItem.tag = 4;
+//    if (version >= 5.0)
+//    {
+//        [vc4.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tab-route.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"tab-route.png"]];
+//    }
+//    else
+//    {
+//        vc4.tabBarItem = [[[CustomTabBarItem alloc] initWithTitle:@"" normalImage:[UIImage imageNamed:@"tab-route.png"] highlightedImage:[UIImage imageNamed:@"tab-route.png"] tag:2] autorelease];
+//    }
+//	NavController *nav4 = [[NavController alloc] initWithRootViewController:vc4];
+//	[arrViewsArray addObject:nav4];
+//	[nav4 release];
+//	[vc4 release];
     
 //    RefreshTableViewController *vc5 = [[RefreshTableViewController alloc] init];
 //    vc5.tabBarItem.tag = 5;
@@ -140,62 +142,6 @@
 //	[nav5 release];
 //	[vc5 release];
 
-	
-//    
-//    //    //Wishing Orange Controller
-//	WOCenterController *vc3 = [[WOCenterController alloc] init];
-//    vc3.tabBarItem.tag = 3;
-//    if (version >= 5.0)
-//    {
-//        
-//        [vc3.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tabeditdesire-selected.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"tabeditdesire.png"]];
-//    }
-//    else
-//    {
-//        vc3.tabBarItem = [[[CustomTabBarItem alloc] initWithTitle:@"" normalImage:[UIImage imageNamed:@"tabeditdesire.png"] highlightedImage:[UIImage imageNamed:@"tabeditdesire-selected.png"] tag:3] autorelease];
-//    }
-//	NavController *nav3 = [[NavController alloc] initWithRootViewController:vc3];
-//	[arrViewsArray addObject:nav3];
-//	[nav3 release];
-//	[vc3 release];
-//    //
-//    //Easy Living Center Controller
-//	ELivingCenterController *vc4 = [[ELivingCenterController alloc] init];
-//    
-//    vc4.tabBarItem.tag = 4;
-//    if (version >= 5.0) {
-//        [vc4.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tabplace-selected.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"tabplace.png"]];
-//    }
-//    else
-//    {
-//        vc4.tabBarItem = [[[CustomTabBarItem alloc] initWithTitle:@"" normalImage:[UIImage imageNamed:@"tabplace.png"] highlightedImage:[UIImage imageNamed:@"tabplace-selected.png"] tag:4] autorelease];
-//    }
-//	UINavigationController *nav4 = [[UINavigationController alloc] initWithRootViewController:vc4];
-//	[arrViewsArray addObject:nav4];
-//	[nav4 release];
-//	[vc4 release];
-//    //
-//	//More Info Controller
-//    MoreController *vc5 = [[MoreController alloc] init];
-//    vc5.tabBarItem.tag =5;
-//    if (version >= 5.0)
-//    {
-//        //当有新版本需要更新时给出红点提示;     2013/02/05
-//        if ([[NSUserDefaults standardUserDefaults] integerForKey:@"banben"] == 1) {
-//            [vc5.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tabmore-selected.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"tabmore.png"]];
-//        }
-//        else{
-//            [vc5.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tabmore-selected.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"tabmore.png"]];
-//        }
-//    }
-//    else
-//    {
-//        vc5.tabBarItem = [[[CustomTabBarItem alloc] initWithTitle:@"" normalImage:[UIImage imageNamed:@"tabmore.png"] highlightedImage:[UIImage imageNamed:@"tabmore-selected.png"] tag:5] autorelease];
-//    }
-//    NavController *nav5 = [[NavController alloc] initWithRootViewController:vc5];
-//    [arrViewsArray addObject:nav5];
-//    [nav5 release];
-//    [vc5 release];
     
     //[self.tabBar setBackgroundImage:[UIImage imageNamed:@"tabbar-bg.png"]];
     CGRect frame;

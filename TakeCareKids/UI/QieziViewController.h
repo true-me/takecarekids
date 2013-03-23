@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MBProgressHUD.h"
 #import "math.h"
 #import "BaseViewController.h"
 #import "LoginController.h"
@@ -14,7 +15,7 @@
 #import "BMapKit.h"
 
 @interface QieziViewController : BaseViewController
-<BMKMapViewDelegate, BMKSearchDelegate, BMKGeneralDelegate, loginDelegate>
+<BMKMapViewDelegate, BMKSearchDelegate, BMKGeneralDelegate, loginDelegate, MBProgressHUDDelegate,UISearchBarDelegate>
 {
     UIToolbar *toolbar;
     BMKMapView* mView;
@@ -37,6 +38,10 @@
     
     BOOL isRouting;
     BOOL stopRoute;
+    
+    MBProgressHUD *HUD;
+    
+    UISearchBar *srchBar;
 }
 
 @property (nonatomic, retain) UIToolbar *toolbar;
@@ -55,4 +60,5 @@
 @property (nonatomic, retain) CLLocation *currentLocation;
 @property (nonatomic, assign) BOOL isRouting;
 @property (nonatomic, assign) BOOL stopRoute;
+@property (nonatomic, assign) IBOutlet UISearchBar *srchBar;
 @end

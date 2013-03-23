@@ -29,6 +29,7 @@ BMKMapManager* _mapManager;
 @synthesize currentLocation;
 @synthesize isRouting;
 @synthesize stopRoute;
+@synthesize srchBar;
 - (void)dealloc
 {
     [_search release];
@@ -41,6 +42,7 @@ BMKMapManager* _mapManager;
     [currentLocation release];
     [routePointsArr release];
     [mView release];
+    [srchBar release];
     [super dealloc];
 }
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -197,7 +199,7 @@ BMKMapManager* _mapManager;
         MapPointAnnotion* pointAnnotation=(MapPointAnnotion*)annotation;
         NSString *AnnotationViewID = [NSString stringWithFormat:@"iAnnotation-%i",pointAnnotation.tag];
 		annotationView = [[BMKPinAnnotationView alloc] initWithAnnotation:annotation 
-                                                          reuseIdentifier:AnnotationViewID]; 
+                                                          reuseIdentifier:AnnotationViewID];
         
         if ([[pointAnnotation subtitle] isEqualToString:@"我的位置"])
         {
@@ -216,11 +218,22 @@ BMKMapManager* _mapManager;
         
         annotationView.canShowCallout = TRUE;
         annotationView.tag=pointAnnotation.tag;
-        
-
-        
-	}
-	return annotationView ; 
+    }
+	return annotationView ;
+    
+//    static NSString *AnnotationViewID = @"annotationViewID";
+	
+//    BMKAnnotationView *annotationView = [view dequeueReusableAnnotationViewWithIdentifier:AnnotationViewID];
+//    if (annotationView == nil) {
+//        annotationView = [[[BMKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:AnnotationViewID] autorelease];
+//		((BMKPinAnnotationView*)annotationView).pinColor = BMKPinAnnotationColorRed;
+//		((BMKPinAnnotationView*)annotationView).animatesDrop = YES;
+//    }
+//	
+//	annotationView.centerOffset = CGPointMake(0, -(annotationView.frame.size.height * 0.5));
+//    annotationView.annotation = annotation;
+//	annotationView.canShowCallout = TRUE;
+//    return annotationView;
 }
 
 /**
@@ -270,6 +283,22 @@ BMKMapManager* _mapManager;
 
 - (void)onGetPoiResult:(NSArray*)poiResultList searchType:(int)type errorCode:(int)error
 {
+    if (error == BMKErrorOk) {
+		BMKPoiResult* result = [poiResultList objectAtIndex:0];
+		for (int i = 0; i < result.poiInfoList.count; i++)
+        {
+			BMKPoiInfo* poi = [result.poiInfoList objectAtIndex:i];
+			BMKPointAnnotation* item = [[BMKPointAnnotation alloc]init];
+			item.coordinate = poi.pt;
+			item.title = poi.name;
+			[self.mView addAnnotation:item];
+			[item release];
+            if (i == 0)
+            {
+                [self.mView setCenterCoordinate:item.coordinate];
+            }
+		}
+	}
 }
 
 - (void)onGetAddrResult:(BMKAddrInfo*)result errorCode:(int)error
@@ -278,7 +307,7 @@ BMKMapManager* _mapManager;
 		MapPointAnnotion* item = [[MapPointAnnotion alloc]init];
 		item.coordinate = result.geoPt;
 		item.title = result.strAddr;
-        item.subtitle=@"我的位置";
+        item.subtitle=result.strAddr;
 		[mView addAnnotation:item];
 		[item release];
         
@@ -399,14 +428,26 @@ BMKMapManager* _mapManager;
     // 验证登录
     if(YES)
     {
-        UIAlertView*alert = [[UIAlertView alloc] initWithTitle:@"提示"
-                                                       message:[NSString stringWithFormat:@"需要登陆后操作"]
-                                                      delegate:self
-                                             cancelButtonTitle:@"确定"
-                                             otherButtonTitles:nil,nil];
-        alert.tag = TAG_ALERT_LOGIN;
-        [alert show];
-        [alert release];
+//        UIAlertView*alert = [[UIAlertView alloc] initWithTitle:@"提示"
+//                                                       message:[NSString stringWithFormat:@"需要登陆后操作"]
+//                                                      delegate:self
+//                                             cancelButtonTitle:@"确定"
+//                                             otherButtonTitles:nil,nil];
+//        alert.tag = TAG_ALERT_LOGIN;
+//        [alert show];
+//        [alert release];
+//        
+        HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+        [self.navigationController.view addSubview:HUD];
+        HUD.labelText = @"请先登陆账号";
+        [HUD showAnimated:YES whileExecutingBlock:^{
+            sleep(2.0f);
+        } completionBlock:^{
+            [HUD removeFromSuperview];
+            [HUD release];
+            HUD = nil;
+            [self LoginModalPresent];
+        }];
         return;
     }
     
@@ -464,48 +505,79 @@ BMKMapManager* _mapManager;
     if ([self.toolbar isHidden])
     {
         [self.toolbar setHidden:NO];
+        
         [self.view bringSubviewToFront:self.toolbar];
     }
     else
     {
-        [self.toolbar setHidden:YES];        
+        [self.toolbar setHidden:YES];
+        [self.srchBar setHidden:YES];
     }
 
 }
+
+- (void)tapSearch:(id) sender
+{
+    [self.srchBar setHidden:NO];
+    [self.view bringSubviewToFront:srchBar];
+    [toolbar setHidden:YES];
+}
+
 - (void)setupLockRect:(id) sender
 {
     UIButton *btn = (UIButton *)sender;
     if (btn.tag == 421)
     {
         NSLog(@"关闭电子围栏，取消围栏模式！");
-        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"围栏模式取消成功！" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-        [alert show];
-        [alert release];
+
         // 关闭设置电子围栏
-        for (UIGestureRecognizer *recognizer in [self.mView gestureRecognizers])
-        {
-            if ([recognizer isKindOfClass:[UITapGestureRecognizer class]])
-            {
-                [self.mView removeGestureRecognizer:recognizer];
-            }
-        }
-        btn.tag = 420;
+        
+        HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+        [self.navigationController.view addSubview:HUD];
+        HUD.labelText = @"围栏模式已经关闭";
+        HUD.mode = MBProgressHUDModeCustomView;
+        HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark"]] autorelease];
+        [HUD showAnimated:YES whileExecutingBlock:^{
+            [self removeGestureRecognizerOnLockMode];
+            btn.tag = 420;
+            sleep(2);
+        } completionBlock:^{
+            [HUD removeFromSuperview];
+            [HUD release];
+            HUD = nil;
+        }];
+
         return;
     }
     else
     {
 
-            NSLog(@"请在地图上选择两个坐标，开始设置围栏！");
-            UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"请在地图上选择两个坐标，开始围栏模式！" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-            [alert show];
-            [alert release];
+        NSLog(@"请在地图上选择两个坐标，开始设置围栏！");
+        HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+        [self.navigationController.view addSubview:HUD];
+        
+        HUD.delegate = self;
+        HUD.labelText = @"启动围栏模式！";
+        HUD.detailsLabelText = @"请在地图上选择两个坐标";
+        HUD.square = YES;
+        [HUD showAnimated:YES whileExecutingBlock:^{
+            
+            NSArray* array = [NSArray arrayWithArray:self.mView.annotations];
+            [self.mView removeAnnotations:array];
+            array = [NSArray arrayWithArray:self.mView.overlays];
+            [self.mView removeOverlays:array];
             
             UITapGestureRecognizer *mTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapPress:)];
             [self.mView addGestureRecognizer:mTap];
             [mTap release];
             btn.tag = 421;
-            return;
-
+            sleep(2);
+        } completionBlock:^{
+            [HUD removeFromSuperview];
+            [HUD release];
+            HUD = nil;
+        }];
+        return;
     }
 //
 //    MapPointAnnotion *item0 = [self.mView.annotations objectAtIndex:0];
@@ -824,10 +896,20 @@ BMKMapManager* _mapManager;
     if (self.mView.annotations.count == 2 )
     {
         // 画多边形
-        [self createLockRect:self.mView.annotations];
-        UIAlertView* alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"围栏模式设置成功！" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-        [alert show];
-        [alert release];
+       
+        HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+        [self.navigationController.view addSubview:HUD];
+        HUD.labelText = @"围栏设置成功";
+        HUD.mode = MBProgressHUDModeCustomView;
+        HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark"]] autorelease];
+        [HUD showAnimated:YES whileExecutingBlock:^{
+            [self createLockRect:self.mView.annotations];            
+            sleep(2);
+        } completionBlock:^{
+            [HUD removeFromSuperview];
+            [HUD release];
+            HUD = nil;  
+        }];
         return;
     }
 }
@@ -1048,7 +1130,8 @@ BMKMapManager* _mapManager;
         [[[UIBarButtonItem alloc] initWithCustomView:[self getButtonWithTitle:@"监控孩子" target:self action:@selector(toggleRouteLine:) forControlEvents:UIControlEventTouchUpInside]] autorelease],
         [[[UIBarButtonItem alloc] initWithCustomView:[self getButtonWithTitle:@"轨迹回放" target:self action:@selector(toggleRouteLine:) forControlEvents:UIControlEventTouchUpInside]] autorelease],
         [[[UIBarButtonItem alloc] initWithCustomView:[self getButtonWithTitle:@"电子围栏" target:self action:@selector(setupLockRect:) forControlEvents:UIControlEventTouchUpInside]] autorelease],
-                                        nil];
+        [[[UIBarButtonItem alloc] initWithCustomView:[self getButtonWithTitle:@"搜索" target:self action:@selector(tapSearch:) forControlEvents:UIControlEventTouchUpInside]] autorelease],
+    nil];
     
     [toolBarOne setItems:toolBarItems animated:YES];
     self.toolbar = toolBarOne;
@@ -1080,13 +1163,79 @@ BMKMapManager* _mapManager;
     [lbl release];
     return btn;
 }
+#pragma mark -
+#pragma mark MBProgressHUDDelegate methods
 
+- (void)hudWasHidden:(MBProgressHUD *)hud {
+	// Remove HUD from screen when the HUD was hidded
+	[HUD removeFromSuperview];
+	[HUD release];
+	HUD = nil;
+}
+
+#pragma mark -
+#pragma mark Search Bar delegate
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
+{
+    [searchBar setShowsCancelButton:YES animated:YES];
+    return YES;
+}
+
+- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
+{
+    [searchBar setShowsCancelButton:NO animated:YES];
+    return YES;
+}
+
+-(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    [searchBar resignFirstResponder];
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    [searchBar resignFirstResponder];
+    [self doSearch:searchBar];
+}
+
+-(void) doSearch:(UISearchBar*)searchBar
+{
+    
+    [searchBar resignFirstResponder];
+    NSString *strKeyword = searchBar.text;
+    HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.navigationController.view addSubview:HUD];
+    HUD.delegate = self;
+    HUD.labelText = @"正在搜索...";
+    
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        [self removeGestureRecognizerOnLockMode];
+        NSArray* array = [NSArray arrayWithArray:self.mView.annotations];
+        [self.mView removeAnnotations:array];
+        array = [NSArray arrayWithArray:self.mView.overlays];
+        [self.mView removeOverlays:array];
+        
+        BOOL flag = [_search poiSearchInCity:@"西安" withKey:strKeyword pageIndex:0];
+        if (!flag) {
+            NSLog(@"search failed!");
+        }
+    } completionBlock:^{
+        [HUD removeFromSuperview];
+        [HUD release];
+        HUD = nil;
+    }];
+}
+
+- (void) removeGestureRecognizerOnLockMode
+{
+    for (UIGestureRecognizer *recognizer in [self.mView gestureRecognizers])
+    {
+        if ([recognizer isKindOfClass:[UITapGestureRecognizer class]])
+        {
+            [self.mView removeGestureRecognizer:recognizer];
+        }
+    }
+}
 @end
 
-//@implementation UIToolbar (CustomImage2)
-//- (void)drawRect:(CGRect)rect
-//{
-//    UIImage *image = [UIImage imageNamed: @"bg.png"];
-//    [image drawInRect:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
-//}
-//@end
+
