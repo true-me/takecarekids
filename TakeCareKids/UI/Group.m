@@ -36,10 +36,10 @@
             if ([varObject isKindOfClass:[NSDictionary class]])
             {
                 SubGroup *subGroupOne = [[SubGroup alloc] init];
-                subGroupOne.imageName = [dic getStringValueForKey:@"imageName" defaultValue:@""];
-                subGroupOne.imageUrl = [dic getStringValueForKey:@"imageUrl" defaultValue:@""];
+                subGroupOne.imageName = [varObject getStringValueForKey:@"imageName" defaultValue:@""];
+                subGroupOne.imageUrl = [varObject getStringValueForKey:@"imageUrl" defaultValue:@""];
 
-                id objClassID = [dic objectForKey:@"classID"];
+                id objClassID = [varObject objectForKey:@"classID"];
                 if ([objClassID isKindOfClass:[NSNumber class]])
                 {
                     subGroupOne.classID = [NSString stringWithFormat:@"%d", [objClassID integerValue]];
@@ -48,7 +48,7 @@
                 {
                     subGroupOne.classID = objClassID;
                 }
-                subGroupOne.name = [dic getStringValueForKey:@"name" defaultValue:@""];
+                subGroupOne.name = [varObject getStringValueForKey:@"name" defaultValue:@""];
                 if (!subGroupArr)
                 {
                     subGroupArr = [[NSMutableArray alloc] initWithCapacity:0];

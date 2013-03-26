@@ -16,6 +16,7 @@
 #import "TableDemoViewController.h"
 #import "HomeRefreshableViewController.h"
 #import "RefreshTableViewController.h"
+#import "EditViewController.h"
 
 @interface CustomTabbarController : UITabBarController<UITabBarControllerDelegate, EGOImageViewDelegate>
 {

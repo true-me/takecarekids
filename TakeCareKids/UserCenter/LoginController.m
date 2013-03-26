@@ -151,10 +151,19 @@
     HUD.delegate = self;
     HUD.labelText = @"提交数据";
 	
-    [HUD show:YES];
+    [HUD showAnimated:YES whileExecutingBlock:^{sleep(1.5f);} completionBlock:^{
+        [HUD removeFromSuperview];
+        [HUD release];
+        HUD = nil;
+        if([self.delegate respondsToSelector:@selector(LoginRecieved)])
+        {
+            [self.delegate LoginRecieved];
+        }
+        [self dismissModalViewControllerAnimated:YES];
+    }];
     
-    NSString *u = [NSString stringWithFormat:@"%@%@", BASE_URL, OC("user/login")];
-    [[MemberDAL memberDAL] PostLoginWithURL:u withTag:TAG_USER_LOGIN withDelegate:self loginid:self.txtLoginID.text pwd:self.txtPwd.text mac:[CommonMethods macaddress]];
+//    NSString *u = [NSString stringWithFormat:@"%@%@", BASE_URL, OC("user/login")];
+//    [[MemberDAL memberDAL] PostLoginWithURL:u withTag:TAG_USER_LOGIN withDelegate:self loginid:self.txtLoginID.text pwd:self.txtPwd.text mac:[CommonMethods macaddress]];
 }
 
 -(IBAction)btnRegClick:(id)sender

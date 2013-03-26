@@ -105,7 +105,8 @@
     NSMutableArray *itemsPerRow = [[NSMutableArray alloc] initWithCapacity:0];
     for (SubGroup *sg in group.subGroupArr)
     {
-        ListItem *itemOne = [[ListItem alloc] initWithFrame:CGRectZero image:[UIImage imageNamed:@"5_64x64.png"] text:group.imageName];
+        NSLog(@"majunfei.#####%@, %@", sg.imageName, sg.name);
+        ListItem *itemOne = [[ListItem alloc] initWithFrame:CGRectZero image:[UIImage imageNamed:@"5_64x64.png"] text:sg.name];
         [itemsPerRow addObject:itemOne];
         [itemOne release];
     }

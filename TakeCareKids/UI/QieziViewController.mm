@@ -538,6 +538,10 @@ BMKMapManager* _mapManager;
         HUD.mode = MBProgressHUDModeCustomView;
         HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark"]] autorelease];
         [HUD showAnimated:YES whileExecutingBlock:^{
+            NSArray* array = [NSArray arrayWithArray:self.mView.annotations];
+            [self.mView removeAnnotations:array];
+            array = [NSArray arrayWithArray:self.mView.overlays];
+            [self.mView removeOverlays:array];
             [self removeGestureRecognizerOnLockMode];
             btn.tag = 420;
             sleep(2);
@@ -806,7 +810,7 @@ BMKMapManager* _mapManager;
 {
     NSLog(@"%@ ----- %@", self, NSStringFromSelector(_cmd));
     NSLog(@"overlayViews: %@", overlayViews);
-    NSLog(@"开始下一个路线, %d", self.routePointsArr.count);
+
     if (overlayViews.count > 0)
     {
         id overlayView = [overlayViews objectAtIndex:0];
@@ -815,6 +819,7 @@ BMKMapManager* _mapManager;
             return;
         }
     }
+    NSLog(@"开始下一个路线, %d", self.routePointsArr.count);
     [self performSelector:@selector(startRoute:) withObject:@"启动轨迹回放" afterDelay:1.2f];
 }
 

@@ -81,7 +81,7 @@
 	[vc1 release];
     //
     //Mall Center Controller
-	FirstViewController *vc2 = [[FirstViewController alloc] init];
+	EditViewController *vc2 = [[EditViewController alloc] init];
     vc2.tabBarItem.tag = 2;
     vc2.tabBarItem.title = @"个人中心";
     if (version >= 5.0)
