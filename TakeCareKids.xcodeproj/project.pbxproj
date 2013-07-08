@@ -3152,6 +3152,8 @@
 		00F7AD0E16CF346C00AEA9FD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer: Ma Jeffrey (CLQ4797ACJ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ma Jeffrey (CLQ4797ACJ)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/TakeCareKids/lib/ShareSDK_v2.2.3/Connection\"",
@@ -3175,6 +3177,8 @@
 				);
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "1552EB68-93F9-4CDE-81F2-CAEF27A623DB";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1552EB68-93F9-4CDE-81F2-CAEF27A623DB";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -3182,6 +3186,8 @@
 		00F7AD0F16CF346C00AEA9FD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer: Ma Jeffrey (CLQ4797ACJ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ma Jeffrey (CLQ4797ACJ)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/TakeCareKids/lib/ShareSDK_v2.2.3/Connection\"",
@@ -3205,6 +3211,8 @@
 				);
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "1552EB68-93F9-4CDE-81F2-CAEF27A623DB";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1552EB68-93F9-4CDE-81F2-CAEF27A623DB";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

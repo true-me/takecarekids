@@ -38,8 +38,6 @@
 #define isRetina ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 960), [[UIScreen mainScreen] currentMode].size) : NO)  
 
 /*--------------------Iphone5 的判断------------------------------------------------------*/
-#define IS_IPHONE_5 (fabs((double)[[UIScreen mainScreen] bounds].size.height - (double)568 ) < DBL_EPSILON)
-
 #define OC(str) [NSString stringWithCString:(str) encoding:NSUTF8StringEncoding]
 
 //#define TEXT_COLOR	 [UIColor colorWithRed:136.0/255.0 green:136.0/255.0 blue:136.0/255.0 alpha:1.0]

@@ -12,10 +12,15 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
     #import "constants.h"
+    #import "JSONKit.h"
     #import "MBProgressHUD.h"
     #import "DataCheck.h"
     #import "NSObject+Property.h"
     #import "SandboxFile.h"
+    #import "NSStringAdditions.h"
+    #import "NSDictionaryAdditions.h"
+    #import "NSDataAdditions.h"
+
 #endif
 #ifdef DEBUG
 #   define DLog(fmt, ...) {NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);}

@@ -24,4 +24,4 @@
 
 #define REST_API_URL @"http://125.76.234.67:8080/alarm/rest.do?meth="
 #define REST_API_HOST @"125.76.234.67"
-#define REST_API_KEY @"tcl_ecm_wishorange_community_pengpengmao_huatek"
+#define REST_API_KEY @"atestkey"
