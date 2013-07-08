@@ -131,7 +131,7 @@ BMKMapManager* _mapManager;
 
     //mapView.zoomLevel = 3;
     //加个当前坐标的小气泡
-    //[_search reverseGeocode:userLocation.location.coordinate];
+    BOOL ret = [_search reverseGeocode:userLocation.location.coordinate];
    // mapView.showsUserLocation = NO;
     mapView.showsUserLocation = NO;
     
@@ -799,7 +799,7 @@ BMKMapManager* _mapManager;
 - (void) toUserLocation:(id)sender
 {
     [self.mView setZoomLevel:18];
-    //[_search reverseGeocode:self.location.coordinate];
+    BOOL ret = [_search reverseGeocode:self.location.coordinate];
     self.mView.showsUserLocation = YES;
 
 }

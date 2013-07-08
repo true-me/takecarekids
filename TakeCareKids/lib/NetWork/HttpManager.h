@@ -11,7 +11,6 @@
 #import "StringUtil.h"
 #import "NSStringAdditions.h"
 #import <CoreLocation/CoreLocation.h>
-#import "Group.h"
 
 #define USER_INFO_KEY_TYPE          @"requestType"
 #define USER_STORE_USER_NAME        @"SinaUserName"

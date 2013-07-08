@@ -11,7 +11,6 @@
 #import "CustomTabbarController.h"
 #import "ViewController.h"
 #import "QieziViewController.h"
-#import "BMViewController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate>
 

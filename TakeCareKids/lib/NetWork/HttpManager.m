@@ -222,8 +222,6 @@
         NSMutableArray  *statuesArr = [[NSMutableArray alloc]initWithCapacity:0];
         for (id item in userArr)
         {
-            Group *groupOne = [Group groupWithJsonDictionary:item];
-            [statuesArr addObject:groupOne];
         }
 //        NSString *isRefresh = [userInformation objectForKey:@"isRefresh"];
 //        if ([isRefresh isEqualToString:@"YES"]) {
