@@ -332,29 +332,30 @@ BMKMapManager* _mapManager;
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    // 验证登录
+    if(YES)
+    {
+        [self LoginModalPresent];
+        
+        //        HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+        //        [self.navigationController.view addSubview:HUD];
+        //        HUD.labelText = @"请先登陆账号";
+        //        [HUD showAnimated:YES whileExecutingBlock:^{
+        //            sleep(2.0f);
+        //        } completionBlock:^{
+        //            [HUD removeFromSuperview];
+        //            [HUD release];
+        //            HUD = nil;
+        //        }];
+        //        return;
+    }
+    
     
     [self leftButtonWithImage:[UIImage imageNamed:@"topbar_menu.png"] withSelector:@selector(toggleToolbar:) onTarget:self];
     [self rightButtonWithTitle:@"定位" withSelector:@selector(toUserLocation:) onTarget:self];
     [self setupTitle:@"GPS系统"];
     [self initToolbar];
 
-    // 验证登录
-    if(YES)
-    {
-        [self LoginModalPresent];
-        
-//        HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-//        [self.navigationController.view addSubview:HUD];
-//        HUD.labelText = @"请先登陆账号";
-//        [HUD showAnimated:YES whileExecutingBlock:^{
-//            sleep(2.0f);
-//        } completionBlock:^{
-//            [HUD removeFromSuperview];
-//            [HUD release];
-//            HUD = nil;
-//        }];
-//        return;
-    }
 
 
     // 要使用百度地图,请先启动 BaiduMapManager

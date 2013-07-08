@@ -13,7 +13,7 @@
 #import "QieziViewController.h"
 #import "EditViewController.h"
 
-@interface CustomTabbarController : UITabBarController<UITabBarControllerDelegate, EGOImageViewDelegate>
+@interface CustomTabbarController : UITabBarController<UITabBarControllerDelegate, EGOImageViewDelegate, loginDelegate>
 {
     NSString *coverURL;
     QieziViewController *mainController;

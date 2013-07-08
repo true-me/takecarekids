@@ -40,12 +40,39 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+#pragma mark - 用户登录
+#pragma mark
+-(void)LoginModalPresent
+{
+    LoginController *objLogin = [[LoginController alloc] init];
+    objLogin.delegate = self;
+    CustomNavBarVC *navController = [[[CustomNavBarVC alloc] initWithRootViewController:objLogin] autorelease];
+    [self.tabBarController presentModalViewController:navController animated:YES];
+    [objLogin release];
+}
 #pragma mark Init Tab Bar
 
 -(void)InitTabBar
 {
     [self.view setAlpha:1.0f];
+    
+    if(YES)
+    {
+        [self LoginModalPresent];
+        
+        //        HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+        //        [self.navigationController.view addSubview:HUD];
+        //        HUD.labelText = @"请先登陆账号";
+        //        [HUD showAnimated:YES whileExecutingBlock:^{
+        //            sleep(2.0f);
+        //        } completionBlock:^{
+        //            [HUD removeFromSuperview];
+        //            [HUD release];
+        //            HUD = nil;
+        //        }];
+        //        return;
+    }
+    
     
     float version = [[[UIDevice currentDevice] systemVersion] floatValue];
     self.selectedIndex = 0;
