@@ -1199,8 +1199,8 @@
 		00EB911516FADFE600A23BD3 /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
 		00EB911616FADFE600A23BD3 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		00EB911716FADFE600A23BD3 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
-		00EB911816FADFE600A23BD3 /* StringUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringUtil.h; sourceTree = "<group>"; };
-		00EB911916FADFE600A23BD3 /* StringUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StringUtil.m; sourceTree = "<group>"; };
+		00EB911816FADFE600A23BD3 /* StringUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StringUtil.h; path = ../WeiboEngine/StringUtil.h; sourceTree = "<group>"; };
+		00EB911916FADFE600A23BD3 /* StringUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StringUtil.m; path = ../WeiboEngine/StringUtil.m; sourceTree = "<group>"; };
 		00EB912D16FAE81900A23BD3 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		00EB912F16FAE85C00A23BD3 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		00EB916016FAF87000A23BD3 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
@@ -1904,6 +1904,8 @@
 		00253AC9178AEB7D00E0D595 /* Addition */ = {
 			isa = PBXGroup;
 			children = (
+				00EB911816FADFE600A23BD3 /* StringUtil.h */,
+				00EB911916FADFE600A23BD3 /* StringUtil.m */,
 				00253ACA178AEB7D00E0D595 /* ChineseToPinyin.h */,
 				00253ACB178AEB7D00E0D595 /* ChineseToPinyin.m */,
 				00253ACC178AEB7D00E0D595 /* CustomSearchBar.h */,
@@ -2343,8 +2345,6 @@
 				00EB910A16FADFE600A23BD3 /* CoreDataManager.h */,
 				00EB910B16FADFE600A23BD3 /* CoreDataManager.m */,
 				00EB910C16FADFE600A23BD3 /* SBJson */,
-				00EB911816FADFE600A23BD3 /* StringUtil.h */,
-				00EB911916FADFE600A23BD3 /* StringUtil.m */,
 			);
 			path = WeiboEngine;
 			sourceTree = "<group>";
@@ -2409,7 +2409,6 @@
 		00F7ACD316CF346C00AEA9FD = {
 			isa = PBXGroup;
 			children = (
-				00DBF7A41761BF8900242B7D /* OpenGLES.framework */,
 				00F1E8B416CF8F4D005A9E26 /* Images */,
 				00F7ACE516CF346C00AEA9FD /* TakeCareKids */,
 				00F7ACDE16CF346C00AEA9FD /* Frameworks */,
@@ -2428,6 +2427,7 @@
 		00F7ACDE16CF346C00AEA9FD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				00DBF7A41761BF8900242B7D /* OpenGLES.framework */,
 				00EB916016FAF87000A23BD3 /* CoreText.framework */,
 				00EB912F16FAE85C00A23BD3 /* CoreData.framework */,
 				00EB912D16FAE81900A23BD3 /* ImageIO.framework */,
