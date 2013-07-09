@@ -1,56 +1,31 @@
 //
-//  WakeUpListVC.m
+//  TerminalListVC.m
 //  TableViewPull
 
-#import "WakeUpListVC.h"
+#import "TerminalListVC.h"
 
-@implementation WakeUpListVC
+@implementation TerminalListVC
 @synthesize titleStr = _titleStr;
 @synthesize taID = _taID;
 @synthesize type = _type;
-@synthesize wkupArr = _wkupArr;
-@synthesize center = _center;
-@synthesize wakeUpParser = _wakeUpParser;
+@synthesize dataArr = _dataArr;
 @synthesize pageSize = _pageSize;
 @synthesize pageNo = _pageNo;
+@synthesize tbl = _tbl;
+@synthesize msgRouter = _msgRouter;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	
+    self.msgRouter = [MessageRouter getInstance];
     self.view.backgroundColor = [UIColor blackColor];//[UIColor colorWithRed:223/255.0f green:225/255.0f blue:225/255.0f alpha:1];
     CustomNavBarVC *navc= (CustomNavBarVC *)self.navigationController;
-    [navc leftButtonWithImage:[UIImage imageNamed:@"topbar_menu.png"] withTarget:@selector(LeftButtonPress:) onTarget:self];
-    switch (_type)
-    {
-        case 0:
-            [navc setupTitle:@"叫醒我的人"];
-            break;
-        case 1:
-            [navc setupTitle:@"我叫醒的人"];
-            break;
-        default:
-            break;
-    }
+    [navc leftButtonWithImage:[UIImage imageNamed:@"topbar_menu.png"] withSelector:@selector(LeftButtonPress:) onTarget:self];
     
-    //self.navigationController.navigationBarHidden = YES;
-    
-//    UIImage *leftBtnImage = nil;
-//    if ([self isEqual:self.navigationController.topViewController] && [self.navigationController.viewControllers count] == 1)
-//    {
-//        leftBtnImage  =[UIImage imageNamed:@"topbar_menu.png"];
-//    }
-//    else
-//    {
-//        leftBtnImage  =[UIImage imageNamed:@"topbar_back.png"];
-//    }
-//    CustomNavigationView *nav = [[CustomNavigationView alloc] initWithView:self.navigationController.view withTitle:_titleStr withLeftButtonIcon:leftBtnImage withRightButtonTitle:NSLocalizedString(@"编辑", @"编辑")];
-//    nav.delegate = self;
-//    [nav.rightNavButton setHidden:YES];
-//    [self.navigationController.view addSubview:nav];
+    [navc setupTitle:@"亲情号码"];
 
     self.pageNo = 1;
     self.pageSize = 10;
-    self.wkupArr = [[NSMutableArray alloc] init];
+    self.dataArr = [[NSMutableArray alloc] init];
 
     self.tableView.backgroundColor = [UIColor colorWithRed:215/255.0f green:220/255.0f blue:220/255.0f alpha:1];
     self.tableView.delegate = self;
@@ -84,44 +59,38 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.wkupArr count];
+    return [self.dataArr count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    static NSString *CellIdentifier = @"WakeUpListCell";
+    static NSString *CellIdentifier = @"TerminalCell";
     
-    RegardViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    TerminalCell *cell = [tableView  dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil)
     {
-        cell = [[[RegardViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[TerminalCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
     
 	// Configure the cell.
-    NSDictionary *user = [self.wkupArr objectAtIndex:indexPath.row];
+    NSDictionary *user = [self.dataArr objectAtIndex:indexPath.row];
     
-    if (![[user objectForKey:@"photo"] isEqualToString:@""])
+    if ([DataCheck isValidString:[NSString stringWithFormat:@"%@", [user objectForKey:@"name"]]])
     {
-        NSString *headImgUrl = [user objectForKey:@"photo"];
-        [cell.userIcon setImageURL:[NSURL URLWithString:headImgUrl]];
-    }
-    else
-    {
-        [cell.userIcon setPlaceholderImage:[UIImage imageNamed:@"avatar_default.png"]];
+        cell.lblName.text = [NSString stringWithFormat:@"%@", [user objectForKey:@"name"]];
     }
     
-    NSString *nickNm = [user objectForKey:@"nickNm"];
-    if ([nickNm length] > 0)
+    if ([DataCheck isValidString:[NSString stringWithFormat:@"%@", [user objectForKey:@"id"]]])
     {
-        cell.userNick.text = nickNm;
+        cell.lblId.text = [NSString stringWithFormat:@"%@", [user objectForKey:@"id"]];
     }
-    else
+    
+    if ([DataCheck isValidString:[NSString stringWithFormat:@"%@", [user objectForKey:@"num"]]])
     {
-        cell.userNick.text = @"知名不具";
+        cell.lblNum.text = [NSString stringWithFormat:@"%@", [user objectForKey:@"num"]];
     }
-
-
+    
     return cell;
 }
 
@@ -139,14 +108,13 @@
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSMutableArray *arr = self.wkupArr;
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    OtherProfileViewController *otherProfile = [[OtherProfileViewController alloc] init];
-    otherProfile.userId = [[arr objectAtIndex:indexPath.row] objectForKey:@"taId"];
-    [self.navigationController pushViewController:otherProfile animated:YES];
-    [otherProfile release];
+//    OtherProfileViewController *otherProfile = [[OtherProfileViewController alloc] init];
+//    otherProfile.userId = [[arr objectAtIndex:indexPath.row] objectForKey:@"taId"];
+//    [self.navigationController pushViewController:otherProfile animated:YES];
+//    [otherProfile release];
 }
 
 
@@ -159,7 +127,7 @@
 	//  put here just for demo
 	_reloading = YES;
     self.pageNo = 1;
-	[self sendWakeUpRequest];
+	[self getTerminalList];
 }
 
 - (void)moreTableViewDataSource{
@@ -168,7 +136,7 @@
 	//  put here just for demo
 	_reloading = YES;
     self.pageNo++;
-	[self sendWakeUpRequest];
+	[self getTerminalList];
 }
 
 - (void)showPlaceHolder
@@ -198,7 +166,7 @@
 	_reloading = NO;
     [self.tableView reloadData];    
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
-    if ([self.wkupArr count] == 0)
+    if ([self.dataArr count] == 0)
     {
         [self showPlaceHolder];
     }
@@ -213,7 +181,7 @@
 	//  model should call this when its done loading
 	_reloading = NO;
     [self.tableView reloadData];
-//    NSIndexPath *indexpath = [NSIndexPath indexPathForRow:0 inSection:[self.wkupArr count]-1];
+//    NSIndexPath *indexpath = [NSIndexPath indexPathForRow:0 inSection:[self.dataArr count]-1];
 //    [self.tableView scrollToRowAtIndexPath:indexpath atScrollPosition:UITableViewScrollPositionBottom animated:NO];
 	[_refreshFooterView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
 
@@ -222,7 +190,7 @@
 //    CGRect frame = CGRectMake(0.0f, self.tableView.contentSize.height, self.view.frame.size.width, self.tableView.bounds.size.height);
 //    [_refreshFooterView setFrame:frame];
     
-    if ([self.wkupArr count] == 0)
+    if ([self.dataArr count] == 0)
     {
         [self showPlaceHolder];
     }
@@ -311,9 +279,7 @@
 	_refreshHeaderView = nil;
     [_titleStr release];
     [_taID release];
-    [_wkupArr release];
-    [_center release];
-    [_wakeUpParser release];
+    [_dataArr release];
     [super dealloc];
 }
 
@@ -321,11 +287,7 @@
 - (void)LeftButtonPress:(id)sender
 {
     if ([self isEqual:self.navigationController.topViewController] && [self.navigationController.viewControllers count] == 1)
-    {
-        [self.viewDeckController toggleLeftViewAnimated:YES];
-    }
-    else
-    {
+{
         [self.navigationController popViewControllerAnimated:YES];
     }
 }
@@ -337,82 +299,91 @@
 }
 
 #pragma mark - RequestFunction
-- (void)sendWakeUpRequest
+- (void)getTerminalList
 {
     
-    NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
-    NSMutableDictionary * tempDic = [[NSMutableDictionary alloc] init];
-    [tempDic setValue:[userDefault objectForKey:UserID] forKey:UserID];
-    [tempDic setValue:[userDefault objectForKey:@"session"] forKey:@"session"];
-    [tempDic setValue:self.taID forKey:@"coreUser"];
-    [tempDic setValue:[NSString stringWithFormat:@"%d", self.pageNo] forKey:@"no"];
-    [tempDic setValue:[NSString stringWithFormat:@"%d", self.pageSize] forKey:@"size"];    
-    if (_type == 0)
-    {
-        // 叫醒我的
-        [tempDic setValue:[NSNumber numberWithInt:0] forKey:@"type"];
-    }
-    else if(_type == 1) {
-        // 我叫醒的
-        [tempDic setValue:[NSNumber numberWithInt:1] forKey:@"type"];
-    }
-    [tempDic setValue:@"zh" forKey:Language];
-    [tempDic setValue:[NSNumber numberWithInt:0] forKey:ENCODING];
-    
-    SBJsonWriter *json = [[SBJsonWriter alloc] init];
-    NSString *parameter = [json stringWithObject:tempDic];
-    
-    self.center = [SingleWMCenter shareCenter];
-    self.wakeUpParser = [[WMParserResult alloc] initWithAPI:WakeUpList withParams:parameter withHttpMethod:POST];
-    [self.wakeUpParser parserWithInfoType:InfoTypeForWakeUpList withDelegate:self];
-}
+    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+	[self.navigationController.view addSubview:HUD];
+    HUD.delegate = self;
+    HUD.labelText = @"正在加载";
+    [HUD show:YES];
+	
+    NSString *uid = [[NSUserDefaults standardUserDefaults] objectForKey:@"uid"];
+    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:@"username"];
+    NSString *pwd = [[NSUserDefaults standardUserDefaults] objectForKey:@"pwd"];
+
+    [_msgRouter getTerminalListWithUid:uid password:pwd
+                             delegate:self
+                             selector:@selector(getTerminalListSuccess:)
+                        errorSelector:@selector(getTerminalListError:)];
+ }
 
 #pragma mark - NetworkDelegate
-- (void)parserWithAPI:(NSString*)API withResult:(id)result
+#pragma mark Recive data
+#pragma mark - private
+
+- (void)getTerminalListSuccess:(NSDictionary *)response
 {
-    if ([API isEqual:WakeUpList])
+    NSLog(@"%s=%@", __PRETTY_FUNCTION__, response);
+    NSInteger result = [[response objectForKey:@"rst"] intValue];
+    if (result == 0)
     {
-        if (result)
+        NSArray * tms = [response objectForKey:@"tms"];
+        if ([DataCheck isValidArray:tms])
         {
-            if (self.wkupArr)
-            {
-                if (self.pageNo == 1)
-                {
-                    [self.wkupArr removeAllObjects];
-                    [self.wkupArr addObjectsFromArray:result];
-                    [self performSelectorOnMainThread:@selector(doneLoadingTableViewData) withObject:nil waitUntilDone:YES];
-                    
-                }
-                else
-                {
-                    [self.wkupArr addObjectsFromArray:result];
-                    [self performSelectorOnMainThread:@selector(doneLoadingMoreTableViewData) withObject:nil waitUntilDone:YES];
-                }
-            }
-            else
-            {
-                self.wkupArr = nil;
-                self.wkupArr = [[NSMutableArray alloc] initWithArray:result];
-                [self performSelectorOnMainThread:@selector(doneLoadingTableViewData) withObject:nil waitUntilDone:YES];
-            }
-
+            [self.dataArr removeAllObjects];
+            [self.dataArr addObjectsFromArray:tms];
+            [self saveTodb:tms];
         }
-        return;
+        
+        MBProgressHUD *hud = [MBProgressHUD HUDForView:self.navigationController.view];
+        if (hud)
+        {
+            hud.labelText = @"完成！";
+            [hud hide:YES afterDelay:0.5f];
+        }
+        
+        [self performSelectorOnMainThread:@selector(doneLoadingMoreTableViewData) withObject:nil waitUntilDone:YES];
     }
-    [self performSelectorOnMainThread:@selector(doneLoadingTableViewData) withObject:nil waitUntilDone:YES];
+    else
+    {
+        MBProgressHUD *hud = [MBProgressHUD HUDForView:self.navigationController.view];
+        if (hud)
+        {
+            hud.labelText = @"请求数据失败！";
+            [hud hide:YES afterDelay:0.5f];
+        }
+    }
+}
 
-}
-- (void)errorWithAPI:(NSString*)API withResult:(id)result
+
+- (void)getTerminalListError:(NSDictionary *)errorInfo
 {
-    [self performSelectorOnMainThread:@selector(doneLoadingTableViewData) withObject:nil waitUntilDone:YES];
+    DLog(@"errorInfo=%@", errorInfo);
+    MBProgressHUD *hud = [MBProgressHUD HUDForView:self.navigationController.view];
+    if (hud)
+    {
+        hud.labelText = @"请求数据失败！";
+        [hud hide:YES afterDelay:0.5f];
+    }
 }
-- (void)timeOutWithAPI:(NSString*)API
+
+-(void) saveTodb:(NSArray *) arr
 {
-    [self performSelectorOnMainThread:@selector(doneLoadingTableViewData) withObject:nil waitUntilDone:YES];
-}
-- (void)connectFailWithNetWork:(NSString*)API withError:(NSError*)error
-{
-    [self performSelectorOnMainThread:@selector(doneLoadingTableViewData) withObject:nil waitUntilDone:YES];
+    for (NSDictionary *dictOne in arr)
+    {
+        NSMutableDictionary *dicModel = [[NSMutableDictionary alloc] initWithCapacity:0];
+        for (NSString *key in dictOne.allKeys)
+        {
+            NSString *newKey = [NSString stringWithFormat:@"tm%@", key];
+            NSString *value = [dictOne objectForKey:key];
+            [dicModel setObject:value forKey:newKey];
+        }
+        
+        Terminal *modelOne = [Terminal objectWithProperties:dicModel];
+        [modelOne setToDB];
+        [dicModel release];
+    }
 }
 
 #pragma mark -

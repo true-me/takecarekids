@@ -10,20 +10,15 @@
 #import "EGOImageButton.h"
 #import "EGOImageView.h"
 
-@interface RegardViewCell : UITableViewCell<EGOImageViewDelegate, EGOImageButtonDelegate> {
-    UIImageView *userIconBackView;
-    EGOImageView *userIcon;
-    UILabel *userNick;
-    UILabel *userDesc;
-    
-    EGOImageButton *relationBtn;
+@interface TerminalCell : UITableViewCell<EGOImageViewDelegate, EGOImageButtonDelegate>
+{
+
 }
 
 @property (nonatomic,strong) UIImageView *userIconBackView;
 @property (nonatomic,strong) EGOImageView *userIcon;
-@property (nonatomic,strong) UILabel *userNick;
-@property (nonatomic,strong) UILabel *userDesc;
-@property (nonatomic,strong) EGOImageButton *relationBtn;
-- (void)setRelation:(NSInteger)relType;
+@property (nonatomic,strong) UILabel *lblId;
+@property (nonatomic,strong) UILabel *lblName;
+@property (nonatomic,strong) UILabel *lblNum;
 
 @end

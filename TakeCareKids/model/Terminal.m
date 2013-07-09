@@ -17,9 +17,8 @@
     self = [super init];
     if(self)
     {
-
+        [Terminal initTable];
     }
-    
     return self;
 }
 - (void)dealloc
@@ -30,17 +29,15 @@
     [super dealloc];
 }
 
-+ (Terminal*) TerminalWithJsonDictionary:(NSDictionary*)dic
-{
-	return [[[Terminal alloc] initWithJsonDictionary:dic] autorelease];
++ (id)objectWithProperties:(NSDictionary *)properties {
+    return [[[self alloc] initWithProperties:properties] autorelease];
 }
-- (Terminal*) initWithJsonDictionary:(NSDictionary*)dic
-{
-	if (self = [super init])
-    {
 
+- (id)initWithProperties:(NSDictionary *)properties {
+    if (self = [self init]) {
+        [self setValuesForKeysWithDictionary:properties];
     }
-   	return self;
+    return self;
 }
 
 #pragma mark - User Custom Methods
@@ -49,7 +46,7 @@
 {
     if (![[DbHelper sharedSingleton] isExistsTable:[self getClassName]])
     {
-        NSString *stmt = [self tableSql:[self getClassName] withPriKey:@"recordID"];
+        NSString *stmt = [self tableSql:[self getClassName] withPriKey:@"tmid"];
         [[DbHelper sharedSingleton] creatTable:[self getClassName] WithSQL:stmt];
     }
 }
@@ -69,6 +66,19 @@
     return arr;
 }
 
+- (void) setToDB
+{
+    [Terminal initTable];
+    
+    if ([[DbHelper sharedSingleton] isExistsWithObject:self])
+    {
+        [[DbHelper sharedSingleton] updateObject:self forKey:@"tmid"];
+    }
+    else
+    {
+        [[DbHelper sharedSingleton] insertObject:self];
+    }
+}
 //+ (NSString *) getCfgValueForName:(NSString *) keyName
 //{
 //    [self initTable];

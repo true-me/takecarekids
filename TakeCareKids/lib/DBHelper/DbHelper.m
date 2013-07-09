@@ -329,5 +329,99 @@ static DbHelper *sharedSingleton = nil;
     return result;
 }
 
+-(BOOL)isExistsWithObject:(id)object{
+    NSString *tablename = [object getClassName];
+    NSMutableString *sql = [[NSMutableString alloc] init];
+    NSArray *array = [object getPropertyList];
+    [sql appendFormat:@"select * from %@ where ",tablename] ;
+    NSInteger i = 0;
+    for (NSString *key in array)
+    {
+        if (i>0)
+        {
+            [sql appendString:@" and "];
+        }
+        [sql appendFormat:@"%@=?",key];
+        i++;
+    }
+    NSMutableArray *arrayValue = [NSMutableArray array];
+    for (NSString *key in array)
+    {
+        if ([object respondsToSelector:NSSelectorFromString(key)])
+        {
+            id value = [object valueForKey:key];
+            if (value==nil)
+            {
+                value = @"";
+            }
+            [arrayValue addObject:value];
+        }
+    }
+    
+    BOOL ret = NO;
+    FMResultSet *rs = [_db executeQuery:sql withArgumentsInArray:arrayValue];
+    NSMutableDictionary *rowDict = nil;
+    while ([rs next])
+    {
+        rowDict = [NSMutableDictionary dictionaryWithDictionary:[rs resultDictionary]];
+        ret = YES;
+        break;
+    }
+    return ret;
+}
+
+-(void)updateObject:(id)object forKey:(NSString *) pkey
+{
+    NSString *tablename = [object getClassName];
+    NSMutableString *sql = [[NSMutableString alloc] init];
+    NSArray *array = [object getPropertyList];
+    [sql appendFormat:@"update %@ set ",tablename] ;
+    NSInteger i = 0;
+    for (NSString *key in array)
+    {
+        if ([key isEqualToString:pkey])
+        {
+            continue;
+        }
+        if (i>0)
+        {
+            [sql appendString:@","];
+        }
+        [sql appendFormat:@"%@=?",key];
+        i++;
+    }
+    [sql appendFormat:@" where %@=?", pkey];
+    NSMutableArray *arrayValue = [NSMutableArray array];
+    for (NSString *key in array)
+    {
+        if ([key isEqualToString:pkey])
+        {
+            continue;
+        }
+        if ([object respondsToSelector:NSSelectorFromString(key)])
+        {
+            id value = [object valueForKey:key];
+            if (value==nil)
+            {
+                value = @"";
+            }
+            [arrayValue addObject:value];
+        }
+    }
+    
+    if ([object respondsToSelector:NSSelectorFromString(pkey)])
+    {
+        id value = [object valueForKey:pkey];
+        if (value==nil)
+        {
+            value = @"";
+        }
+        [arrayValue addObject:value];
+    }
+    
+    [_db executeUpdate:sql withArgumentsInArray:arrayValue];
+}
+
+
 @end
 

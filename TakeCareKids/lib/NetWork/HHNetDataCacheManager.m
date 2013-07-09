@@ -108,7 +108,7 @@ static HHNetDataCacheManager * instance;
     
     NSData * data=[request responseData];
     if ([url rangeOfString:@"/180/"].location == NSNotFound) {
-        [_CDManager insertImageToCD:data url:url];
+     //[_CDManager insertImageToCD:data url:url];
     }
     [self sendNotificationWithKey:url Data:data index:indexNumber];
 }

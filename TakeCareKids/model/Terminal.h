@@ -9,18 +9,17 @@
 #import <Foundation/Foundation.h>
 #import "DbHelper.h"
 
-@interface Terminal : NSObject {
-
-}
+@interface Terminal : NSObject
 @property (nonatomic, retain) NSString * tmname;
 @property (nonatomic, retain) NSString * tmid;
 @property (nonatomic, retain) NSString * tmnum;
 
-//+(SysCfg *) sharedSingleton;
-- (Terminal*) initWithJsonDictionary:(NSDictionary*)dic;
-+ (Terminal*) TerminalWithJsonDictionary:(NSDictionary*)dic;
++ (id)objectWithProperties:(NSDictionary *)properties;
 + (void)initTable;
 + (NSArray *) getAllModels;
+- (void) setToDB;
+
+
 //+ (NSString *) getCfgValueForName:(NSString *) keyName;
 //+ (void) setCfgValue:(NSString *) valueStr ForName:(NSString *) keyName;
 @end

@@ -133,30 +133,28 @@ static MessageRouter * instance=nil;
                       selector:selector
                  errorSelector:errorSelector];
 }
-- (void)userLoginWithEmail:(NSString *)email password:(NSString *)password
-                  delegate:(id)delegate selector:(SEL)selector
-             errorSelector:(SEL)errorSelector
+- (void)getTerminalListWithUid:(NSString *)uid
+                      password:(NSString *)password
+                      delegate:(id)delegate
+                      selector:(SEL)selector
+                 errorSelector:(SEL)errorSelector
 {
     
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-                            @"0", @"encoding",
-                            @"ewtr345346t456456456445", @"device",
-                            email, @"userNm",
-                            password, @"pwd",
-                            @"zh", @"lang",
-                            @"0", @"phoneType",
-                            @"1.0", @"appver",
+                            uid, @"uid",
+                            [password md5Hash], @"pwd",
                             nil];
     
-    [_client callMethodWithMod:@"user.login"
-                        params:nil
-                    postParams:params
+    [_client callMethodWithMod:@"terminals.php"
+                        params:params
+                    postParams:nil
                          files:nil
                        cookies:nil
                         header:nil
                       delegate:delegate
                       selector:selector
-                 errorSelector:errorSelector];    
+                 errorSelector:errorSelector];
+    
 }
 
 - (void)bindLoginWithSNS:(NSString *)email password:(NSString *)password

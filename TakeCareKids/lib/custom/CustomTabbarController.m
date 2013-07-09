@@ -73,7 +73,7 @@
     QieziViewController *vc3 = [[QieziViewController alloc] init];
     [self setTabBarItemWithVC:vc3 withTitle:@"电子围栏" withImage:[UIImage imageNamed:@"tab-route.png"] withHlImage:[UIImage imageNamed:@"tab-route.png"]];
     
-    EditViewController *vc4 = [[EditViewController alloc] init];
+    TerminalListVC *vc4 = [[TerminalListVC alloc] init];
     [self setTabBarItemWithVC:vc4 withTitle:@"亲情号码" withImage:[UIImage imageNamed:@"tab-route.png"] withHlImage:[UIImage imageNamed:@"tab-route.png"]];
     
     EditViewController *vc5 = [[EditViewController alloc] init];

@@ -418,6 +418,9 @@
 		0056BC4316FAA378009BE97E /* 7_64x64.png in Resources */ = {isa = PBXBuildFile; fileRef = 0056BC3816FAA378009BE97E /* 7_64x64.png */; };
 		0056BC4416FAA378009BE97E /* 8_64x64.png in Resources */ = {isa = PBXBuildFile; fileRef = 0056BC3916FAA378009BE97E /* 8_64x64.png */; };
 		0056BC4516FAA378009BE97E /* 9_64x64.png in Resources */ = {isa = PBXBuildFile; fileRef = 0056BC3A16FAA378009BE97E /* 9_64x64.png */; };
+		0069BCBE178BE6B5006DB6A8 /* Terminal.m in Sources */ = {isa = PBXBuildFile; fileRef = 0069BCBD178BE6B5006DB6A8 /* Terminal.m */; };
+		0069BCC1178BE95D006DB6A8 /* TerminalListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0069BCC0178BE95C006DB6A8 /* TerminalListVC.m */; };
+		0069BCC4178BE9A3006DB6A8 /* TerminalCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0069BCC3178BE9A3006DB6A8 /* TerminalCell.m */; };
 		0095922516FC0E7D008A2A5C /* HttpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0095922116FC0E7D008A2A5C /* HttpManager.m */; };
 		0095922616FC0E7D008A2A5C /* MessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0095922216FC0E7D008A2A5C /* MessageManager.m */; };
 		00AC21CD16F06BE3001948CD /* navbar-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 00AC21AC16F06BE3001948CD /* navbar-bg.png */; };
@@ -1053,6 +1056,12 @@
 		0056BC3816FAA378009BE97E /* 7_64x64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 7_64x64.png; sourceTree = "<group>"; };
 		0056BC3916FAA378009BE97E /* 8_64x64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 8_64x64.png; sourceTree = "<group>"; };
 		0056BC3A16FAA378009BE97E /* 9_64x64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 9_64x64.png; sourceTree = "<group>"; };
+		0069BCBC178BE6B5006DB6A8 /* Terminal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Terminal.h; sourceTree = "<group>"; };
+		0069BCBD178BE6B5006DB6A8 /* Terminal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Terminal.m; sourceTree = "<group>"; };
+		0069BCBF178BE95C006DB6A8 /* TerminalListVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TerminalListVC.h; sourceTree = "<group>"; };
+		0069BCC0178BE95C006DB6A8 /* TerminalListVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TerminalListVC.m; sourceTree = "<group>"; };
+		0069BCC2178BE9A3006DB6A8 /* TerminalCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TerminalCell.h; sourceTree = "<group>"; };
+		0069BCC3178BE9A3006DB6A8 /* TerminalCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TerminalCell.m; sourceTree = "<group>"; };
 		0095922116FC0E7D008A2A5C /* HttpManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpManager.m; sourceTree = "<group>"; };
 		0095922216FC0E7D008A2A5C /* MessageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageManager.m; sourceTree = "<group>"; };
 		0095922316FC0E7D008A2A5C /* HttpManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpManager.h; sourceTree = "<group>"; };
@@ -1706,6 +1715,10 @@
 		0017A2FB178B39F70003D1AC /* controller */ = {
 			isa = PBXGroup;
 			children = (
+				0069BCC2178BE9A3006DB6A8 /* TerminalCell.h */,
+				0069BCC3178BE9A3006DB6A8 /* TerminalCell.m */,
+				0069BCBF178BE95C006DB6A8 /* TerminalListVC.h */,
+				0069BCC0178BE95C006DB6A8 /* TerminalListVC.m */,
 				0017A2FC178B39F70003D1AC /* EditViewController.h */,
 				0017A2FD178B39F70003D1AC /* EditViewController.m */,
 				0017A2FE178B39F70003D1AC /* Images */,
@@ -2088,6 +2101,15 @@
 			path = tbl;
 			sourceTree = "<group>";
 		};
+		0069BCBB178BE6B4006DB6A8 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				0069BCBC178BE6B5006DB6A8 /* Terminal.h */,
+				0069BCBD178BE6B5006DB6A8 /* Terminal.m */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
 		00AC21AB16F06BE3001948CD /* navbar */ = {
 			isa = PBXGroup;
 			children = (
@@ -2428,6 +2450,7 @@
 		00F7ACE516CF346C00AEA9FD /* TakeCareKids */ = {
 			isa = PBXGroup;
 			children = (
+				0069BCBB178BE6B4006DB6A8 /* model */,
 				0017A373178B3D570003D1AC /* constants.h */,
 				0017A2FB178B39F70003D1AC /* controller */,
 				00EB90BA16FAB33A00A23BD3 /* lib */,
@@ -3038,6 +3061,9 @@
 				0017A370178B3BC60003D1AC /* HttpRequestAPI.m in Sources */,
 				0017A371178B3BC60003D1AC /* MessageRouter.m in Sources */,
 				0017A372178B3BC60003D1AC /* SRASIDownloadCache.m in Sources */,
+				0069BCBE178BE6B5006DB6A8 /* Terminal.m in Sources */,
+				0069BCC1178BE95D006DB6A8 /* TerminalListVC.m in Sources */,
+				0069BCC4178BE9A3006DB6A8 /* TerminalCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3114,14 +3140,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer: Ma Jeffrey (CLQ4797ACJ)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ma Jeffrey (CLQ4797ACJ)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/TakeCareKids/lib/ShareSDK_v2.2.3/Connection\"",
-					"\"$(SRCROOT)/TakeCareKids/lib/ShareSDK_v2.2.3/Core\"",
-					"\"$(SRCROOT)/TakeCareKids/lib/ShareSDK_v2.2.3/Extend\"",
-					"\"$(SRCROOT)/TakeCareKids/lib/ShareSDK_v2.2.3\"",
-					"\"$(SRCROOT)/TakeCareKids/lib/ShareSDK_v2.2.3/UI\"",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TakeCareKids/TakeCareKids-Prefix.pch";
 				HEADER_SEARCH_PATHS = "${SDK_DIR}/usr/include/libxml2";
@@ -3132,8 +3151,6 @@
 					"\"$(SRCROOT)/TakeCareKids/lib/BMAPI/libs/Release-aio\"",
 					"\"$(SRCROOT)/TakeCareKids/lib/BMAPI/libs/Release-iphoneos\"",
 					"\"$(SRCROOT)/TakeCareKids/lib/BMAPI/libs/Release-iphonesimulator\"",
-					"\"$(SRCROOT)/TakeCareKids/lib/ShareSDK_v2.2.3/Extend/SDKExport\"",
-					"\"$(SRCROOT)/TakeCareKids/lib/ShareSDK_v2.2.3/Extend/TencentWeiboSSO\"",
 				);
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3148,14 +3165,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer: Ma Jeffrey (CLQ4797ACJ)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ma Jeffrey (CLQ4797ACJ)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/TakeCareKids/lib/ShareSDK_v2.2.3/Connection\"",
-					"\"$(SRCROOT)/TakeCareKids/lib/ShareSDK_v2.2.3/Core\"",
-					"\"$(SRCROOT)/TakeCareKids/lib/ShareSDK_v2.2.3/Extend\"",
-					"\"$(SRCROOT)/TakeCareKids/lib/ShareSDK_v2.2.3\"",
-					"\"$(SRCROOT)/TakeCareKids/lib/ShareSDK_v2.2.3/UI\"",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TakeCareKids/TakeCareKids-Prefix.pch";
 				HEADER_SEARCH_PATHS = "${SDK_DIR}/usr/include/libxml2";
@@ -3166,8 +3176,6 @@
 					"\"$(SRCROOT)/TakeCareKids/lib/BMAPI/libs/Release-aio\"",
 					"\"$(SRCROOT)/TakeCareKids/lib/BMAPI/libs/Release-iphoneos\"",
 					"\"$(SRCROOT)/TakeCareKids/lib/BMAPI/libs/Release-iphonesimulator\"",
-					"\"$(SRCROOT)/TakeCareKids/lib/ShareSDK_v2.2.3/Extend/SDKExport\"",
-					"\"$(SRCROOT)/TakeCareKids/lib/ShareSDK_v2.2.3/Extend/TencentWeiboSSO\"",
 				);
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = "$(TARGET_NAME)";

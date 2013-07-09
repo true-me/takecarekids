@@ -20,15 +20,17 @@
 
 #pragma mark - user
 
-- (void)userLoginWithUserName:(NSString *)username
+- (void)getTerminalListWithUid:(NSString *)uid
                      password:(NSString *)password
                      delegate:(id)delegate
                      selector:(SEL)selector
                 errorSelector:(SEL)errorSelector;
 
-- (void)userLoginWithEmail:(NSString *)email password:(NSString *)password
-                   delegate:(id)delegate selector:(SEL)selector
-              errorSelector:(SEL)errorSelector;
+- (void)userLoginWithUserName:(NSString *)username
+                     password:(NSString *)password
+                     delegate:(id)delegate
+                     selector:(SEL)selector
+                errorSelector:(SEL)errorSelector;
 
 - (void)bindLoginWithSNS:(NSString *)email password:(NSString *)password
                   delegate:(id)delegate selector:(SEL)selector

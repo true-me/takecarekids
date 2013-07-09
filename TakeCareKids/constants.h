@@ -25,3 +25,7 @@
 #define REST_API_URL @"http://cdma.xadhgps.com/inter/"
 #define REST_API_HOST @"cdma.xadhgps.com"
 #define REST_API_KEY @"atestkey"
+
+#define FONT @"STHeitiSC-Light"
+#define FONT_M @"STHeitiSC-Medium"
+#define FONT_B @"STHeitiSC-Bold"

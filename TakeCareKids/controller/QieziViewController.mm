@@ -70,10 +70,10 @@ BMKMapManager* _mapManager;
 #pragma mark-
 #pragma mark 定位委托
 //开始定位
-- (void)mapViewWillStartLocatingUser:(BMKMapView *)mapView{
+- (void)mapViewWillStartLocatingUser:(BMKMapView *)mapView
+{
     
     NSLog(@"开始定位");
-    
 }
 
 //更新坐标
@@ -107,8 +107,7 @@ BMKMapManager* _mapManager;
             else
             {
                 [mapView setCenterCoordinate:userLocation.location.coordinate];
-                
-                [mapView setShowsUserLocation:NO];
+                [mapView setShowsUserLocation:YES];
             }
             return;
         }
@@ -389,7 +388,7 @@ BMKMapManager* _mapManager;
     self.mView.delegate = self;
     [self.mView setZoomEnabled:YES];
     //[self.mView setZoomLevel:18];
-    [self.mView setShowsUserLocation:NO];//显示定位的蓝点儿
+    [self.mView setShowsUserLocation:YES];//显示定位的蓝点儿
     //
     //    //    [mView setCenterCoordinate:location.coordinate animated:YES];
     //    NSLog(@"%@", [self.pointsArr objectAtIndex:0]);
@@ -630,6 +629,8 @@ BMKMapManager* _mapManager;
 
 - (void)startRoute:(NSString *)string
 {
+    [mView setShowsUserLocation:NO];
+    
     if (stopRoute)
     {
         if (self.routeLine)
@@ -744,7 +745,7 @@ BMKMapManager* _mapManager;
 
 - (void) toUserLocation:(id)sender
 {
-//    [self.mView setZoomLevel:18];
+    [self.mView setZoomLevel:18];
 //    BOOL ret = [_search reverseGeocode:self.location.coordinate];
     self.mView.showsUserLocation = YES;
 }

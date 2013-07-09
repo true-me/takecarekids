@@ -46,4 +46,8 @@
 -(void) creatTable:(NSString *) tableName WithSQL:(NSString *) sqlStatmt;
 -(NSDictionary *) querySingleRecordFromTable:(NSString *) tableName withStatmt:(NSString *) sqlStatmt;
 -(BOOL) updateRecordFromTable:(NSString *) tableName withStatmt:(NSString *) sqlStatmt;
+
+-(BOOL)isExistsWithObject:(id)object;
+-(void)updateObject:(id)object forKey:(NSString *) pkey;
+
 @end

@@ -1,34 +1,31 @@
 //
-//  WakeUpListVC.h
+//  TerminalListVC.h
 
 #import <UIKit/UIKit.h>
-#import "IIViewDeckController.h"
 #import "EGORefreshTableFooterView.h"
 #import "EGORefreshTableHeaderView.h"
-#import "RegardViewCell.h"
-#import "OtherProfileViewController.h"
+#import "BaseViewController.h"
+#import "TerminalCell.h"
 #import "CustomNavBarVC.h"
+#import "Terminal.h"
 
-@interface WakeUpListVC : UITableViewController  <EGORefreshTableHeaderDelegate, UITableViewDelegate, UITableViewDataSource, CustomNavgationDelegate,WMParserResultDelegate, EGORefreshTableFooterDelegate>{
+@interface TerminalListVC : UITableViewController  <EGORefreshTableHeaderDelegate, UITableViewDelegate, UITableViewDataSource, EGORefreshTableFooterDelegate, MBProgressHUDDelegate>{
 	
 	EGORefreshTableHeaderView *_refreshHeaderView;
-
     EGORefreshTableFooterView *_refreshFooterView;
 
-	//  Reloading var should really be your tableviews datasource
-	//  Putting it here for demo purposes 
 	BOOL _reloading;
 }
-
-@property (nonatomic, strong) NSString *titleStr;
-@property (nonatomic, strong) NSString *taID;
+@property (nonatomic, retain) UITableView *tbl;
+@property (nonatomic, retain) NSString *titleStr;
+@property (nonatomic, retain) NSString *taID;
 @property (nonatomic, assign) NSInteger type;
-@property (nonatomic, retain) NSMutableArray *wkupArr;
-@property (nonatomic, retain) WMCenter *center;
-@property (nonatomic, retain) WMParserResult *wakeUpParser;
+@property (nonatomic, retain) NSMutableArray *dataArr;
 @property (nonatomic, assign) NSInteger pageSize;
 @property (nonatomic, assign) NSInteger pageNo;
 @property (nonatomic, assign) UIImageView *ima;
+@property(nonatomic, retain) MessageRouter *msgRouter;
+
 
 
 
