@@ -15,9 +15,8 @@
 
 @interface CustomTabbarController : UITabBarController<UITabBarControllerDelegate, EGOImageViewDelegate, loginDelegate>
 {
-    NSString *coverURL;
-    QieziViewController *mainController;
 }
-@property(retain, nonatomic) NSString *coverURL;
 @property(retain, nonatomic) QieziViewController *mainController;
+@property(retain, nonatomic) NSMutableArray *arrVC;
+
 @end

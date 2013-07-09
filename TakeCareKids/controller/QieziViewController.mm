@@ -744,10 +744,9 @@ BMKMapManager* _mapManager;
 
 - (void) toUserLocation:(id)sender
 {
-    [self.mView setZoomLevel:18];
-    BOOL ret = [_search reverseGeocode:self.location.coordinate];
+//    [self.mView setZoomLevel:18];
+//    BOOL ret = [_search reverseGeocode:self.location.coordinate];
     self.mView.showsUserLocation = YES;
-    
 }
 
 #pragma mark - MKMapViewDelegate

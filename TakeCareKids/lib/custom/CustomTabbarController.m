@@ -14,8 +14,14 @@
 @end
 
 @implementation CustomTabbarController
-@synthesize coverURL;
-@synthesize mainController;
+@synthesize mainController =_mainController;
+@synthesize arrVC = _arrVC;
+
+- (void)dealloc
+{
+    [_arrVC release];
+    [super dealloc];
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -29,15 +35,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-//    if(![GlobaMethods isUserAuth])
-//    {
-//        [self LoginModalPresent];
-//    }
-//    else
-//    {
-        [self InitTabBar];
-//    }
+    
+    NSMutableArray * arr =[[NSMutableArray alloc] initWithCapacity:5];
+    self.arrVC = arr;
+    [arr release];
+
+    [self InitTabBar];
 }
 
 - (void)didReceiveMemoryWarning
@@ -47,21 +50,12 @@
 }
 #pragma mark - 用户登录
 #pragma mark
--(void)LoginModalPresent
-{
-    LoginController *objLogin = [[LoginController alloc] init];
-    objLogin.delegate = self;
-    CustomNavBarVC *navController = [[[CustomNavBarVC alloc] initWithRootViewController:objLogin] autorelease];
-    [self.tabBarController presentModalViewController:navController animated:YES];
-    [objLogin release];
-}
-#pragma mark Init Tab Bar
+#pragma mark Init Tabbar item
+#pragma mark
 
 -(void)InitTabBar
 {
     [self.view setAlpha:1.0f];
-        
-    float version = [[[UIDevice currentDevice] systemVersion] floatValue];
     self.selectedIndex = 0;
     if(IS_IPHONE_5)
     {
@@ -70,91 +64,54 @@
     {
         [self.view setFrame:CGRectMake(0,0,320,480)];
     }
-	NSMutableArray *arrViewsArray = [[NSMutableArray alloc] initWithCapacity:5];
-	
-    //Home Center Controller
-	QieziViewController *vc1 = [[QieziViewController alloc] init];
-    self.mainController = vc1;
-    vc1.tabBarItem.tag = 1;
-    vc1.tabBarItem.title = @"轨迹地图";
-    if (version >= 5.0)
-    {
-        [vc1.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tab-home.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"tab-home.png"]];
-    }
-    else
-    {
-        vc1.tabBarItem = [[[CustomTabBarItem alloc] initWithTitle:@"" normalImage:[UIImage imageNamed:@"tab-home.png"] highlightedImage:[UIImage imageNamed:@"tab-home.png"] tag:1] autorelease];
-    }
-    //
-	CustomNavBarVC  *nav1 = [[CustomNavBarVC alloc] initWithRootViewController:vc1];
-    //    CGRect frame = navContrMainViewContoller.navigationBar.frame.origin.y;
-    //    NSLog(@"navContrMainViewContoller.navigationBar.frame.origin.y=%f",nav1.navigationBar.frame.origin.y);
-	[arrViewsArray addObject:nav1];
-	[nav1 release];
-	[vc1 release];
-    //
-    //Mall Center Controller
-	EditViewController *vc2 = [[EditViewController alloc] init];
-    vc2.tabBarItem.tag = 2;
-    vc2.tabBarItem.title = @"个人中心";
-    if (version >= 5.0)
-    {
-        [vc2.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tab-route.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"tab-route.png"]];
-    }
-    else
-    {
-        vc2.tabBarItem = [[[CustomTabBarItem alloc] initWithTitle:@"" normalImage:[UIImage imageNamed:@"tab-route.png"] highlightedImage:[UIImage imageNamed:@"tab-route.png"] tag:2] autorelease];
-    }
-	CustomNavBarVC *nav2 = [[CustomNavBarVC alloc] initWithRootViewController:vc2];
-	[arrViewsArray addObject:nav2];
-	[nav2 release];
-	[vc2 release];
+    QieziViewController *vc1 = [[QieziViewController alloc] init];
+    [self setTabBarItemWithVC:vc1 withTitle:@"首页" withImage:[UIImage imageNamed:@"tab-home.png"] withHlImage:[UIImage imageNamed:@"tab-home.png"]];
     
-//    TableDemoViewController *vc3 = [[TableDemoViewController alloc] init];
-//    vc3.tabBarItem.tag = 3;
-//    if (version >= 5.0)
-//    {
-//        [vc3.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tab-route.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"tab-route.png"]];
-//    }
-//    else
-//    {
-//        vc3.tabBarItem = [[[CustomTabBarItem alloc] initWithTitle:@"" normalImage:[UIImage imageNamed:@"tab-route.png"] highlightedImage:[UIImage imageNamed:@"tab-route.png"] tag:2] autorelease];
-//    }
-//	NavController *nav3 = [[NavController alloc] initWithRootViewController:vc3];
-//	[arrViewsArray addObject:nav3];
-//	[nav3 release];
-//	[vc3 release];
-    
-//    HomeRefreshableViewController *vc4 = [[HomeRefreshableViewController alloc] init];
-//    vc4.tabBarItem.tag = 4;
-//    if (version >= 5.0)
-//    {
-//        [vc4.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tab-route.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"tab-route.png"]];
-//    }
-//    else
-//    {
-//        vc4.tabBarItem = [[[CustomTabBarItem alloc] initWithTitle:@"" normalImage:[UIImage imageNamed:@"tab-route.png"] highlightedImage:[UIImage imageNamed:@"tab-route.png"] tag:2] autorelease];
-//    }
-//	NavController *nav4 = [[NavController alloc] initWithRootViewController:vc4];
-//	[arrViewsArray addObject:nav4];
-//	[nav4 release];
-//	[vc4 release];
-    
-//    RefreshTableViewController *vc5 = [[RefreshTableViewController alloc] init];
-//    vc5.tabBarItem.tag = 5;
-//    if (version >= 5.0)
-//    {
-//        [vc5.tabBarItem setFinishedSelectedImage:[UIImage imageNamed:@"tab-route.png"] withFinishedUnselectedImage:[UIImage imageNamed:@"tab-route.png"]];
-//    }
-//    else
-//    {
-//        vc5.tabBarItem = [[[CustomTabBarItem alloc] initWithTitle:@"" normalImage:[UIImage imageNamed:@"tab-route.png"] highlightedImage:[UIImage imageNamed:@"tab-route.png"] tag:2] autorelease];
-//    }
-//	NavController *nav5 = [[NavController alloc] initWithRootViewController:vc5];
-//	[arrViewsArray addObject:nav5];
-//	[nav5 release];
-//	[vc5 release];
+    QieziViewController *vc2 = [[QieziViewController alloc] init];
+    [self setTabBarItemWithVC:vc2 withTitle:@"轨迹回放" withImage:[UIImage imageNamed:@"tab-route.png"] withHlImage:[UIImage imageNamed:@"tab-route.png"]];
 
+    QieziViewController *vc3 = [[QieziViewController alloc] init];
+    [self setTabBarItemWithVC:vc3 withTitle:@"电子围栏" withImage:[UIImage imageNamed:@"tab-route.png"] withHlImage:[UIImage imageNamed:@"tab-route.png"]];
+    
+    EditViewController *vc4 = [[EditViewController alloc] init];
+    [self setTabBarItemWithVC:vc4 withTitle:@"亲情号码" withImage:[UIImage imageNamed:@"tab-route.png"] withHlImage:[UIImage imageNamed:@"tab-route.png"]];
+    
+    EditViewController *vc5 = [[EditViewController alloc] init];
+    [self setTabBarItemWithVC:vc5 withTitle:@"静默监听" withImage:[UIImage imageNamed:@"tab-route.png"] withHlImage:[UIImage imageNamed:@"tab-route.png"]];
+    
+    EditViewController *vc6 = [[EditViewController alloc] init];
+    [self setTabBarItemWithVC:vc6 withTitle:@"免打扰时间" withImage:[UIImage imageNamed:@"tab-route.png"] withHlImage:[UIImage imageNamed:@"tab-route.png"]];
+
+    EditViewController *vc7 = [[EditViewController alloc] init];
+    [self setTabBarItemWithVC:vc7 withTitle:@"指定通话" withImage:[UIImage imageNamed:@"tab-route.png"] withHlImage:[UIImage imageNamed:@"tab-route.png"]];
+    
+    EditViewController *vc8 = [[EditViewController alloc] init];
+    [self setTabBarItemWithVC:vc8 withTitle:@"定时定位" withImage:[UIImage imageNamed:@"tab-route.png"] withHlImage:[UIImage imageNamed:@"tab-route.png"]];
+    
+    EditViewController *vc9 = [[EditViewController alloc] init];
+    [self setTabBarItemWithVC:vc9 withTitle:@"允许呼入号码" withImage:[UIImage imageNamed:@"tab-route.png"] withHlImage:[UIImage imageNamed:@"tab-route.png"]];
+    
+    EditViewController *vc10 = [[EditViewController alloc] init];
+    [self setTabBarItemWithVC:vc10 withTitle:@"SOS快捷键设置" withImage:[UIImage imageNamed:@"tab-route.png"] withHlImage:[UIImage imageNamed:@"tab-route.png"]];
+    
+    EditViewController *vc11 = [[EditViewController alloc] init];
+    [self setTabBarItemWithVC:vc11 withTitle:@"通知提醒" withImage:[UIImage imageNamed:@"tab-route.png"] withHlImage:[UIImage imageNamed:@"tab-route.png"]];
+    
+    EditViewController *vc12 = [[EditViewController alloc] init];
+    [self setTabBarItemWithVC:vc12 withTitle:@"短信允许" withImage:[UIImage imageNamed:@"tab-route.png"] withHlImage:[UIImage imageNamed:@"tab-route.png"]];
+    
+    [vc1  release];
+    [vc2  release];
+    [vc3  release];
+    [vc4  release];
+    [vc5  release];
+    [vc6  release];
+    [vc7  release];
+    [vc8  release];
+    [vc9  release];
+    [vc10 release];
+    [vc11 release];
+    [vc12 release];
     
     //[self.tabBar setBackgroundImage:[UIImage imageNamed:@"tabbar-bg.png"]];
     CGRect frame;
@@ -170,15 +127,9 @@
     }
     
     [self.tabBar setFrame:frame];
-	self.viewControllers = arrViewsArray;
+	self.viewControllers = self.arrVC;
     self.tabBar.opaque = YES;
-    //
 	self.delegate=self;
-	//[self.navigationController setNavigationBarHidden:YES];
-    //
-	[arrViewsArray release];
-//	[self.view addSubview:self.tabBarView.view];
-//	[tabBar release];
 }
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
@@ -193,4 +144,29 @@
 //    NSLog(@"登录成功!");
 //    [self InitTabBar];
 //}
+
+//
+
+-(void) setTabBarItemWithVC:(UIViewController *)vc
+                  withTitle:title
+                  withImage:(UIImage *)image
+                withHlImage:(UIImage *)hlImage
+{
+    float version = [[[UIDevice currentDevice] systemVersion] floatValue];
+    vc.tabBarItem.tag = [self.arrVC count] + 1;
+    vc.tabBarItem.title = title;
+//    vc.tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0);
+    if (version >= 5.0)
+    {
+        [vc.tabBarItem setFinishedSelectedImage:image withFinishedUnselectedImage:hlImage];
+    }
+    else
+    {
+        vc.tabBarItem = [[[CustomTabBarItem alloc] initWithTitle:title normalImage:image highlightedImage:hlImage tag:vc.tabBarItem.tag] autorelease];
+    }
+    CustomNavBarVC *nav = [[CustomNavBarVC alloc] initWithRootViewController:vc];
+    [self.arrVC addObject:nav];
+    [nav release];
+}
+
 @end

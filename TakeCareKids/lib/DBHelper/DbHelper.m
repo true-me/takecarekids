@@ -38,7 +38,7 @@ static DbHelper *sharedSingleton = nil;
 
 +(NSString *) databaseFilePath
 {
-    return [SCDBUtils getPathForDocuments:@"syscfg.sqlite" inDir:@"db"];;
+    return [SCDBUtils getPathForDocuments:@"tck.sqlite" inDir:@"db"];;
 }
 
 -(FMDatabaseQueue *)queue{

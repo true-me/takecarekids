@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "BMapKit.h"
 
-@interface ViewController : UIViewController<BMKGeneralDelegate>
+@interface ViewController : UIViewController<BMKGeneralDelegate, UIScrollViewDelegate>
 {
         BMKMapManager *_mapManager;     
 }

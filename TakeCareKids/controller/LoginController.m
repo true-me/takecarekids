@@ -184,7 +184,13 @@
     if (result == 0)
     {
         NSString * uid = [response objectForKey:@"uid"];
+        NSString * username = self.txtLoginID.text;
+        NSString * pwd = self.txtPwd.text;
+
         [[NSUserDefaults standardUserDefaults] setObject:uid forKey:@"uid"];
+        [[NSUserDefaults standardUserDefaults] setObject:username forKey:@"username"];
+        [[NSUserDefaults standardUserDefaults] setObject:pwd forKey:@"pwd"];
+
         HUD.labelText = @"登录成功！";
         [HUD hide:YES afterDelay:0.5f];
         if(self.delegate && [self.delegate respondsToSelector:@selector(LoginRecieved)])
@@ -195,7 +201,10 @@
     }
     else
     {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"uid"];        
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"uid"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"username"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"pwd"];
+
         HUD.labelText = @"登录失败！";
         [HUD hide:YES afterDelay:0.5f];
     }
@@ -205,8 +214,10 @@
 
 - (void)userLoginError:(NSDictionary *)errorInfo
 {
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"uid"];      
-    NSLog(@"%s=%@", __PRETTY_FUNCTION__, errorInfo);    
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"uid"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"username"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"pwd"];
+    NSLog(@"%s=%@", __PRETTY_FUNCTION__, errorInfo);
     HUD.labelText = @"登录失败！";
     [HUD hide:YES afterDelay:0.5f];
 
