@@ -6,13 +6,26 @@
 //  Copyright (c) 2012 LionTeam. All rights reserved.
 //
 
-#import "CommonMethods.h"
+#import "GlobaMethods.h"
 #include <arpa/inet.h>
 #include <net/if.h>
 #include <ifaddrs.h>
 #include <net/if_dl.h>
 
-@implementation CommonMethods
+@implementation GlobaMethods
+
++(BOOL)isUserAuth
+{
+    NSString *uid =[[NSUserDefaults standardUserDefaults] objectForKey:@"uid"];
+    if (uid && [DataCheck isValidString:uid])
+    {
+        return YES;
+    }
+    else
+    {
+        return NO;
+    }
+}
 
 +(NSString *)getFileSizeString:(NSString *)size
 {
@@ -151,13 +164,6 @@
     }    
 }
 
-+(void)removeDownloadedFile:(NSString*)fileName
-{
-    NSLog(@"%@", [self getTargetFloderPath]);
-    NSLog(@"%@", fileName);
-    [[NSFileManager defaultManager] removeItemAtPath:[[self getTargetFloderPath] stringByAppendingPathComponent:fileName] error: nil];
-}
-
 +(NSString *)getTempFolderPath
 {
     return [[self getDocumentPath] stringByAppendingPathComponent:@"Temp"];
@@ -176,7 +182,7 @@
 
 +(void)SetBadgeNum:(NSArray*)tabbarItems
 {
-    NSInteger c = [self GetDownloadingCount];
+    NSInteger c = 1;
     [UIApplication sharedApplication].applicationIconBadgeNumber = c;
     if(c <= 0)
     {
@@ -300,66 +306,6 @@
             NSAssert( FALSE, @"Failed to create directory maybe out of disk space?");
         }
     }
-}
-
-// 保存正在播放的列表和进度
-+(void)SaveLastPlayModel:(NSArray*)arrContentModel PlayingIndex:(NSInteger)playingIndex Progress:(double)progress
-{
-////    NSDate *today = [NSDate date];
-////    NSDate *lastMonth = [today dateByAddingTimeInterval: -5259487.66];
-////    
-//    SQLite *objsqld = [[SQLite alloc] initWithSQLFile:@"duotin.sqlite"];
-//    NSString *sql = [NSString stringWithFormat:@"delete from [tblLastPlayModels]"];
-//    [objsqld openDb];
-//    [objsqld updateDb:sql];
-//    [objsqld closeDb];
-//
-//    for (NSInteger i=0; i < arrContentModel.count; i++)
-//    {
-//        NSString *selected = nil;
-//        NSString *strProgress = nil;
-//        if (playingIndex == i)
-//        {
-//            selected = [NSString stringWithFormat:@"YES"];
-//            strProgress = [NSString stringWithFormat:@"%f", progress];
-//        }
-//        else
-//        {
-//            selected = [NSString stringWithFormat:@"NO"];
-//            strProgress = [NSString stringWithFormat:@"%f", 0.0f];
-//        }
-//        
-//        AlbumContentModel *acm = [arrContentModel objectAtIndex:i];
-//        NSString *sqlSentence = [NSString stringWithFormat:@"insert into tblLastPlayModels(id,title,runtime,size,newstatus,listen_url,download_url,playtimes,image_url,album_id,collect_url,collected,file_size_16,file_size_32,file_url,seconds,album_image_url,album_title,upload_by,fileName, selected, progress, seq) values ('%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%@','%d','%d','%d','%@','%d','%@','%@','%@','%@','%@', '%@',%d)",
-//                                 acm.sID,
-//                                 acm.title,
-//                                 acm.runtime,
-//                                 acm.size,
-//                                 acm.newstatus,
-//                                 acm.listen_url,
-//                                 acm.download_url,
-//                                 acm.playtimes,
-//                                 acm.image_url,
-//                                 acm.album_id,
-//                                 acm.collect_url,
-//                                 acm.collected,
-//                                 acm.file_size_16,
-//                                 acm.file_size_32,
-//                                 acm.file_url,
-//                                 acm.seconds,
-//                                 acm.album_image_url,
-//                                 acm.album_title,
-//                                 acm.upload_by,
-//                                 @"",
-//                                 selected,
-//                                 strProgress,
-//                                 i];
-//
-//        [objsqld openDb];
-//        [objsqld insertDb:sqlSentence];
-//        [objsqld closeDb];
-//    }
-//    [objsqld release];
 }
 
 +(NSString *) macaddress

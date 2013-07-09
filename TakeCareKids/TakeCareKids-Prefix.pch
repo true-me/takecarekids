@@ -11,6 +11,7 @@
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
+    #import "GlobaMethods.h"
     #import "constants.h"
     #import "JSONKit.h"
     #import "MBProgressHUD.h"
@@ -20,6 +21,8 @@
     #import "NSStringAdditions.h"
     #import "NSDictionaryAdditions.h"
     #import "NSDataAdditions.h"
+    #import "MessageRouter.h"
+
 
 #endif
 #ifdef DEBUG
@@ -32,4 +35,17 @@
 
 // ALog always displays output regardless of the DEBUG setting
 #define ALog(fmt, ...) {NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);};
+#define T_MAC_ADDRESS @"MacAddress"
+// 极光调用使用，暂时未启用
+#define T_DEVICE_TOKEN @"deviceToken"
+// umeng 的SDK
+#define UMENG_SDK @"50f6a82a52701568e3000020"
+
+#define APPDELEGETE (AppDelegate *)[[UIApplication sharedApplication]delegate]
+
 #define RELEASE_SAFELY(__POINTER) { [__POINTER release]; __POINTER = nil; }
+#define isRetina ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 960), [[UIScreen mainScreen] currentMode].size) : NO)
+
+#define NORMAL_TEXT_COLOR	 [UIColor colorWithRed:136.0/255.0 green:136.0/255.0 blue:136.0/255.0 alpha:1.0]
+#define TITLE_COLOR	 [UIColor colorWithRed:68.0/255.0 green:68.0/255.0 blue:68.0/255.0 alpha:1.0]
+#define GRAY_COLOR	 [UIColor colorWithRed:181.0/255.0 green:167.0/255.0 blue:154.0/255.0 alpha:1.0]

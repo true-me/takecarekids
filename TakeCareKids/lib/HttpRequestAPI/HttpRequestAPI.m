@@ -129,7 +129,7 @@
 - (NSString *)getRequestUrl:(NSString *)mod
                      params:(NSDictionary *)params
 {
-//    NSString *ts = [NSString stringWithFormat:@"%d", (int)round([[NSDate date] timeIntervalSince1970])];
+    //    NSString *ts = [NSString stringWithFormat:@"%d", (int)round([[NSDate date] timeIntervalSince1970])];
     
     if (![DataCheck isValidDictionary:params])
     {
@@ -138,25 +138,39 @@
     
     NSMutableDictionary *mutableParams = [[params mutableCopy] autorelease];
     
-//    NSString *osVersion = [NSString stringWithFormat:@"%f", TTOSVersion()];
-//    [mutableParams setObject:osVersion forKey:@"_os_version"];
-//    
-//    NSString *deviceType = [self getDeviceType];
-//    [mutableParams setObject:deviceType forKey:@"_device_type"];
-//    
-//    [mutableParams setObject:CLOUD_CLIENT_VERSION forKey:@"_client_version"];
-//    [mutableParams setObject:APP_VERSION forKey:@"_app_version"];
-//    [mutableParams setObject:ts forKey:@"_ts"];
-
-    NSString *url = [NSString stringWithFormat:@"%@%@", REST_API_URL, mod];    
-//    NSString *sig = [self genSig:mutableParams];
-//    if (![sig isEmptyOrWhitespace])
-//    {
-//        [mutableParams setObject:sig forKey:@"sig"];        
-//    }
-//    
+    //    NSString *osVersion = [NSString stringWithFormat:@"%f", TTOSVersion()];
+    //    [mutableParams setObject:osVersion forKey:@"_os_version"];
+    //
+    //    NSString *deviceType = [self getDeviceType];
+    //    [mutableParams setObject:deviceType forKey:@"_device_type"];
+    //
+    //    [mutableParams setObject:CLOUD_CLIENT_VERSION forKey:@"_client_version"];
+    //    [mutableParams setObject:APP_VERSION forKey:@"_app_version"];
+    //    [mutableParams setObject:ts forKey:@"_ts"];
+    
+    NSString *url = [NSString stringWithFormat:@"%@%@", REST_API_URL, mod];
+    //    NSString *sig = [self genSig:mutableParams];
+    //    if (![sig isEmptyOrWhitespace])
+    //    {
+    //        [mutableParams setObject:sig forKey:@"sig"];
+    //    }
+    //
     url = [url stringByAddingQueryDictionary:mutableParams];
     
+    return url;
+}
+
+- (NSString *)getRequestUrlWithoutSig:(NSString *)mod
+                     params:(NSDictionary *)params
+{
+    if (![DataCheck isValidDictionary:params])
+    {
+        params = [NSDictionary dictionary];
+    }
+    
+    NSMutableDictionary *mutableParams = [[params mutableCopy] autorelease];
+    NSString *url = [NSString stringWithFormat:@"%@%@", REST_API_URL, mod];    
+    url = [url stringByAddingQueryDictionary:mutableParams];
     return url;
 }
 
@@ -202,7 +216,7 @@
             errorSelector:(SEL)errorSelector
 {
    
-    NSString *url = [self getRequestUrl:mod params:params];
+    NSString *url = [self getRequestUrlWithoutSig:mod params:params];
     NSLog(@"url=%@", url);
     NSLog(@"params=%@", params);
     NSLog(@"postParams=%@", postParams);
@@ -434,12 +448,12 @@
         
         NSDictionary *items = [json objectFromJSONString];
         
-        int code = [[items objectForKey:@"code"] intValue];
+        int resultCode = [[items objectForKey:@"rst"] intValue];
         NSString *message = [items objectForKey:@"msg"];
-        if (code > 0)
+        if (resultCode > 0)
         {
             NSDictionary *errorInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                                       [NSString stringWithFormat:@"%d", code], @"code",
+                                       [NSString stringWithFormat:@"%d", resultCode], @"code",
                                        message, @"message", nil];
             
             [_delegate performSelector:_finishErrorSelector
@@ -451,12 +465,12 @@
             return;
         }
                 
-        NSDictionary *result = [items objectForKey:@"data"];
+//        NSDictionary *result = [items objectForKey:@"data"];
         
         // 执行回调        
         [_delegate performSelector:_finishSelector
                         withObject:request.userInfo
-                        withObject:result];
+                        withObject:items];
     }
     @catch (NSException *exception)
     {

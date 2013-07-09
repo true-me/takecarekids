@@ -20,6 +20,8 @@
 @synthesize btnLogin = _btnLogin;
 @synthesize btnReg = _btnReg;
 @synthesize btnForgetPwd = _btnForgetPwd;
+@synthesize msgRouter = _msgRouter;
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -37,6 +39,7 @@
     RELEASE_SAFELY(_btnLogin);
     RELEASE_SAFELY(_btnReg);
     RELEASE_SAFELY(_btnForgetPwd);
+    RELEASE_SAFELY(_msgRouter);
     [super dealloc];
 }
 
@@ -44,6 +47,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    self.msgRouter = [MessageRouter getInstance];
 
     [self setupTitle:@"登陆系统"];
 
@@ -130,20 +134,26 @@
     
     HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
 	[self.navigationController.view addSubview:HUD];
-	
     HUD.delegate = self;
-    HUD.labelText = @"提交数据";
+    HUD.labelText = @"正在登录";
+    [HUD show:YES];
 	
-    [HUD showAnimated:YES whileExecutingBlock:^{sleep(0.8f);} completionBlock:^{
-        [HUD removeFromSuperview];
-        [HUD release];
-        HUD = nil;
-        if([self.delegate respondsToSelector:@selector(LoginRecieved)])
-        {
-            [self.delegate LoginRecieved];
-        }
-        [self dismissModalViewControllerAnimated:YES];
-    }];
+    
+    [_msgRouter userLoginWithUserName:@"15829679903"
+                          password:@"123456"
+                          delegate:self
+                          selector:@selector(userLoginSuccess:)
+                     errorSelector:@selector(userLoginError:)];
+//    [HUD showAnimated:YES whileExecutingBlock:^{sleep(0.8f);} completionBlock:^{
+//        [HUD removeFromSuperview];
+//        [HUD release];
+//        HUD = nil;
+//        if([self.delegate respondsToSelector:@selector(LoginRecieved)])
+//        {
+//            [self.delegate LoginRecieved];
+//        }
+//        [self dismissModalViewControllerAnimated:YES];
+//    }];
     
 
 }
@@ -165,5 +175,41 @@
 }
 
 #pragma mark Recive data
+#pragma mark - private
+
+- (void)userLoginSuccess:(NSDictionary *)response
+{
+    NSLog(@"%s=%@", __PRETTY_FUNCTION__, response);
+    NSInteger result = [[response objectForKey:@"rst"] intValue];
+    if (result == 0)
+    {
+        NSString * uid = [response objectForKey:@"uid"];
+        [[NSUserDefaults standardUserDefaults] setObject:uid forKey:@"uid"];
+        HUD.labelText = @"登录成功！";
+        [HUD hide:YES afterDelay:0.5f];
+        if(self.delegate && [self.delegate respondsToSelector:@selector(LoginRecieved)])
+        {
+            [self.delegate performSelector:@selector(LoginRecieved) withObject:nil];
+        }
+        [self dismissModalViewControllerAnimated:YES];
+    }
+    else
+    {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"uid"];        
+        HUD.labelText = @"登录失败！";
+        [HUD hide:YES afterDelay:0.5f];
+    }
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+
+- (void)userLoginError:(NSDictionary *)errorInfo
+{
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"uid"];      
+    NSLog(@"%s=%@", __PRETTY_FUNCTION__, errorInfo);    
+    HUD.labelText = @"登录失败！";
+    [HUD hide:YES afterDelay:0.5f];
+
+}
 
 @end

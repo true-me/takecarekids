@@ -113,6 +113,26 @@ static MessageRouter * instance=nil;
  * Description: 
  * Parameters: email, password, token(push token, android直接传空字符串即可)
  */
+- (void)userLoginWithUserName:(NSString *)username password:(NSString *)password
+                  delegate:(id)delegate selector:(SEL)selector
+             errorSelector:(SEL)errorSelector
+{
+    
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
+                            username, @"user",
+                            [password md5Hash], @"pwd",
+                            nil];
+    
+    [_client callMethodWithMod:@"login.php"
+                        params:params
+                    postParams:nil
+                         files:nil
+                       cookies:nil
+                        header:nil
+                      delegate:delegate
+                      selector:selector
+                 errorSelector:errorSelector];
+}
 - (void)userLoginWithEmail:(NSString *)email password:(NSString *)password
                   delegate:(id)delegate selector:(SEL)selector
              errorSelector:(SEL)errorSelector

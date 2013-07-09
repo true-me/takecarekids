@@ -351,7 +351,7 @@
 		0017A34C178B39F70003D1AC /* xian3.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 0017A330178B39F70003D1AC /* xian3.gpx */; };
 		0017A34D178B39F70003D1AC /* xian4.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 0017A331178B39F70003D1AC /* xian4.gpx */; };
 		0017A35D178B3A100003D1AC /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0017A350178B3A100003D1AC /* BaseViewController.m */; };
-		0017A35E178B3A100003D1AC /* CommonMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = 0017A352178B3A100003D1AC /* CommonMethods.m */; };
+		0017A35E178B3A100003D1AC /* GlobaMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = 0017A352178B3A100003D1AC /* GlobaMethods.m */; };
 		0017A35F178B3A100003D1AC /* CustomNavBarVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0017A354178B3A100003D1AC /* CustomNavBarVC.m */; };
 		0017A360178B3A100003D1AC /* CustomTabbarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0017A356178B3A100003D1AC /* CustomTabbarController.m */; };
 		0017A361178B3A100003D1AC /* CustomTabbarController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0017A357178B3A100003D1AC /* CustomTabbarController.xib */; };
@@ -511,14 +511,6 @@
 		00EB912E16FAE81900A23BD3 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00EB912D16FAE81900A23BD3 /* ImageIO.framework */; };
 		00EB913016FAE85C00A23BD3 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00EB912F16FAE85C00A23BD3 /* CoreData.framework */; };
 		00EB916116FAF87000A23BD3 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00EB916016FAF87000A23BD3 /* CoreText.framework */; };
-		00EB916F16FAFE4300A23BD3 /* blackArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 00EB916416FAFE4300A23BD3 /* blackArrow.png */; };
-		00EB917016FAFE4300A23BD3 /* blackArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 00EB916516FAFE4300A23BD3 /* blackArrow@2x.png */; };
-		00EB917116FAFE4300A23BD3 /* blueArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 00EB916616FAFE4300A23BD3 /* blueArrow.png */; };
-		00EB917216FAFE4300A23BD3 /* blueArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 00EB916716FAFE4300A23BD3 /* blueArrow@2x.png */; };
-		00EB917316FAFE4300A23BD3 /* grayArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 00EB916816FAFE4300A23BD3 /* grayArrow.png */; };
-		00EB917416FAFE4300A23BD3 /* grayArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 00EB916916FAFE4300A23BD3 /* grayArrow@2x.png */; };
-		00EB917816FAFE4300A23BD3 /* whiteArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 00EB916D16FAFE4300A23BD3 /* whiteArrow.png */; };
-		00EB917916FAFE4300A23BD3 /* whiteArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 00EB916E16FAFE4300A23BD3 /* whiteArrow@2x.png */; };
 		00F1E8C816CF8F4D005A9E26 /* login_code.png in Resources */ = {isa = PBXBuildFile; fileRef = 00F1E8B616CF8F4D005A9E26 /* login_code.png */; };
 		00F1E8C916CF8F4D005A9E26 /* login_code_point.png in Resources */ = {isa = PBXBuildFile; fileRef = 00F1E8B716CF8F4D005A9E26 /* login_code_point.png */; };
 		00F1E8CA16CF8F4D005A9E26 /* login_email.png in Resources */ = {isa = PBXBuildFile; fileRef = 00F1E8B816CF8F4D005A9E26 /* login_email.png */; };
@@ -924,8 +916,8 @@
 		0017A331178B39F70003D1AC /* xian4.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = xian4.gpx; sourceTree = "<group>"; };
 		0017A34F178B3A100003D1AC /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		0017A350178B3A100003D1AC /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
-		0017A351178B3A100003D1AC /* CommonMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonMethods.h; sourceTree = "<group>"; };
-		0017A352178B3A100003D1AC /* CommonMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonMethods.m; sourceTree = "<group>"; };
+		0017A351178B3A100003D1AC /* GlobaMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobaMethods.h; sourceTree = "<group>"; };
+		0017A352178B3A100003D1AC /* GlobaMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobaMethods.m; sourceTree = "<group>"; };
 		0017A353178B3A100003D1AC /* CustomNavBarVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomNavBarVC.h; sourceTree = "<group>"; };
 		0017A354178B3A100003D1AC /* CustomNavBarVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomNavBarVC.m; sourceTree = "<group>"; };
 		0017A355178B3A100003D1AC /* CustomTabbarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTabbarController.h; sourceTree = "<group>"; };
@@ -1203,14 +1195,6 @@
 		00EB912D16FAE81900A23BD3 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		00EB912F16FAE85C00A23BD3 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		00EB916016FAF87000A23BD3 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
-		00EB916416FAFE4300A23BD3 /* blackArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackArrow.png; sourceTree = "<group>"; };
-		00EB916516FAFE4300A23BD3 /* blackArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blackArrow@2x.png"; sourceTree = "<group>"; };
-		00EB916616FAFE4300A23BD3 /* blueArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blueArrow.png; sourceTree = "<group>"; };
-		00EB916716FAFE4300A23BD3 /* blueArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blueArrow@2x.png"; sourceTree = "<group>"; };
-		00EB916816FAFE4300A23BD3 /* grayArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grayArrow.png; sourceTree = "<group>"; };
-		00EB916916FAFE4300A23BD3 /* grayArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "grayArrow@2x.png"; sourceTree = "<group>"; };
-		00EB916D16FAFE4300A23BD3 /* whiteArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whiteArrow.png; sourceTree = "<group>"; };
-		00EB916E16FAFE4300A23BD3 /* whiteArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "whiteArrow@2x.png"; sourceTree = "<group>"; };
 		00F1E8B616CF8F4D005A9E26 /* login_code.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login_code.png; sourceTree = "<group>"; };
 		00F1E8B716CF8F4D005A9E26 /* login_code_point.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login_code_point.png; sourceTree = "<group>"; };
 		00F1E8B816CF8F4D005A9E26 /* login_email.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login_email.png; sourceTree = "<group>"; };
@@ -1807,8 +1791,8 @@
 				0017A365178B3A610003D1AC /* CustomTabBarItem.h */,
 				0017A34F178B3A100003D1AC /* BaseViewController.h */,
 				0017A350178B3A100003D1AC /* BaseViewController.m */,
-				0017A351178B3A100003D1AC /* CommonMethods.h */,
-				0017A352178B3A100003D1AC /* CommonMethods.m */,
+				0017A351178B3A100003D1AC /* GlobaMethods.h */,
+				0017A352178B3A100003D1AC /* GlobaMethods.m */,
 				0017A353178B3A100003D1AC /* CustomNavBarVC.h */,
 				0017A354178B3A100003D1AC /* CustomNavBarVC.m */,
 				0017A355178B3A100003D1AC /* CustomTabbarController.h */,
@@ -2361,26 +2345,10 @@
 			path = SBJson;
 			sourceTree = "<group>";
 		};
-		00EB916316FAFE4300A23BD3 /* pullrefresh */ = {
-			isa = PBXGroup;
-			children = (
-				00EB916416FAFE4300A23BD3 /* blackArrow.png */,
-				00EB916516FAFE4300A23BD3 /* blackArrow@2x.png */,
-				00EB916616FAFE4300A23BD3 /* blueArrow.png */,
-				00EB916716FAFE4300A23BD3 /* blueArrow@2x.png */,
-				00EB916816FAFE4300A23BD3 /* grayArrow.png */,
-				00EB916916FAFE4300A23BD3 /* grayArrow@2x.png */,
-				00EB916D16FAFE4300A23BD3 /* whiteArrow.png */,
-				00EB916E16FAFE4300A23BD3 /* whiteArrow@2x.png */,
-			);
-			path = pullrefresh;
-			sourceTree = "<group>";
-		};
 		00F1E8B416CF8F4D005A9E26 /* Images */ = {
 			isa = PBXGroup;
 			children = (
 				0017A07B178B1C170003D1AC /* wakeup */,
-				00EB916316FAFE4300A23BD3 /* pullrefresh */,
 				0056BC2F16FAA378009BE97E /* tbl */,
 				002C798F16F8AB600049D21D /* download_edit_bg.png */,
 				002C799016F8AB600049D21D /* download_edit_bg@2x.png */,
@@ -2619,14 +2587,6 @@
 				0056BC4416FAA378009BE97E /* 8_64x64.png in Resources */,
 				0056BC4516FAA378009BE97E /* 9_64x64.png in Resources */,
 				00EB90D616FAD76400A23BD3 /* ImageBrowser.xib in Resources */,
-				00EB916F16FAFE4300A23BD3 /* blackArrow.png in Resources */,
-				00EB917016FAFE4300A23BD3 /* blackArrow@2x.png in Resources */,
-				00EB917116FAFE4300A23BD3 /* blueArrow.png in Resources */,
-				00EB917216FAFE4300A23BD3 /* blueArrow@2x.png in Resources */,
-				00EB917316FAFE4300A23BD3 /* grayArrow.png in Resources */,
-				00EB917416FAFE4300A23BD3 /* grayArrow@2x.png in Resources */,
-				00EB917816FAFE4300A23BD3 /* whiteArrow.png in Resources */,
-				00EB917916FAFE4300A23BD3 /* whiteArrow@2x.png in Resources */,
 				00B65B8416FCC9770077076E /* Location.gpx in Resources */,
 				00253AC4178AE04400E0D595 /* mapapi.bundle in Resources */,
 				00253AC5178AE04400E0D595 /* readme.docx in Resources */,
@@ -3069,7 +3029,7 @@
 				0017A346178B39F70003D1AC /* UIScrollView+Touches.m in Sources */,
 				0017A347178B39F70003D1AC /* ViewController.m in Sources */,
 				0017A35D178B3A100003D1AC /* BaseViewController.m in Sources */,
-				0017A35E178B3A100003D1AC /* CommonMethods.m in Sources */,
+				0017A35E178B3A100003D1AC /* GlobaMethods.m in Sources */,
 				0017A35F178B3A100003D1AC /* CustomNavBarVC.m in Sources */,
 				0017A360178B3A100003D1AC /* CustomTabbarController.m in Sources */,
 				0017A362178B3A100003D1AC /* CustomTabBarItem.m in Sources */,

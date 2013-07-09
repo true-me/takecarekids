@@ -10,6 +10,7 @@
 #import "BaseViewController.h"
 #import "MBProgressHUD.h"
 
+
 @protocol loginDelegate <NSObject>
 @optional
     -(void)LoginRecieved;
@@ -27,5 +28,5 @@
 @property(nonatomic, retain) IBOutlet UITextField *txtLoginID;
 @property(nonatomic, retain) IBOutlet UITextField *txtPwd;
 @property(nonatomic, retain) IBOutlet UIButton *btnForgetPwd;
-
+@property(nonatomic, retain) MessageRouter *msgRouter;
 @end

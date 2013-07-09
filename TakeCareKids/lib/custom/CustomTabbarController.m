@@ -8,7 +8,6 @@
 
 #import "CustomTabbarController.h"
 #import "CustomTabBarItem.h"
-#import "CommonMethods.h"
 
 @interface CustomTabbarController ()
 -(void)InitTabBar;
@@ -31,8 +30,14 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    
-    [self InitTabBar];
+//    if(![GlobaMethods isUserAuth])
+//    {
+//        [self LoginModalPresent];
+//    }
+//    else
+//    {
+        [self InitTabBar];
+//    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -55,25 +60,7 @@
 -(void)InitTabBar
 {
     [self.view setAlpha:1.0f];
-    
-    if(YES)
-    {
-        [self LoginModalPresent];
         
-        //        HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-        //        [self.navigationController.view addSubview:HUD];
-        //        HUD.labelText = @"请先登陆账号";
-        //        [HUD showAnimated:YES whileExecutingBlock:^{
-        //            sleep(2.0f);
-        //        } completionBlock:^{
-        //            [HUD removeFromSuperview];
-        //            [HUD release];
-        //            HUD = nil;
-        //        }];
-        //        return;
-    }
-    
-    
     float version = [[[UIDevice currentDevice] systemVersion] floatValue];
     self.selectedIndex = 0;
     if(IS_IPHONE_5)
@@ -201,5 +188,9 @@
         
     }
 }
-
+//-(void)LoginRecieved
+//{
+//    NSLog(@"登录成功!");
+//    [self InitTabBar];
+//}
 @end

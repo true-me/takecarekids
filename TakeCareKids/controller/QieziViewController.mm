@@ -50,7 +50,7 @@ BMKMapManager* _mapManager;
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-
+        
         //self.title = NSLocalizedString(@"轨迹回放", @"轨迹回放");
         [self setupTitleView:@"关注孩子"];
         //self.tabBarItem.image = [UIImage imageNamed:@"Third"];
@@ -81,10 +81,10 @@ BMKMapManager* _mapManager;
 -(void)mapView:(BMKMapView *)mapView didUpdateUserLocation:(BMKUserLocation *)userLocation{
     
     NSLog(@"更新坐标");
-
+    
     
     CLLocation *locationOne = [[CLLocation alloc] initWithLatitude:userLocation.coordinate.latitude
-                                                      longitude:userLocation.coordinate.longitude];
+                                                         longitude:userLocation.coordinate.longitude];
     // check the zero point
     if  (userLocation.coordinate.latitude == 0.0f ||
          userLocation.coordinate.longitude == 0.0f)
@@ -107,7 +107,7 @@ BMKMapManager* _mapManager;
             else
             {
                 [mapView setCenterCoordinate:userLocation.location.coordinate];
-
+                
                 [mapView setShowsUserLocation:NO];
             }
             return;
@@ -117,7 +117,7 @@ BMKMapManager* _mapManager;
     if (nil == self.pointsArr) {
         self.pointsArr = [[NSMutableArray alloc] init];
     }
-
+    
     self.location = userLocation.location;
     
     //给view中心定位
@@ -128,11 +128,11 @@ BMKMapManager* _mapManager;
     region.span.longitudeDelta = 0.25;
     mapView.region   = region;
     mapView.zoomLevel = 16;
-
+    
     //mapView.zoomLevel = 3;
     //加个当前坐标的小气泡
     BOOL ret = [_search reverseGeocode:userLocation.location.coordinate];
-   // mapView.showsUserLocation = NO;
+    // mapView.showsUserLocation = NO;
     mapView.showsUserLocation = NO;
     
     
@@ -152,7 +152,7 @@ BMKMapManager* _mapManager;
 
 -(void)mapViewDidStopLocatingUser:(BMKMapView *)mapView{
     
-    NSLog(@"定位停止");  
+    NSLog(@"定位停止");
 }
 
 #pragma mark-
@@ -194,20 +194,20 @@ BMKMapManager* _mapManager;
     
     BMKAnnotationView *annotationView =[mapView viewForAnnotation:annotation];
     
-    if (annotationView==nil&&[annotation isKindOfClass:[MapPointAnnotion class]]) 
+    if (annotationView==nil&&[annotation isKindOfClass:[MapPointAnnotion class]])
     {
         MapPointAnnotion* pointAnnotation=(MapPointAnnotion*)annotation;
         NSString *AnnotationViewID = [NSString stringWithFormat:@"iAnnotation-%i",pointAnnotation.tag];
-		annotationView = [[BMKPinAnnotationView alloc] initWithAnnotation:annotation 
+		annotationView = [[BMKPinAnnotationView alloc] initWithAnnotation:annotation
                                                           reuseIdentifier:AnnotationViewID];
         
         if ([[pointAnnotation subtitle] isEqualToString:@"我的位置"])
         {
-            ((BMKPinAnnotationView*) annotationView).pinColor = BMKPinAnnotationColorRed;   
+            ((BMKPinAnnotationView*) annotationView).pinColor = BMKPinAnnotationColorRed;
         }else if([[pointAnnotation subtitle] isEqualToString:@"目标位置"]){
-            ((BMKPinAnnotationView*) annotationView).pinColor = BMKPinAnnotationColorPurple;  
+            ((BMKPinAnnotationView*) annotationView).pinColor = BMKPinAnnotationColorPurple;
         }else{
-            ((BMKPinAnnotationView*) annotationView).pinColor = BMKPinAnnotationColorGreen; 
+            ((BMKPinAnnotationView*) annotationView).pinColor = BMKPinAnnotationColorGreen;
         }
         
 		((BMKPinAnnotationView*)annotationView).animatesDrop = YES;// 设置该标注点动画显示
@@ -221,19 +221,19 @@ BMKMapManager* _mapManager;
     }
 	return annotationView ;
     
-//    static NSString *AnnotationViewID = @"annotationViewID";
+    //    static NSString *AnnotationViewID = @"annotationViewID";
 	
-//    BMKAnnotationView *annotationView = [view dequeueReusableAnnotationViewWithIdentifier:AnnotationViewID];
-//    if (annotationView == nil) {
-//        annotationView = [[[BMKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:AnnotationViewID] autorelease];
-//		((BMKPinAnnotationView*)annotationView).pinColor = BMKPinAnnotationColorRed;
-//		((BMKPinAnnotationView*)annotationView).animatesDrop = YES;
-//    }
-//	
-//	annotationView.centerOffset = CGPointMake(0, -(annotationView.frame.size.height * 0.5));
-//    annotationView.annotation = annotation;
-//	annotationView.canShowCallout = TRUE;
-//    return annotationView;
+    //    BMKAnnotationView *annotationView = [view dequeueReusableAnnotationViewWithIdentifier:AnnotationViewID];
+    //    if (annotationView == nil) {
+    //        annotationView = [[[BMKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:AnnotationViewID] autorelease];
+    //		((BMKPinAnnotationView*)annotationView).pinColor = BMKPinAnnotationColorRed;
+    //		((BMKPinAnnotationView*)annotationView).animatesDrop = YES;
+    //    }
+    //
+    //	annotationView.centerOffset = CGPointMake(0, -(annotationView.frame.size.height * 0.5));
+    //    annotationView.annotation = annotation;
+    //	annotationView.canShowCallout = TRUE;
+    //    return annotationView;
 }
 
 /**
@@ -319,7 +319,7 @@ BMKMapManager* _mapManager;
 -(void)cleanMap
 {
     NSArray* array = [NSArray arrayWithArray:mView.annotations];
-
+    
     for (MapPointAnnotion* ann in array) {
         [mView removeAnnotation:ann];
     }
@@ -327,37 +327,13 @@ BMKMapManager* _mapManager;
 
 
 #pragma mark - View lifecycle
-
-- (void)viewDidLoad
+-(void) setupPage
 {
-    [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-    // 验证登录
-    if(YES)
-    {
-        [self LoginModalPresent];
-        
-        //        HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-        //        [self.navigationController.view addSubview:HUD];
-        //        HUD.labelText = @"请先登陆账号";
-        //        [HUD showAnimated:YES whileExecutingBlock:^{
-        //            sleep(2.0f);
-        //        } completionBlock:^{
-        //            [HUD removeFromSuperview];
-        //            [HUD release];
-        //            HUD = nil;
-        //        }];
-        //        return;
-    }
-    
-    
     [self leftButtonWithImage:[UIImage imageNamed:@"topbar_menu.png"] withSelector:@selector(toggleToolbar:) onTarget:self];
     [self rightButtonWithTitle:@"定位" withSelector:@selector(toUserLocation:) onTarget:self];
     [self setupTitle:@"GPS系统"];
     [self initToolbar];
-
-
-
+    
     // 要使用百度地图,请先启动 BaiduMapManager
     _mapManager = [[BMKMapManager alloc] init] ;
     // 如果要关注网络及授权验证事件,请设定 generalDelegate 参 数
@@ -391,15 +367,15 @@ BMKMapManager* _mapManager;
                            [[[CLLocation alloc] initWithLatitude:34.255843 longitude:108.906242] autorelease],
                            [[[CLLocation alloc] initWithLatitude:34.25083  longitude:108.902074] autorelease],
                            [[[CLLocation alloc] initWithLatitude:34.245578 longitude:108.899631] autorelease],
-                           [[[CLLocation alloc] initWithLatitude:34.238416 longitude:108.897906] autorelease], 
-                           [[[CLLocation alloc] initWithLatitude:34.233521 longitude:108.902362] autorelease], 
-                           [[[CLLocation alloc] initWithLatitude:34.22994  longitude:108.909404] autorelease], 
-                           [[[CLLocation alloc] initWithLatitude:34.228507 longitude:108.902074] autorelease], 
-                           [[[CLLocation alloc] initWithLatitude:34.231134 longitude:108.89575 ] autorelease], 
-                           [[[CLLocation alloc] initWithLatitude:34.236744 longitude:108.88957 ] autorelease], 
+                           [[[CLLocation alloc] initWithLatitude:34.238416 longitude:108.897906] autorelease],
+                           [[[CLLocation alloc] initWithLatitude:34.233521 longitude:108.902362] autorelease],
+                           [[[CLLocation alloc] initWithLatitude:34.22994  longitude:108.909404] autorelease],
+                           [[[CLLocation alloc] initWithLatitude:34.228507 longitude:108.902074] autorelease],
+                           [[[CLLocation alloc] initWithLatitude:34.231134 longitude:108.89575 ] autorelease],
+                           [[[CLLocation alloc] initWithLatitude:34.236744 longitude:108.88957 ] autorelease],
                            nil];
     
-    self.pointsArr = arr;  //用来记录路线信息的，以后会用到    
+    self.pointsArr = arr;  //用来记录路线信息的，以后会用到
     _search = [[BMKSearch alloc] init];
     _search.delegate = self;
     
@@ -407,18 +383,32 @@ BMKMapManager* _mapManager;
     stopRoute = NO;
     
     
-//    BMKMapView *mv = [[BMKMapView alloc] initWithFrame:CGRectMake(0, 0, 320, 431)];
-//    self.mView = mv;
-//    [self.view addSubview:self.mView];
-//    self.mView.delegate = self;
-//    [self.mView setZoomEnabled:YES];
-//    //[self.mView setZoomLevel:18];
-//    [self.mView setShowsUserLocation:NO];//显示定位的蓝点儿
-//    
-//    //    [mView setCenterCoordinate:location.coordinate animated:YES];
-//    NSLog(@"%@", [self.pointsArr objectAtIndex:0]);
-//    CLLocation *locationOne = (CLLocation *)[self.pointsArr objectAtIndex:0];
-//    [self.mView setCenterCoordinate:locationOne.coordinate animated:YES];
+    BMKMapView *mv = [[BMKMapView alloc] initWithFrame:CGRectMake(0, 0, 320, 431)];
+    self.mView = mv;
+    [self.view addSubview:self.mView];
+    self.mView.delegate = self;
+    [self.mView setZoomEnabled:YES];
+    //[self.mView setZoomLevel:18];
+    [self.mView setShowsUserLocation:NO];//显示定位的蓝点儿
+    //
+    //    //    [mView setCenterCoordinate:location.coordinate animated:YES];
+    //    NSLog(@"%@", [self.pointsArr objectAtIndex:0]);
+    //    CLLocation *locationOne = (CLLocation *)[self.pointsArr objectAtIndex:0];
+    //    [self.mView setCenterCoordinate:locationOne.coordinate animated:YES];
+}
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+	// Do any additional setup after loading the view, typically from a nib.
+    // 验证登录
+    if(![GlobaMethods isUserAuth])
+    {
+        [self LoginModalPresent];
+    }
+    else
+    {
+        [self setupPage];
+    }
 }
 
 - (void)viewDidUnload
@@ -469,7 +459,7 @@ BMKMapManager* _mapManager;
         [self.toolbar setHidden:YES];
         [self.srchBar setHidden:YES];
     }
-
+    
 }
 
 - (void)tapSearch:(id) sender
@@ -485,7 +475,7 @@ BMKMapManager* _mapManager;
     if (btn.tag == 421)
     {
         NSLog(@"关闭电子围栏，取消围栏模式！");
-
+        
         // 关闭设置电子围栏
         
         HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
@@ -506,12 +496,12 @@ BMKMapManager* _mapManager;
             [HUD release];
             HUD = nil;
         }];
-
+        
         return;
     }
     else
     {
-
+        
         NSLog(@"请在地图上选择两个坐标，开始设置围栏！");
         HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
         [self.navigationController.view addSubview:HUD];
@@ -539,73 +529,73 @@ BMKMapManager* _mapManager;
         }];
         return;
     }
-//
-//    MapPointAnnotion *item0 = [self.mView.annotations objectAtIndex:0];
-//    MapPointAnnotion *item1 = [self.mView.annotations objectAtIndex:1];
-//    
-//    CGPoint p0 = [self.mView convertCoordinate:item0.coordinate toPointToView:self.mView];
-//    CGPoint p1 = [self.mView convertCoordinate:item1.coordinate toPointToView:self.mView];
-//    CGFloat x1, y1, x2, y2;
-//    if (p0.x < p1.x)
-//    {
-//        x1 = p0.x;
-//        x2 = p1.x;
-//    }
-//    else
-//    {
-//        x1 = p1.x;
-//        x2 = p0.x;
-//    }
-//    
-//    if (p0.y < p1.y)
-//    {
-//        y1 = p0.y;
-//        y2 = p1.y;
-//    }
-//    else
-//    {
-//        y1 = p1.y;
-//        y2 = p0.y;
-//    }
-//    
-//    CGPoint pt1 = CGPointMake(x1, y1);
-//    CGPoint pt2 = CGPointMake(x2, y1);
-//    CGPoint pt3 = CGPointMake(x2, y2);
-//    CGPoint pt4 = CGPointMake(x1, y2);
-//
-//    CLLocationCoordinate2D coord1 =[self.mView convertPoint:pt1 toCoordinateFromView:self.mView];
-//    CLLocationCoordinate2D coord2 =[self.mView convertPoint:pt2 toCoordinateFromView:self.mView];
-//    CLLocationCoordinate2D coord3 =[self.mView convertPoint:pt3 toCoordinateFromView:self.mView];
-//    CLLocationCoordinate2D coord4 =[self.mView convertPoint:pt4 toCoordinateFromView:self.mView];
-//    
-//    NSMutableArray *arr = [NSMutableArray arrayWithObjects:
-//       [[[CLLocation alloc] initWithLatitude:coord1.latitude longitude:coord1.longitude] autorelease],
-//       [[[CLLocation alloc] initWithLatitude:coord2.latitude longitude:coord2.longitude] autorelease],
-//       [[[CLLocation alloc] initWithLatitude:coord3.latitude longitude:coord3.longitude] autorelease],
-//       [[[CLLocation alloc] initWithLatitude:coord4.latitude longitude:coord4.longitude] autorelease],
-//       [[[CLLocation alloc] initWithLatitude:coord1.latitude longitude:coord1.longitude] autorelease],
-//                           nil];
-// 
-//    if (self.routeLine)
-//    {
-//        [self.mView removeOverlay:routeLine];
-//    }
-//    self.routeLine = nil;
-//    
-//    if (self.routeLineView)
-//    {
-//        [self.routeLineView removeFromSuperview];
-//    }
-//    
-//    [self.pointsArr removeAllObjects];
-//    self.pointsArr = nil;
-//    
-//    [self.routePointsArr removeAllObjects];
-//    self.routePointsArr = nil;
-//    
-//    self.pointsArr = arr;
-//    
-//    [self startRoute:@""];
+    //
+    //    MapPointAnnotion *item0 = [self.mView.annotations objectAtIndex:0];
+    //    MapPointAnnotion *item1 = [self.mView.annotations objectAtIndex:1];
+    //
+    //    CGPoint p0 = [self.mView convertCoordinate:item0.coordinate toPointToView:self.mView];
+    //    CGPoint p1 = [self.mView convertCoordinate:item1.coordinate toPointToView:self.mView];
+    //    CGFloat x1, y1, x2, y2;
+    //    if (p0.x < p1.x)
+    //    {
+    //        x1 = p0.x;
+    //        x2 = p1.x;
+    //    }
+    //    else
+    //    {
+    //        x1 = p1.x;
+    //        x2 = p0.x;
+    //    }
+    //
+    //    if (p0.y < p1.y)
+    //    {
+    //        y1 = p0.y;
+    //        y2 = p1.y;
+    //    }
+    //    else
+    //    {
+    //        y1 = p1.y;
+    //        y2 = p0.y;
+    //    }
+    //
+    //    CGPoint pt1 = CGPointMake(x1, y1);
+    //    CGPoint pt2 = CGPointMake(x2, y1);
+    //    CGPoint pt3 = CGPointMake(x2, y2);
+    //    CGPoint pt4 = CGPointMake(x1, y2);
+    //
+    //    CLLocationCoordinate2D coord1 =[self.mView convertPoint:pt1 toCoordinateFromView:self.mView];
+    //    CLLocationCoordinate2D coord2 =[self.mView convertPoint:pt2 toCoordinateFromView:self.mView];
+    //    CLLocationCoordinate2D coord3 =[self.mView convertPoint:pt3 toCoordinateFromView:self.mView];
+    //    CLLocationCoordinate2D coord4 =[self.mView convertPoint:pt4 toCoordinateFromView:self.mView];
+    //
+    //    NSMutableArray *arr = [NSMutableArray arrayWithObjects:
+    //       [[[CLLocation alloc] initWithLatitude:coord1.latitude longitude:coord1.longitude] autorelease],
+    //       [[[CLLocation alloc] initWithLatitude:coord2.latitude longitude:coord2.longitude] autorelease],
+    //       [[[CLLocation alloc] initWithLatitude:coord3.latitude longitude:coord3.longitude] autorelease],
+    //       [[[CLLocation alloc] initWithLatitude:coord4.latitude longitude:coord4.longitude] autorelease],
+    //       [[[CLLocation alloc] initWithLatitude:coord1.latitude longitude:coord1.longitude] autorelease],
+    //                           nil];
+    //
+    //    if (self.routeLine)
+    //    {
+    //        [self.mView removeOverlay:routeLine];
+    //    }
+    //    self.routeLine = nil;
+    //
+    //    if (self.routeLineView)
+    //    {
+    //        [self.routeLineView removeFromSuperview];
+    //    }
+    //
+    //    [self.pointsArr removeAllObjects];
+    //    self.pointsArr = nil;
+    //
+    //    [self.routePointsArr removeAllObjects];
+    //    self.routePointsArr = nil;
+    //
+    //    self.pointsArr = arr;
+    //
+    //    [self startRoute:@""];
 }
 
 - (void)toggleRouteLine:(id) sender
@@ -698,7 +688,7 @@ BMKMapManager* _mapManager;
         {
             [self.mView setCenterCoordinate:locationOne.coordinate animated:YES];
         }
-    
+        
         //[self.mView setShowsUserLocation:YES];
         
         CLLocationDegrees latitude  = locationOne.coordinate.latitude;
@@ -757,16 +747,16 @@ BMKMapManager* _mapManager;
     [self.mView setZoomLevel:18];
     BOOL ret = [_search reverseGeocode:self.location.coordinate];
     self.mView.showsUserLocation = YES;
-
+    
 }
 
 #pragma mark - MKMapViewDelegate
-#pragma mark 
+#pragma mark
 - (void)mapView:(BMKMapView *)mapView didAddOverlayViews:(NSArray *)overlayViews
 {
     NSLog(@"%@ ----- %@", self, NSStringFromSelector(_cmd));
     NSLog(@"overlayViews: %@", overlayViews);
-
+    
     if (overlayViews.count > 0)
     {
         id overlayView = [overlayViews objectAtIndex:0];
@@ -810,7 +800,7 @@ BMKMapManager* _mapManager;
             self.routeLineView.strokeColor = [UIColor redColor];
             self.routeLineView.lineWidth = 5;
             overlayView = self.routeLineView;
-        }        
+        }
     }
 	return overlayView;
 }
@@ -833,7 +823,7 @@ BMKMapManager* _mapManager;
             [self.polygonView removeFromSuperview];
             self.polygonView = nil;
         }
-
+        
         //return;
     }
     
@@ -842,11 +832,11 @@ BMKMapManager* _mapManager;
     [self.mView convertPoint:touchPoint toCoordinateFromView:self.mView];//这里touchMapCoordinate就是该点的经纬度了
     
     NSLog(@"touching %f,%f",touchMapCoordinate.latitude,touchMapCoordinate.longitude);
-//    if (annotationa) {
-//
-//        [self.mView removeAnnotation:annotationa];
-//        
-//    }
+    //    if (annotationa) {
+    //
+    //        [self.mView removeAnnotation:annotationa];
+    //
+    //    }
     MapPointAnnotion* item = [[MapPointAnnotion alloc]init];
     item.coordinate = touchMapCoordinate;
     item.title = [NSString stringWithFormat:@"%.f, %.f", touchMapCoordinate.latitude, touchMapCoordinate.longitude];
@@ -857,19 +847,19 @@ BMKMapManager* _mapManager;
     if (self.mView.annotations.count == 2 )
     {
         // 画多边形
-       
+        
         HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
         [self.navigationController.view addSubview:HUD];
         HUD.labelText = @"围栏设置成功";
         HUD.mode = MBProgressHUDModeCustomView;
         HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark"]] autorelease];
         [HUD showAnimated:YES whileExecutingBlock:^{
-            [self createLockRect:self.mView.annotations];            
+            [self createLockRect:self.mView.annotations];
             sleep(2);
         } completionBlock:^{
             [HUD removeFromSuperview];
             [HUD release];
-            HUD = nil;  
+            HUD = nil;
         }];
         return;
     }
@@ -877,7 +867,7 @@ BMKMapManager* _mapManager;
 
 - (void)createLockRect:(NSArray *) arr
 {
-
+    
     MapPointAnnotion *item0 = [arr objectAtIndex:0];
     MapPointAnnotion *item1 = [arr objectAtIndex:1];
     
@@ -917,77 +907,77 @@ BMKMapManager* _mapManager;
     CLLocationCoordinate2D coord4 =[self.mView convertPoint:pt4 toCoordinateFromView:self.mView];
     
     CLLocationCoordinate2D coords[4] = {coord1, coord2, coord3, coord4};
-//    coords[0].latitude = 39;
-//    coords[0].longitude = 116;
-//    coords[1].latitude = 38;
-//    coords[1].longitude = 115;
-//    coords[2].latitude = 38;
-//    coords[2].longitude = 117;
+    //    coords[0].latitude = 39;
+    //    coords[0].longitude = 116;
+    //    coords[1].latitude = 38;
+    //    coords[1].longitude = 115;
+    //    coords[2].latitude = 38;
+    //    coords[2].longitude = 117;
     NSMutableArray *arrloc = [NSMutableArray arrayWithObjects:
-                           [[[CLLocation alloc] initWithLatitude:coord1.latitude longitude:coord1.longitude] autorelease],
-                           [[[CLLocation alloc] initWithLatitude:coord2.latitude longitude:coord2.longitude] autorelease],
-                           [[[CLLocation alloc] initWithLatitude:coord3.latitude longitude:coord3.longitude] autorelease],
-                           [[[CLLocation alloc] initWithLatitude:coord4.latitude longitude:coord4.longitude] autorelease],
-                           nil];
-
-//    // define minimum, maximum points
-//	BMKMapPoint northEastPoint = BMKMapPointMake(0.f, 0.f);
-//	BMKMapPoint southWestPoint = BMKMapPointMake(0.f, 0.f);
-//	
-//	// create a c array of points.
-//    //    NSMutableArray *mapPointarr = [NSMutableArray arrayWithObjects:<#(const id *)#> count:<#(NSUInteger)#>
-//    
-//    BMKMapPoint* pointArray = (BMKMapPoint* )malloc(sizeof(CLLocationCoordinate2D) * self.routePointsArr.count);
-//    
-//	// for(int idx = 0; idx < pointStrings.count; idx++)
-//    for(int idx = 0; idx < arrloc.count; idx++)
-//	{
-//        CLLocation *locationOne = [arrloc objectAtIndex:idx];
-//        //[self.mView setZoomLevel:14];
-//        NSLog(@"locOne=%f, %f", locationOne.coordinate.latitude, locationOne.coordinate.longitude);
-//        if (idx == arrloc.count -1 )
-//        {
-//            //[self.mView setCenterCoordinate:locationOne.coordinate animated:YES];
-//        }
-//        
-//        CLLocationDegrees latitude  = locationOne.coordinate.latitude;
-//		CLLocationDegrees longitude = locationOne.coordinate.longitude;
-//        
-//		// create our coordinate and add it to the correct spot in the array
-//		CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(latitude, longitude);
-//        //		MKMapPoint point = MKMapPointForCoordinate(coordinate);
-//        BMKMapPoint point = BMKMapPointForCoordinate(coordinate);
-//		
-//		// if it is the first point, just use them, since we have nothing to compare to yet.
-//		if (idx == 0) {
-//			northEastPoint = point;
-//			southWestPoint = point;
-//		} else {
-//			if (point.x > northEastPoint.x)
-//				northEastPoint.x = point.x;
-//			if(point.y > northEastPoint.y)
-//				northEastPoint.y = point.y;
-//			if (point.x < southWestPoint.x)
-//				southWestPoint.x = point.x;
-//			if (point.y < southWestPoint.y)
-//				southWestPoint.y = point.y;
-//		}
-//        
-//		pointArray[idx] = point;
-//	}
-//	
-//    if (self.polygon)
-//    {
-//        [self.mView removeOverlay:polygon];
-//    }
-//    self.polygon = nil;
-//    
-//    if (self.polygonView)
-//    {
-//        [self.polygonView removeFromSuperview];
-//    }
-//    
-//    self.polygon = [BMKPolygon polygonWithPoints:pointArray count:arrloc.count];
+                              [[[CLLocation alloc] initWithLatitude:coord1.latitude longitude:coord1.longitude] autorelease],
+                              [[[CLLocation alloc] initWithLatitude:coord2.latitude longitude:coord2.longitude] autorelease],
+                              [[[CLLocation alloc] initWithLatitude:coord3.latitude longitude:coord3.longitude] autorelease],
+                              [[[CLLocation alloc] initWithLatitude:coord4.latitude longitude:coord4.longitude] autorelease],
+                              nil];
+    
+    //    // define minimum, maximum points
+    //	BMKMapPoint northEastPoint = BMKMapPointMake(0.f, 0.f);
+    //	BMKMapPoint southWestPoint = BMKMapPointMake(0.f, 0.f);
+    //
+    //	// create a c array of points.
+    //    //    NSMutableArray *mapPointarr = [NSMutableArray arrayWithObjects:<#(const id *)#> count:<#(NSUInteger)#>
+    //
+    //    BMKMapPoint* pointArray = (BMKMapPoint* )malloc(sizeof(CLLocationCoordinate2D) * self.routePointsArr.count);
+    //
+    //	// for(int idx = 0; idx < pointStrings.count; idx++)
+    //    for(int idx = 0; idx < arrloc.count; idx++)
+    //	{
+    //        CLLocation *locationOne = [arrloc objectAtIndex:idx];
+    //        //[self.mView setZoomLevel:14];
+    //        NSLog(@"locOne=%f, %f", locationOne.coordinate.latitude, locationOne.coordinate.longitude);
+    //        if (idx == arrloc.count -1 )
+    //        {
+    //            //[self.mView setCenterCoordinate:locationOne.coordinate animated:YES];
+    //        }
+    //
+    //        CLLocationDegrees latitude  = locationOne.coordinate.latitude;
+    //		CLLocationDegrees longitude = locationOne.coordinate.longitude;
+    //
+    //		// create our coordinate and add it to the correct spot in the array
+    //		CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(latitude, longitude);
+    //        //		MKMapPoint point = MKMapPointForCoordinate(coordinate);
+    //        BMKMapPoint point = BMKMapPointForCoordinate(coordinate);
+    //
+    //		// if it is the first point, just use them, since we have nothing to compare to yet.
+    //		if (idx == 0) {
+    //			northEastPoint = point;
+    //			southWestPoint = point;
+    //		} else {
+    //			if (point.x > northEastPoint.x)
+    //				northEastPoint.x = point.x;
+    //			if(point.y > northEastPoint.y)
+    //				northEastPoint.y = point.y;
+    //			if (point.x < southWestPoint.x)
+    //				southWestPoint.x = point.x;
+    //			if (point.y < southWestPoint.y)
+    //				southWestPoint.y = point.y;
+    //		}
+    //
+    //		pointArray[idx] = point;
+    //	}
+    //
+    //    if (self.polygon)
+    //    {
+    //        [self.mView removeOverlay:polygon];
+    //    }
+    //    self.polygon = nil;
+    //
+    //    if (self.polygonView)
+    //    {
+    //        [self.polygonView removeFromSuperview];
+    //    }
+    //
+    //    self.polygon = [BMKPolygon polygonWithPoints:pointArray count:arrloc.count];
     
     
     self.polygon = [BMKPolygon polygonWithCoordinates:coords count:4];
@@ -999,16 +989,16 @@ BMKMapManager* _mapManager;
     // clear the memory allocated earlier for the points
 	//free(pointArray);
     
-//    CLLocationCoordinate2D coords[3] = {0};
-//    coords[0].latitude = 39;
-//    coords[0].longitude = 116;
-//    coords[1].latitude = 38;
-//    coords[1].longitude = 115;
-//    coords[2].latitude = 38;
-//    coords[2].longitude = 117;
-//    BMKPolygon* plyg = [BMKPolygon polygonWithPoints:<#(BMKMapPoint *)#> count:<#(NSUInteger)#>];
-//    [self.mView addOverlay:plyg];
-
+    //    CLLocationCoordinate2D coords[3] = {0};
+    //    coords[0].latitude = 39;
+    //    coords[0].longitude = 116;
+    //    coords[1].latitude = 38;
+    //    coords[1].longitude = 115;
+    //    coords[2].latitude = 38;
+    //    coords[2].longitude = 117;
+    //    BMKPolygon* plyg = [BMKPolygon polygonWithPoints:<#(BMKMapPoint *)#> count:<#(NSUInteger)#>];
+    //    [self.mView addOverlay:plyg];
+    
 }
 
 
@@ -1026,19 +1016,20 @@ BMKMapManager* _mapManager;
 -(void)LoginRecieved
 {
     NSLog(@"登录成功!");
-    BMKMapView *mv = [[BMKMapView alloc] initWithFrame:CGRectMake(0, 0, 320, 431)];
-    self.mView = mv;
-    [self.view addSubview:self.mView];
-    self.mView.delegate = self;
-    [self.mView setZoomEnabled:YES];
-    [self.mView setZoomLevel:15];
-    [self.mView setShowsUserLocation:YES];//显示定位的蓝点儿
-
-//    [mView setCenterCoordinate:location.coordinate animated:YES];
-//    NSLog(@"%@", [self.pointsArr objectAtIndex:0]);
-//    CLLocation *locationOne = (CLLocation *)[self.pointsArr objectAtIndex:0];
-//    [self.mView setCenterCoordinate:locationOne.coordinate animated:YES];
-//    [self loadUserInfo];
+    [self setupPage];
+    //    BMKMapView *mv = [[BMKMapView alloc] initWithFrame:CGRectMake(0, 0, 320, 431)];
+    //    self.mView = mv;
+    //    [self.view addSubview:self.mView];
+    //    self.mView.delegate = self;
+    //    [self.mView setZoomEnabled:YES];
+    //    [self.mView setZoomLevel:15];
+    //    [self.mView setShowsUserLocation:YES];//显示定位的蓝点儿
+    
+    //    [mView setCenterCoordinate:location.coordinate animated:YES];
+    //    NSLog(@"%@", [self.pointsArr objectAtIndex:0]);
+    //    CLLocation *locationOne = (CLLocation *)[self.pointsArr objectAtIndex:0];
+    //    [self.mView setCenterCoordinate:locationOne.coordinate animated:YES];
+    //    [self loadUserInfo];
 }
 
 
@@ -1053,16 +1044,16 @@ BMKMapManager* _mapManager;
     }
     if(alertView.tag == TAG_ALERT_LOGOUT)
     {
-//        if(buttonIndex == 1)
-//        {
-//            [self SetInfoHidden:YES];
-//            [[self.tabBarController.tabBar.items objectAtIndex:3] setBadgeValue:nil];
-//            [MemberDAL DeleteUserListenData];
-//            [MemberDAL DeleteUser];
-//            self.mainModel = nil;
-//            [self.tblMemberMain reloadData];
-//            [self LoginModalPresent];
-//        }
+        //        if(buttonIndex == 1)
+        //        {
+        //            [self SetInfoHidden:YES];
+        //            [[self.tabBarController.tabBar.items objectAtIndex:3] setBadgeValue:nil];
+        //            [MemberDAL DeleteUserListenData];
+        //            [MemberDAL DeleteUser];
+        //            self.mainModel = nil;
+        //            [self.tblMemberMain reloadData];
+        //            [self LoginModalPresent];
+        //        }
     }
 }
 #pragma mark - 添加工具栏
@@ -1070,7 +1061,7 @@ BMKMapManager* _mapManager;
 - (void) initToolbar
 {
     UIToolbar *toolBarOne = [[UIToolbar alloc] initWithFrame:
-                            CGRectMake(0.0f, 0.0f, 320.0f, 49.0f)];
+                             CGRectMake(0.0f, 0.0f, 320.0f, 49.0f)];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] > 4.9) {
         
         //iOS 5
@@ -1086,13 +1077,13 @@ BMKMapManager* _mapManager;
         [toolBarOne insertSubview:[[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"download_edit_bg.png"]] autorelease] atIndex:0];
         
     }
-
+    
     NSMutableArray *toolBarItems = [NSMutableArray arrayWithObjects:
-        [[[UIBarButtonItem alloc] initWithCustomView:[self getButtonWithTitle:@"监控孩子" target:self action:@selector(toggleRouteLine:) forControlEvents:UIControlEventTouchUpInside]] autorelease],
-        [[[UIBarButtonItem alloc] initWithCustomView:[self getButtonWithTitle:@"轨迹回放" target:self action:@selector(toggleRouteLine:) forControlEvents:UIControlEventTouchUpInside]] autorelease],
-        [[[UIBarButtonItem alloc] initWithCustomView:[self getButtonWithTitle:@"电子围栏" target:self action:@selector(setupLockRect:) forControlEvents:UIControlEventTouchUpInside]] autorelease],
-        [[[UIBarButtonItem alloc] initWithCustomView:[self getButtonWithTitle:@"搜索" target:self action:@selector(tapSearch:) forControlEvents:UIControlEventTouchUpInside]] autorelease],
-    nil];
+                                    [[[UIBarButtonItem alloc] initWithCustomView:[self getButtonWithTitle:@"监控孩子" target:self action:@selector(toggleRouteLine:) forControlEvents:UIControlEventTouchUpInside]] autorelease],
+                                    [[[UIBarButtonItem alloc] initWithCustomView:[self getButtonWithTitle:@"轨迹回放" target:self action:@selector(toggleRouteLine:) forControlEvents:UIControlEventTouchUpInside]] autorelease],
+                                    [[[UIBarButtonItem alloc] initWithCustomView:[self getButtonWithTitle:@"电子围栏" target:self action:@selector(setupLockRect:) forControlEvents:UIControlEventTouchUpInside]] autorelease],
+                                    [[[UIBarButtonItem alloc] initWithCustomView:[self getButtonWithTitle:@"搜索" target:self action:@selector(tapSearch:) forControlEvents:UIControlEventTouchUpInside]] autorelease],
+                                    nil];
     
     [toolBarOne setItems:toolBarItems animated:YES];
     self.toolbar = toolBarOne;
@@ -1107,9 +1098,9 @@ BMKMapManager* _mapManager;
     [lbl setFont:[UIFont fontWithName:@"STHeitiSC-Medium" size:12.0f]];
     lbl.textColor = [UIColor blackColor];
     lbl.shadowColor = [UIColor colorWithRed:0.0f
-                                            green:0.0f
-                                             blue:0.0f
-                                            alpha:0.4f];
+                                      green:0.0f
+                                       blue:0.0f
+                                      alpha:0.4f];
     lbl.shadowOffset = CGSizeMake(0.0f, 0.9f);
     lbl.backgroundColor = [UIColor clearColor];
     lbl.textAlignment = NSTextAlignmentCenter;

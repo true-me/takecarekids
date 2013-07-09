@@ -7,7 +7,6 @@
 //
 
 #import "CustomTabBarItem.h"
-#import "CommonMethods.h"
 
 @implementation CustomTabBarItem
 

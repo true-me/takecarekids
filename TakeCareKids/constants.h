@@ -22,6 +22,6 @@
 
 #define isRetina ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 960), [[UIScreen mainScreen] currentMode].size) : NO)
 
-#define REST_API_URL @"http://125.76.234.67:8080/alarm/rest.do?meth="
-#define REST_API_HOST @"125.76.234.67"
+#define REST_API_URL @"http://cdma.xadhgps.com/inter/"
+#define REST_API_HOST @"cdma.xadhgps.com"
 #define REST_API_KEY @"atestkey"
