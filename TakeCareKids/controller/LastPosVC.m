@@ -61,7 +61,6 @@ BMKMapManager* _mapManager;
     if (self) {
         // Custom initialization
         self.msgRouter = [MessageRouter getInstance];
-        [self setupTitleView:@"终端最后位置"];
     }
     return self;
 }

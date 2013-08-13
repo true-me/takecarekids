@@ -1,23 +1,26 @@
 //
-//  MapDemoVC.m
+//  WLVC.m
 //  TakeCareKids
 //
 //  Created by Jeffrey Ma on 7/19/13.
 //  Copyright (c) 2013 Jeffrey Ma. All rights reserved.
 //
 
-#import "MapDemoVC.h"
+#import "WLVC.h"
 
-@interface MapDemoVC ()
+@interface WLVC ()
 
 @end
 
-@implementation MapDemoVC
+@implementation WLVC
 @synthesize mpView = _mpView;
 
 - (void)dealloc
 {
-    [_mpView release];
+    if (_mpView) {
+        [_mpView release];
+        _mpView = nil;
+    }
     [super dealloc];
 }
 

@@ -14,7 +14,7 @@
 #import "EditViewController.h"
 #import "TerminalListVC.h"
 #import "LastPosVC.h"
-#import "MapDemoVC.h"
+#import "TRMLastPosVC.h"
 
 @interface CustomTabbarController : UITabBarController<UITabBarControllerDelegate, EGOImageViewDelegate, loginDelegate>
 {

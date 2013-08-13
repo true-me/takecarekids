@@ -36,20 +36,43 @@
 }
 - (void )setupTitle:(NSString *)title
 {
-    _titleLabel = [[UILabel alloc] init];
-    _titleLabel.frame = CGRectMake(0, 0, 220, 50);
-    _titleLabel.center = CGPointMake(160, 25);
-    _titleLabel.backgroundColor = [UIColor clearColor];
-    _titleLabel.textAlignment = UITextAlignmentCenter;
-    _titleLabel.font = [UIFont boldSystemFontOfSize:18];
-    _titleLabel.textColor = [UIColor colorWithRed:115/255.0f green:115/255.0f blue:115/255.0f alpha:1.0f];
-    _titleLabel.text = title;
+    UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 220, 50)];
+    label.center = CGPointMake(160, 25);
+    [label setFont:[UIFont fontWithName:FONT_M size:18.0f]];
+    [label setMinimumFontSize:18.0f];
+    label.textColor =  [UIColor colorWithRed:115/255.0f green:115/255.0f blue:115/255.0f alpha:1.0f];
+    label.backgroundColor = [UIColor clearColor];
+    label.textAlignment = UITextAlignmentCenter;
+    label.shadowColor = [UIColor colorWithRed:0.0f
+                                        green:0.0f
+                                         blue:0.0f
+                                        alpha:0.4f];
+    label.shadowOffset = CGSizeMake(0.0f, 0.9f);
+    label.text = title;
+    //    label.layer.borderColor = [[UIColor greenColor] CGColor];
+    //    label.layer.borderWidth = 2.0f;
+    self.titleLabel = label;
+//    [label release];
     if([self.viewControllers lastObject])
     {
         UIViewController * vc = [self.viewControllers lastObject];
-        vc.navigationItem.titleView = _titleLabel;
+        vc.navigationItem.titleView = self.titleLabel;
     }
-//    [_titleLabel release];
+    
+//    _titleLabel = [[UILabel alloc] init];
+//    _titleLabel.frame = CGRectMake(0, 0, 220, 50);
+//    _titleLabel.center = CGPointMake(160, 25);
+//    _titleLabel.backgroundColor = [UIColor clearColor];
+//    _titleLabel.textAlignment = UITextAlignmentCenter;
+//    _titleLabel.font = [UIFont fontWithName:FONT_B size:20.0f];
+//    _titleLabel.textColor = [UIColor colorWithRed:115/255.0f green:115/255.0f blue:115/255.0f alpha:1.0f];
+//    _titleLabel.text = title;
+//    if([self.viewControllers lastObject])
+//    {
+//        UIViewController * vc = [self.viewControllers lastObject];
+//        vc.navigationItem.titleView = _titleLabel;
+//    }
+////    [_titleLabel release];
 }
 
 - (void )rightButtonWithTitle:(NSString *)title withSelector:(SEL) selector onTarget:(id) target
@@ -216,6 +239,8 @@
     {
         NSString *str = [NSString stringWithUTF8String:object_getClassName(subv)];
         DLog(@"class=%@, x.1=%f", [subv getClassName], subv.frame.origin.x);
+        DLog(@"class=%@, y.1=%f", [subv getClassName], subv.frame.origin.y);
+
         if([str isEqualToString:@"UINavigationItemView"]
            || [str isEqualToString:@"UILabel"]
            )

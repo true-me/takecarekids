@@ -20,10 +20,10 @@
 @interface CustomNavBarVC : UINavigationController
 
 @property (nonatomic,retain) id<CustomNavBarDelegate> customdelegate;
-@property (nonatomic,strong) UIImageView * navImage;
-@property (nonatomic,strong) UIButton * leftNavButton;
-@property (nonatomic,strong) UIButton * rightNavButton;
-@property (nonatomic,strong) UILabel * titleLabel;
+@property (nonatomic,retain) UIImageView * navImage;
+@property (nonatomic,retain) UIButton * leftNavButton;
+@property (nonatomic,retain) UIButton * rightNavButton;
+@property (nonatomic,retain) UILabel * titleLabel;
 
 - (id) initWithRootViewController:(UIViewController *)rootViewController;
 - (void )setupTitle:(NSString *)title;

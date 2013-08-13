@@ -1,5 +1,5 @@
 //
-//  MapDemoVC.h
+//  WLVC.h
 //  TakeCareKids
 //
 //  Created by Jeffrey Ma on 7/19/13.
@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "BMapKit.h"
 
-@interface MapDemoVC : UIViewController<BMKMapViewDelegate>
+@interface WLVC : UIViewController<BMKMapViewDelegate>
 @property (nonatomic, retain) IBOutlet BMKMapView* mpView;
 
 @end
