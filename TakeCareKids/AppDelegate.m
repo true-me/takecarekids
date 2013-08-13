@@ -11,6 +11,7 @@
 @implementation AppDelegate
 @synthesize tabBarController;
 @synthesize customTabbarController;
+@synthesize mapManager = _mapManager;
 - (void)dealloc
 {
     [_window release];
@@ -20,6 +21,16 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // 要使用百度地图,请先启动 BaiduMapManager
+    _mapManager = [[BMKMapManager alloc] init] ;
+    // 如果要关注网络及授权验证事件,请设定 generalDelegate 参 数
+    BOOL ret = [_mapManager start:@"2772BD5CAFF652491F65707D6D5E9ABEBF3639CC" generalDelegate:nil];
+    if (!ret)
+    {
+        NSLog(@"manager start failed!");
+    }
+
+    
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
     

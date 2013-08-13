@@ -64,13 +64,16 @@
     {
         [self.view setFrame:CGRectMake(0,0,320,480)];
     }
-    QieziViewController *vc1 = [[QieziViewController alloc] init];
-    [self setTabBarItemWithVC:vc1 withTitle:@"首页" withImage:[UIImage imageNamed:@"tab-home.png"] withHlImage:[UIImage imageNamed:@"tab-home.png"]];
+//    LastPosVC *vc1 = [[LastPosVC alloc] initWithNibName:@"LastPosVC" bundle:nil];
+    MapDemoVC *vc1 = [[MapDemoVC alloc] initWithNibName:@"MapDemoVC" bundle:nil];    
+    [self setTabBarItemWithVC:vc1 withTitle:@"最后位置" withImage:[UIImage imageNamed:@"tab-home.png"] withHlImage:[UIImage imageNamed:@"tab-home.png"]];
     
-    QieziViewController *vc2 = [[QieziViewController alloc] init];
+    TerminalListVC *vc2 = [[TerminalListVC alloc] init];
+    vc2.fnType = FNTypeRouteLine;
     [self setTabBarItemWithVC:vc2 withTitle:@"轨迹回放" withImage:[UIImage imageNamed:@"tab-route.png"] withHlImage:[UIImage imageNamed:@"tab-route.png"]];
 
-    QieziViewController *vc3 = [[QieziViewController alloc] init];
+//    QieziViewController *vc3 = [[QieziViewController alloc] init];
+    MapDemoVC *vc3 = [[MapDemoVC alloc] initWithNibName:@"MapDemoVC" bundle:nil];
     [self setTabBarItemWithVC:vc3 withTitle:@"电子围栏" withImage:[UIImage imageNamed:@"tab-route.png"] withHlImage:[UIImage imageNamed:@"tab-route.png"]];
     
     TerminalListVC *vc4 = [[TerminalListVC alloc] init];

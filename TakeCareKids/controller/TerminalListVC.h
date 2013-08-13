@@ -8,6 +8,7 @@
 #import "TerminalCell.h"
 #import "CustomNavBarVC.h"
 #import "Terminal.h"
+#import "RouteLineVC.h"
 
 @interface TerminalListVC : UITableViewController  <EGORefreshTableHeaderDelegate, UITableViewDelegate, UITableViewDataSource, EGORefreshTableFooterDelegate, MBProgressHUDDelegate>{
 	
@@ -24,7 +25,8 @@
 @property (nonatomic, assign) NSInteger pageSize;
 @property (nonatomic, assign) NSInteger pageNo;
 @property (nonatomic, assign) UIImageView *ima;
-@property(nonatomic, retain) MessageRouter *msgRouter;
+@property (nonatomic, retain) MessageRouter *msgRouter;
+@property (nonatomic, assign) FunctionType fnType;
 
 
 

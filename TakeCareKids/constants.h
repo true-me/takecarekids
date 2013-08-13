@@ -22,10 +22,17 @@
 
 #define isRetina ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 960), [[UIScreen mainScreen] currentMode].size) : NO)
 
-#define REST_API_URL @"http://cdma.xadhgps.com/inter/"
+#define REST_API_URL @"http://cdma.xadhgps.com/export/"
 #define REST_API_HOST @"cdma.xadhgps.com"
 #define REST_API_KEY @"atestkey"
 
 #define FONT @"STHeitiSC-Light"
 #define FONT_M @"STHeitiSC-Medium"
 #define FONT_B @"STHeitiSC-Bold"
+
+typedef enum
+{
+    FNTypeRouteLine = 0,
+    FNTypeLockRect,
+    FNTypeKeySetting,
+}FunctionType;

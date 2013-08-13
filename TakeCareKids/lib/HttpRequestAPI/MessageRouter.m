@@ -157,6 +157,57 @@ static MessageRouter * instance=nil;
     
 }
 
+- (void)getLocListWithUid:(NSString *)uid
+                 password:(NSString *)password
+                  withTid:(NSString *)tid
+                 delegate:(id)delegate
+                 selector:(SEL)selector
+            errorSelector:(SEL)errorSelector
+{
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
+                            uid, @"uid",
+                            [password md5Hash], @"pwd",
+                            tid, @"tid",
+                            nil];
+    
+    [_client callMethodWithMod:@"pos_last.php"
+                        params:params
+                    postParams:nil
+                         files:nil
+                       cookies:nil
+                        header:nil
+                      delegate:delegate
+                      selector:selector
+                 errorSelector:errorSelector];
+}
+
+- (void)getLocHistoryWithUid:(NSString *)uid
+                 password:(NSString *)password
+                  withTid:(NSString *)tid
+                      withBt:(NSString *)bt
+                  withEt:(NSString *)et
+                 delegate:(id)delegate
+                 selector:(SEL)selector
+            errorSelector:(SEL)errorSelector
+{
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
+                            uid, @"uid",
+                            [password md5Hash], @"pwd",
+                            [tid URLEncodedString], @"tid",
+                            [bt URLEncodedString], @"bt",
+                            [et URLEncodedString], @"et",
+                            nil];
+    
+    [_client callMethodWithMod:@"pos_range.php"
+                        params:params
+                    postParams:nil
+                         files:nil
+                       cookies:nil
+                        header:nil
+                      delegate:delegate
+                      selector:selector
+                 errorSelector:errorSelector];
+}
 - (void)bindLoginWithSNS:(NSString *)email password:(NSString *)password
                   delegate:(id)delegate selector:(SEL)selector
              errorSelector:(SEL)errorSelector

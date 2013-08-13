@@ -18,4 +18,6 @@
 
 @property (strong, nonatomic) UITabBarController *tabBarController;
 @property (strong, nonatomic) CustomTabbarController *customTabbarController;
+@property (assign, nonatomic) BMKMapManager *mapManager;
+
 @end

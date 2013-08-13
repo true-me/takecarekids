@@ -139,11 +139,16 @@
     [HUD show:YES];
 	
     
-    [_msgRouter userLoginWithUserName:@"15829679903"
-                          password:@"123456"
-                          delegate:self
-                          selector:@selector(userLoginSuccess:)
-                     errorSelector:@selector(userLoginError:)];
+//    [_msgRouter userLoginWithUserName:@"15829679903"
+//                          password:@"123456"
+//                          delegate:self
+//                          selector:@selector(userLoginSuccess:)
+//                     errorSelector:@selector(userLoginError:)];
+    [_msgRouter userLoginWithUserName:self.txtLoginID.text
+                             password:self.txtPwd.text
+                             delegate:self
+                             selector:@selector(userLoginSuccess:)
+                        errorSelector:@selector(userLoginError:)];
 //    [HUD showAnimated:YES whileExecutingBlock:^{sleep(0.8f);} completionBlock:^{
 //        [HUD removeFromSuperview];
 //        [HUD release];

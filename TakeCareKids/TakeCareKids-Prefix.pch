@@ -11,6 +11,7 @@
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
+    #import "NSStringAdditions.h"
     #import "GlobaMethods.h"
     #import "constants.h"
     #import "JSONKit.h"

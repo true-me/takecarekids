@@ -13,6 +13,8 @@
 #import "QieziViewController.h"
 #import "EditViewController.h"
 #import "TerminalListVC.h"
+#import "LastPosVC.h"
+#import "MapDemoVC.h"
 
 @interface CustomTabbarController : UITabBarController<UITabBarControllerDelegate, EGOImageViewDelegate, loginDelegate>
 {

@@ -36,4 +36,18 @@
                   delegate:(id)delegate selector:(SEL)selector
              errorSelector:(SEL)errorSelector;
 
+- (void)getLocListWithUid:(NSString *)uid
+                      password:(NSString *)password
+                       withTid:(NSString *)tid
+                      delegate:(id)delegate
+                      selector:(SEL)selector
+                 errorSelector:(SEL)errorSelector;
+- (void)getLocHistoryWithUid:(NSString *)uid
+                    password:(NSString *)password
+                     withTid:(NSString *)tid
+                      withBt:(NSString *)bt
+                      withEt:(NSString *)et
+                    delegate:(id)delegate
+                    selector:(SEL)selector
+               errorSelector:(SEL)errorSelector;
 @end

@@ -1,15 +1,15 @@
 //
-//  RegardViewCell.m
+//  RouteLineCell.m
 //  WakeMeUp
 //
 //  Created by 黄 晶 on 13-6-3.
 //  Copyright (c) 2013年 黄 晶. All rights reserved.
 //
 
-#import "TerminalCell.h"
+#import "RouteLineCell.h"
 #import <QuartzCore/QuartzCore.h>
 
-@implementation TerminalCell
+@implementation RouteLineCell
 
 @synthesize userIconBackView = _userIconBackView,userIcon = _userIcon;
 @synthesize lblName = _lblName, lblId = _lblId, lblNum = _lblNum;
@@ -46,30 +46,30 @@
         [_userIcon release];
         
         self.lblId = [[UILabel alloc] init];
-        self.lblId.frame = CGRectMake(62, 12, 40, 18);
+        self.lblId.frame = CGRectMake(62, 12, 48, 18);
         self.lblId.backgroundColor = [UIColor clearColor];
         self.lblId.textAlignment = UITextAlignmentLeft;
-        self.lblId.font = [UIFont fontWithName:FONT_B size:12.0f];
-        self.lblId.textColor = [UIColor whiteColor];
+        self.lblId.font = [UIFont fontWithName:FONT_M size:12.0f];
+        self.lblId.textColor = [UIColor colorWithRed:166/255.0f green:166/255.0f blue:166/255.0f alpha:1];
         self.lblId.text = @"";
         [self addSubview:self.lblId];
         
         self.lblName = [[UILabel alloc] init];
-        self.lblName.frame = CGRectMake(100, 12, 100, 18);
+        self.lblName.frame = CGRectMake(110, 12, 100, 18);
         self.lblName.backgroundColor = [UIColor clearColor];
         self.lblName.textAlignment = UITextAlignmentLeft;
-        self.lblName.font = [UIFont fontWithName:FONT_B size:16.0f];
-        self.lblName.textColor = [UIColor whiteColor];//[UIColor colorWithRed:76/255.0f green:76/255.0f blue:76/255.0f alpha:1];
+        self.lblName.font = [UIFont fontWithName:FONT_M size:16.0f];
+        self.lblName.textColor = [UIColor colorWithRed:76/255.0f green:76/255.0f blue:76/255.0f alpha:1];
         self.lblName.text = @"<无名>";
         [self addSubview:self.lblName];
         
 
         self.lblNum = [[UILabel alloc] init];
-        self.lblNum.frame = CGRectMake(100, 30, 200, 18);
+        self.lblNum.frame = CGRectMake(62, 30, 200, 18);
         self.lblNum.backgroundColor = [UIColor clearColor];
         self.lblNum.textAlignment = UITextAlignmentLeft;
-        self.lblNum.font = [UIFont fontWithName:FONT_B size:16.0f];
-        self.lblNum.textColor = [UIColor whiteColor];//[UIColor colorWithRed:76/255.0f green:76/255.0f blue:76/255.0f alpha:1];
+        self.lblNum.font = [UIFont fontWithName:FONT_M size:16.0f];
+        self.lblNum.textColor = [UIColor colorWithRed:76/255.0f green:76/255.0f blue:76/255.0f alpha:1];
         self.lblNum.text = @"";
         [self addSubview:self.lblNum];
         

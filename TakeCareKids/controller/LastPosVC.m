@@ -1,24 +1,24 @@
 //
-//  QieziViewController.m
+//  LastPosVC.m
 //  BaiduDemo
 //
 //  Created by jian zhang on 12-5-7.
 //  Copyright (c) 2012年 txtws.com. All rights reserved.
 //
 
-#import "QieziViewController.h"
+#import "LastPosVC.h"
 #import "MapPointAnnotion.h"
 
 #define MAP_ANNVIEW_I_TAG 78000
 #define TAG_ALERT_LOGIN 56
 #define TAG_ALERT_LOGOUT 57
 
-@implementation QieziViewController
+@implementation LastPosVC
 BMKMapManager* _mapManager;
 
 @synthesize toolbar;
 @synthesize _search;
-@synthesize mView;
+@synthesize mView = _mview;
 @synthesize location;
 @synthesize pointsArr;
 @synthesize routePointsArr;
@@ -30,6 +30,8 @@ BMKMapManager* _mapManager;
 @synthesize isRouting;
 @synthesize stopRoute;
 @synthesize srchBar;
+@synthesize terminalInfo = _terminalInfo;
+@synthesize dataArr = _dataArr;
 - (void)dealloc
 {
     [_search release];
@@ -41,20 +43,25 @@ BMKMapManager* _mapManager;
     [polygonView release];
     [currentLocation release];
     [routePointsArr release];
-    [mView release];
     [srchBar release];
+    [_terminalInfo release];
+    [_mView release];
+    
     [super dealloc];
+}
+- (id)initWithNibName:(NSString *)nibNameOrNil withInfo:(NSDictionary *) info
+{
+    self = [self initWithNibName:nibNameOrNil bundle:nil];
+    self.terminalInfo = info;
+    return self;
 }
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        
-        //self.title = NSLocalizedString(@"轨迹回放", @"轨迹回放");
-        [self setupTitleView:@"关注孩子"];
-        //self.tabBarItem.image = [UIImage imageNamed:@"Third"];
-        
+        self.msgRouter = [MessageRouter getInstance];
+        [self setupTitleView:@"终端最后位置"];
     }
     return self;
 }
@@ -64,7 +71,6 @@ BMKMapManager* _mapManager;
     [super didReceiveMemoryWarning];
     // Release any cached data, images, etc that aren't in use.
 }
-
 
 #pragma mark - 百度地图
 #pragma mark-
@@ -80,8 +86,7 @@ BMKMapManager* _mapManager;
 
 -(void)mapView:(BMKMapView *)mapView didUpdateUserLocation:(BMKUserLocation *)userLocation{
     
-    NSLog(@"更新坐标");
-    
+    NSLog(@"更新当前设备坐标");
     
     CLLocation *locationOne = [[CLLocation alloc] initWithLatitude:userLocation.coordinate.latitude
                                                          longitude:userLocation.coordinate.longitude];
@@ -165,7 +170,7 @@ BMKMapManager* _mapManager;
 - (void)mapView:(BMKMapView *)mapView regionWillChangeAnimated:(BOOL)animated
 {
     //mapView.showsUserLocation = YES;
-    NSLog(@"地图区域即将改变");
+    DLog(@"地图区域即将改变");
 }
 
 /**
@@ -175,7 +180,7 @@ BMKMapManager* _mapManager;
  */
 - (void)mapView:(BMKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
 {
-    NSLog(@"地图区域改变完成");
+    DLog(@"地图区域改变完成");
 }
 
 #pragma mark-
@@ -188,37 +193,81 @@ BMKMapManager* _mapManager;
  */
 - (BMKAnnotationView *)mapView:(BMKMapView *)mapView viewForAnnotation:(id <BMKAnnotation>)annotation
 {
-    
     NSLog(@"生成标注");
     
-    BMKAnnotationView *annotationView =[mapView viewForAnnotation:annotation];
+    static NSString *AnnotationViewID = @"annotationViewID";
     
-    if (annotationView==nil&&[annotation isKindOfClass:[MapPointAnnotion class]])
+    BMKAnnotationView *annotationView = [mapView dequeueReusableAnnotationViewWithIdentifier:AnnotationViewID];
+    if (annotationView == nil)
     {
-        MapPointAnnotion* pointAnnotation=(MapPointAnnotion*)annotation;
-        NSString *AnnotationViewID = [NSString stringWithFormat:@"iAnnotation-%i",pointAnnotation.tag];
-		annotationView = [[BMKPinAnnotationView alloc] initWithAnnotation:annotation
-                                                          reuseIdentifier:AnnotationViewID];
+        annotationView = [[BMKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:AnnotationViewID];
+        ((BMKPinAnnotationView*)annotationView).animatesDrop = YES;
+//        annotationView.leftCalloutAccessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_location.png"]];//气泡框左侧显示的View,可自定义
         
-        if ([[pointAnnotation subtitle] isEqualToString:@"我的位置"])
-        {
-            ((BMKPinAnnotationView*) annotationView).pinColor = BMKPinAnnotationColorRed;
-        }else if([[pointAnnotation subtitle] isEqualToString:@"目标位置"]){
-            ((BMKPinAnnotationView*) annotationView).pinColor = BMKPinAnnotationColorPurple;
-        }else{
-            ((BMKPinAnnotationView*) annotationView).pinColor = BMKPinAnnotationColorGreen;
-        }
-        
-		((BMKPinAnnotationView*)annotationView).animatesDrop = YES;// 设置该标注点动画显示
-        
-        
-        annotationView.centerOffset = CGPointMake(0, -(annotationView.frame.size.height * 0.5));
-        annotationView.annotation = annotation;
-        
-        annotationView.canShowCallout = TRUE;
-        annotationView.tag=pointAnnotation.tag;
+//        UIButton *selectButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//        [selectButton setFrame:(CGRect){220,0,45,36}];
+//        [selectButton setTitle:@"确定" forState:UIControlStateNormal];
+//        annotationView.rightCalloutAccessoryView =selectButton;//气泡框右侧显示的View 可自定义
+//        [selectButton setBackgroundColor:[UIColor blueColor]];
+//        [selectButton setShowsTouchWhenHighlighted:YES];
+//        [selectButton addTarget:self action:@selector(Location_selectPointAnnotation:) forControlEvents:UIControlEventTouchUpInside];
     }
-	return annotationView ;
+    //以下三行代码用于将自定义视图和标记绑定,一一对应,目的是当点击,右侧自定义视图时,能够知道点击的是那个标记
+//    annotationView.rightCalloutAccessoryView.tag = 100;
+//    [_cacheAnnotationMDic setObject:annotation forKey:[NSNumber numberWithInteger:_cacheAnnotationTag]];
+//    _cacheAnnotationTag++;
+    
+    //如果是我的位置标注,则允许用户拖动改标注视图,并赋予绿色样式 处于
+//    if ([annotation.title isEqualToString:String_myLocation])
+//    {
+//        ((BMKPinAnnotationView *)annotationView).pinColor = BMKPinAnnotationColorGreen;//标注呈绿色样式
+//        [annotationView setDraggable:YES];//允许用户拖动
+//        [annotationView setSelected:YES animated:YES];//让标注处于弹出气泡框的状态
+//    }else
+//    {
+//        ((BMKPinAnnotationView *)annotationView).pinColor = BMKPinAnnotationColorRed;
+//    }
+    
+    ((BMKPinAnnotationView*) annotationView).pinColor = BMKPinAnnotationColorPurple;
+    ((BMKPinAnnotationView*)annotationView).animatesDrop = YES;// 设置该标注点动画显示
+//    [annotationView setDraggable:YES];//允许用户拖动
+//    [annotationView setSelected:YES animated:YES];//让标注处于弹出气泡框的状态
+    
+    annotationView.centerOffset = CGPointMake(0, -(annotationView.frame.size.height * 0.5));//不知道干什么用的
+    annotationView.annotation = annotation;//绑定对应的标点经纬度
+    annotationView.canShowCallout = TRUE;//允许点击弹出气泡框
+    return annotationView;
+    
+//    
+//    BMKAnnotationView *annotationView =[mapView viewForAnnotation:annotation];
+//    
+//    if (annotationView==nil&&[annotation isKindOfClass:[MapPointAnnotion class]])
+//    {
+//        MapPointAnnotion* pointAnnotation=(MapPointAnnotion*)annotation;
+//        NSString *AnnotationViewID = [NSString stringWithFormat:@"iAnnotation-%i",pointAnnotation.tag];
+//		annotationView = [[BMKPinAnnotationView alloc] initWithAnnotation:annotation
+//                                                          reuseIdentifier:AnnotationViewID];
+//        
+////        if ([[pointAnnotation subtitle] isEqualToString:@"我的位置"])
+////        {
+////            ((BMKPinAnnotationView*) annotationView).pinColor = BMKPinAnnotationColorRed;
+////        }else if([[pointAnnotation subtitle] isEqualToString:@"目标位置"]){
+////            ((BMKPinAnnotationView*) annotationView).pinColor = BMKPinAnnotationColorPurple;
+////        }else{
+////            ((BMKPinAnnotationView*) annotationView).pinColor = BMKPinAnnotationColorGreen;
+////        }
+//        
+//        ((BMKPinAnnotationView*) annotationView).pinColor = BMKPinAnnotationColorPurple;
+//		((BMKPinAnnotationView*)annotationView).animatesDrop = YES;// 设置该标注点动画显示
+//        
+//        
+//        annotationView.centerOffset = CGPointMake(0, -(annotationView.frame.size.height * 0.5));
+//        annotationView.annotation = annotation;
+//        
+//        annotationView.canShowCallout = TRUE;
+//        annotationView.tag=pointAnnotation.tag;
+//    }
+//	return annotationView ;
     
     //    static NSString *AnnotationViewID = @"annotationViewID";
 	
@@ -243,6 +292,9 @@ BMKMapManager* _mapManager;
 - (void)mapView:(BMKMapView *)mapView didAddAnnotationViews:(NSArray *)views
 {
     NSLog(@"添加多个标注");
+    BMKAnnotationView * viewOne = [views objectAtIndex:0];
+   // viewOne.annotation.coordinate.latitude
+    [self.mView setCenterCoordinate:viewOne.annotation.coordinate];
 }
 
 /**
@@ -307,7 +359,7 @@ BMKMapManager* _mapManager;
 		item.coordinate = result.geoPt;
 		item.title = result.strAddr;
         item.subtitle=result.strAddr;
-		[mView addAnnotation:item];
+		[self.mView addAnnotation:item];
 		[item release];
         
         NSLog(@"添加地名名称标注");
@@ -317,20 +369,21 @@ BMKMapManager* _mapManager;
 #pragma mark - fun
 -(void)cleanMap
 {
-    NSArray* array = [NSArray arrayWithArray:mView.annotations];
-    
-    for (MapPointAnnotion* ann in array) {
-        [mView removeAnnotation:ann];
-    }
+    NSArray* arrAnn = [NSArray arrayWithArray:self.mView.annotations];
+    [self.mView removeAnnotations:arrAnn]; 
+//    for (MapPointAnnotion* ann in array) {
+//        [mView removeAnnotation:ann];
+//    }
+    NSArray *arrOverlays = [NSArray arrayWithArray:self.mView.overlays];
+    [self.mView removeOverlays:arrOverlays];
 }
-
 
 #pragma mark - View lifecycle
 -(void) setupPage
 {
-    [self leftButtonWithImage:[UIImage imageNamed:@"topbar_menu.png"] withSelector:@selector(toggleToolbar:) onTarget:self];
-    [self rightButtonWithTitle:@"定位" withSelector:@selector(toUserLocation:) onTarget:self];
-    [self setupTitle:@"GPS系统"];
+    [self leftButtonWithImage:[UIImage imageNamed:@"topbar_menu.png"] withSelector:@selector(LeftButtonPress:) onTarget:self];
+    [self rightButtonWithTitle:@"定位" withSelector:@selector(RightButtonPress:) onTarget:self];
+    [self setupTitle:@"终端最后位置"];
     [self initToolbar];
     
 //    // 要使用百度地图,请先启动 BaiduMapManager
@@ -340,7 +393,7 @@ BMKMapManager* _mapManager;
 //    if (!ret) {
 //        NSLog(@"manager start failed!");
 //    }
-//    
+    
     // 初始化轨迹坐标数据源。
     NSMutableArray *arr = [NSMutableArray arrayWithObjects:
                            [[[CLLocation alloc] initWithLatitude:34.246772 longitude:108.916447] autorelease],
@@ -382,15 +435,14 @@ BMKMapManager* _mapManager;
     stopRoute = NO;
     
     
-    BMKMapView *mv = [[BMKMapView alloc] initWithFrame:CGRectMake(0, 0, 320, 431)];
+    BMKMapView *mv = [[BMKMapView alloc] initWithFrame:CGRectMake(0, 0, 320, 413)];
     self.mView = mv;
     [self.view addSubview:self.mView];
     self.mView.delegate = self;
     [self.mView setZoomEnabled:YES];
     [mv release];
-    
     //[self.mView setZoomLevel:18];
-    [self.mView setShowsUserLocation:YES];//显示定位的蓝点儿
+//    [self.mView setShowsUserLocation:YES];//显示定位的蓝点儿
     //
     //    //    [mView setCenterCoordinate:location.coordinate animated:YES];
     //    NSLog(@"%@", [self.pointsArr objectAtIndex:0]);
@@ -403,14 +455,13 @@ BMKMapManager* _mapManager;
 	// Do any additional setup after loading the view, typically from a nib.
     // 验证登录
     [self setupPage];
+    [self.mView setZoomLevel:15];
     if(![GlobaMethods isUserAuth])
     {
         [self LoginModalPresent];
     }
-//    else
-//    {
-//        [self setupPage];
-//    }
+    
+//    [self getLocListByTid];
 }
 
 - (void)viewDidUnload
@@ -423,19 +474,19 @@ BMKMapManager* _mapManager;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.mView.delegate = self;
+
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self.mView setShowsUserLocation:YES];
-    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
 	[super viewWillDisappear:animated];
-    [self.mView setShowsUserLocation:NO];
+    self.mView.delegate = nil;
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -635,8 +686,6 @@ BMKMapManager* _mapManager;
 
 - (void)startRoute:(NSString *)string
 {
-    [mView setShowsUserLocation:NO];
-    
     if (stopRoute)
     {
         if (self.routeLine)
@@ -751,8 +800,8 @@ BMKMapManager* _mapManager;
 
 - (void) toUserLocation:(id)sender
 {
-    [self.mView setZoomLevel:18];
-//    BOOL ret = [_search reverseGeocode:self.location.coordinate];
+//    [self.mView setZoomLevel:18];
+    //    BOOL ret = [_search reverseGeocode:self.location.coordinate];
     self.mView.showsUserLocation = YES;
 }
 
@@ -760,8 +809,8 @@ BMKMapManager* _mapManager;
 #pragma mark
 - (void)mapView:(BMKMapView *)mapView didAddOverlayViews:(NSArray *)overlayViews
 {
-    NSLog(@"%@ ----- %@", self, NSStringFromSelector(_cmd));
-    NSLog(@"overlayViews: %@", overlayViews);
+//    DLog(@"%@ ----- %@", __, NSStringFromSelector(_cmd));
+    DLog(@"overlayViews: %d", [overlayViews count]);
     
     if (overlayViews.count > 0)
     {
@@ -771,13 +820,13 @@ BMKMapManager* _mapManager;
             return;
         }
     }
-    NSLog(@"开始下一个路线, %d", self.routePointsArr.count);
-    [self performSelector:@selector(startRoute:) withObject:@"启动轨迹回放" afterDelay:1.2f];
+//    NSLog(@"开始下一个路线, %d", self.routePointsArr.count);
+//    [self performSelector:@selector(startRoute:) withObject:@"启动轨迹回放" afterDelay:1.2f];
 }
 
 - (BMKOverlayView *)mapView:(BMKMapView *)mapView viewForOverlay:(id <BMKOverlay>)overlay
 {
-    NSLog(@"%@ ----- %@", self, NSStringFromSelector(_cmd));
+    DLog(@"overlayViews: %s", object_getClassName(overlay));
     BMKOverlayView* overlayView = nil;
     if ([overlay isKindOfClass:[BMKPolygon class]])
     {
@@ -847,7 +896,7 @@ BMKMapManager* _mapManager;
     item.coordinate = touchMapCoordinate;
     item.title = [NSString stringWithFormat:@"%.f, %.f", touchMapCoordinate.latitude, touchMapCoordinate.longitude];
     item.subtitle=@"我的位置";
-    [mView addAnnotation:item];
+    [self.mView addAnnotation:item];
     [item release];
     
     if (self.mView.annotations.count == 2 )
@@ -1007,49 +1056,6 @@ BMKMapManager* _mapManager;
     
 }
 
-
-#pragma mark - 用户登录
-#pragma mark
--(void)LoginModalPresent
-{
-    LoginController *objLogin = [[LoginController alloc] init];
-    objLogin.delegate = self;
-    CustomNavBarVC *navController = [[[CustomNavBarVC alloc] initWithRootViewController:objLogin] autorelease];
-    [self.tabBarController presentModalViewController:navController animated:YES];
-    [objLogin release];
-}
-
--(void)LoginRecieved
-{
-    NSLog(@"登录成功!");
-//    [self setupPage];
-
-}
-
-
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if(alertView.tag == TAG_ALERT_LOGIN)
-    {
-        if(buttonIndex == 0)
-        {
-            [self LoginModalPresent];
-        }
-    }
-    if(alertView.tag == TAG_ALERT_LOGOUT)
-    {
-        //        if(buttonIndex == 1)
-        //        {
-        //            [self SetInfoHidden:YES];
-        //            [[self.tabBarController.tabBar.items objectAtIndex:3] setBadgeValue:nil];
-        //            [MemberDAL DeleteUserListenData];
-        //            [MemberDAL DeleteUser];
-        //            self.mainModel = nil;
-        //            [self.tblMemberMain reloadData];
-        //            [self LoginModalPresent];
-        //        }
-    }
-}
 #pragma mark - 添加工具栏
 #pragma mark
 - (void) initToolbar
@@ -1073,10 +1079,10 @@ BMKMapManager* _mapManager;
     }
     
     NSMutableArray *toolBarItems = [NSMutableArray arrayWithObjects:
-                                    [[[UIBarButtonItem alloc] initWithCustomView:[self getButtonWithTitle:@"监控孩子" target:self action:@selector(toggleRouteLine:) forControlEvents:UIControlEventTouchUpInside]] autorelease],
-                                    [[[UIBarButtonItem alloc] initWithCustomView:[self getButtonWithTitle:@"轨迹回放" target:self action:@selector(toggleRouteLine:) forControlEvents:UIControlEventTouchUpInside]] autorelease],
-                                    [[[UIBarButtonItem alloc] initWithCustomView:[self getButtonWithTitle:@"搜索" target:self action:@selector(tapSearch:) forControlEvents:UIControlEventTouchUpInside]] autorelease],                                    
-//                                    [[[UIBarButtonItem alloc] initWithCustomView:[self getButtonWithTitle:@"电子围栏" target:self action:@selector(setupLockRect:) forControlEvents:UIControlEventTouchUpInside]] autorelease],
+//                                    [[[UIBarButtonItem alloc] initWithCustomView:[self getButtonWithTitle:@"监控孩子" target:self action:@selector(toggleRouteLine:) forControlEvents:UIControlEventTouchUpInside]] autorelease],
+//                                    [[[UIBarButtonItem alloc] initWithCustomView:[self getButtonWithTitle:@"轨迹回放" target:self action:@selector(toggleRouteLine:) forControlEvents:UIControlEventTouchUpInside]] autorelease],
+//                                    [[[UIBarButtonItem alloc] initWithCustomView:[self getButtonWithTitle:@"搜索" target:self action:@selector(tapSearch:) forControlEvents:UIControlEventTouchUpInside]] autorelease],
+                                    //                                    [[[UIBarButtonItem alloc] initWithCustomView:[self getButtonWithTitle:@"电子围栏" target:self action:@selector(setupLockRect:) forControlEvents:UIControlEventTouchUpInside]] autorelease],
                                     [[[UIBarButtonItem alloc] initWithCustomView:[self getButtonWithTitle:@"注销登录" target:self action:@selector(Logout:) forControlEvents:UIControlEventTouchUpInside]] autorelease],
                                     nil];
     
@@ -1193,6 +1199,266 @@ BMKMapManager* _mapManager;
     [[NSUserDefaults standardUserDefaults] synchronize];
     [self LoginModalPresent];
 
+}
+
+#pragma mark - RequestFunction
+- (void)getLocListByTid
+{
+    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+	[self.navigationController.view addSubview:hud];
+    hud.delegate = self;
+    hud.labelText = @"正在加载";
+    [hud show:YES];
+	
+    NSString *uid = [[NSUserDefaults standardUserDefaults] objectForKey:@"uid"];
+    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:@"username"];
+    NSString *pwd = [[NSUserDefaults standardUserDefaults] objectForKey:@"pwd"];
+    if(self.terminalInfo)
+    {
+        [_msgRouter getLocListWithUid:uid
+                         password:pwd
+                          withTid:[self.terminalInfo objectForKey:@"id"]
+                          delegate:self
+                          selector:@selector(getLocListSuccess:)
+                     errorSelector:@selector(getLocListError:)];
+    }
+    else
+    {
+        [_msgRouter getLocListWithUid:uid
+                             password:pwd
+                              withTid:nil
+                             delegate:self
+                             selector:@selector(getLocListSuccess:)
+                        errorSelector:@selector(getLocListError:)];
+    }
+}
+
+#pragma mark - NetworkDelegate
+#pragma mark Recive data
+
+- (void)getLocListSuccess:(NSDictionary *)response
+{
+    NSLog(@"%s=%@", __PRETTY_FUNCTION__, response);
+    MBProgressHUD *hud = [MBProgressHUD HUDForView:self.navigationController.view];
+    
+    NSInteger result = [[response objectForKey:@"rst"] intValue];
+    if (result == 0)
+    {
+        NSArray * pos = [response objectForKey:@"pos"];
+        if ([DataCheck isValidArray:pos])
+        {
+            if (!self.dataArr)
+            {
+                NSMutableArray *arr = [[NSMutableArray alloc] initWithCapacity:0];
+                self.dataArr = arr;
+                [arr release];
+            }
+            [self.dataArr removeAllObjects];
+            [self.dataArr addObjectsFromArray:pos];
+//            [self performSelector:@selector(showAllTerminals) withObject:nil];
+            [self showAllTerminals];
+//            [self saveTodb:tms];
+        }
+        if (hud)
+        {
+            hud.labelText = @"完成！";
+        }
+    }
+    else
+    {
+        if (hud)
+        {
+            hud.labelText = @"请求数据失败！";
+        }
+    }
+    [hud hide:YES afterDelay:0.5f];
+
+}
+
+
+- (void)getLocListError:(NSDictionary *)errorInfo
+{
+    DLog(@"errorInfo=%@", errorInfo);
+    MBProgressHUD *hud = [MBProgressHUD HUDForView:self.navigationController.view];
+    if (hud)
+    {
+        hud.labelText = @"请求数据失败！";
+        [hud hide:YES afterDelay:0.5f];
+    }
+}
+
+-(void) saveTodb:(NSArray *) arr
+{
+//    for (NSDictionary *dictOne in arr)
+//    {
+//        NSMutableDictionary *dicModel = [[NSMutableDictionary alloc] initWithCapacity:0];
+//        for (NSString *key in dictOne.allKeys)
+//        {
+//            NSString *newKey = [NSString stringWithFormat:@"tm%@", key];
+//            NSString *value = [dictOne objectForKey:key];
+//            [dicModel setObject:value forKey:newKey];
+//        }
+//        
+//        Terminal *modelOne = [Terminal objectWithProperties:dicModel];
+//        [modelOne setToDB];
+//        [dicModel release];
+//    }
+}
+
+#pragma mark - NavButtonFunction
+- (void)LeftButtonPress:(id)sender
+{
+//    DLog(@"%d, %d", [self.navigationController.viewControllers count], [self isEqual:self.navigationController.topViewController]);
+//    if ([self.navigationController.viewControllers count] > 1)
+//    {
+//        [self.navigationController popViewControllerAnimated:YES];
+//    }
+    
+    [self toggleToolbar:sender];
+}
+
+- (void)RightButtonPress:(id)sender
+{
+//    [self.mView setZoomLevel:18];
+
+    [self getLocListByTid];
+}
+
+#pragma mark - 显示该终端所有路线
+- (void)showAllTerminals
+{
+    DLog(@"%d, %d", [self.navigationController.viewControllers count], [self isEqual:self.navigationController.topViewController]);
+    [self cleanMap];
+//    [self configureRoutes2];
+    [self showTerminalsOnMap:self.dataArr];
+}
+
+- (void)showAllRoutelineAnimation:(BOOL)animation
+{
+    
+    
+}
+
+- (void)showTerminalsOnMap:(NSArray *) arr
+{
+    for(int idx = 0; idx < [arr count]; idx++)
+	{
+        NSDictionary *locInfo = [arr objectAtIndex:idx];        
+        NSString *slat = [locInfo objectForKey:@"lat"];
+        NSString *slon =  [locInfo objectForKey:@"lon"];
+        CLLocation *locOne = [[CLLocation alloc] initWithLatitude:[slat doubleValue] longitude:[slon doubleValue]];
+        
+        MapPointAnnotion* item = [[MapPointAnnotion alloc]init];
+        item.coordinate = locOne.coordinate;
+        item.title = [locInfo objectForKey:@"id"];//[NSString stringWithFormat:@"%.f, %.f", locOne.coordinate.latitude, locOne.coordinate.longitude];
+        item.subtitle=[locInfo objectForKey:@"adr"];
+        [self.mView addAnnotation:item];
+        [item release];
+    }
+
+}
+
+- (void)showTerminalsRouteLineOnMap:(NSArray *) arr
+{
+    // define minimum, maximum points
+	BMKMapPoint northEastPoint = BMKMapPointMake(0.f, 0.f);
+	BMKMapPoint southWestPoint = BMKMapPointMake(0.f, 0.f);
+	
+	// create a c array of points.
+    //    NSMutableArray *mapPointarr = [NSMutableArray arrayWithObjects:<#(const id *)#> count:<#(NSUInteger)#>
+    
+    BMKMapPoint* pointArray = (BMKMapPoint* )malloc(sizeof(CLLocationCoordinate2D) * [arr count]);
+    
+    for(int idx = 0; idx < [arr count]; idx++)
+	{
+        NSDictionary *locInfo = [arr objectAtIndex:idx];
+        CLLocation *locOne = nil;
+        
+        if ([[arr objectAtIndex:idx] isKindOfClass:[CLLocation class]])
+        {
+            locOne = [pointsArr objectAtIndex:idx];
+        }
+        else
+        {
+            NSString *slat = [locInfo objectForKey:@"lat"];
+            NSString *slon =  [locInfo objectForKey:@"lon"];
+            locOne = [[CLLocation alloc] initWithLatitude:[slat doubleValue] longitude:[slon doubleValue]];
+        }
+//        [self.mView setZoomLevel:16];
+        NSLog(@"locOne=%f, %f", locOne.coordinate.latitude, locOne.coordinate.longitude);
+        if (idx == arr.count -1 )
+        {
+            [self.mView setCenterCoordinate:locOne.coordinate animated:YES];
+        }
+        
+        CLLocationDegrees latitude  = locOne.coordinate.latitude;
+		CLLocationDegrees longitude = locOne.coordinate.longitude;
+        
+		// create our coordinate and add it to the correct spot in the array
+		CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(latitude, longitude);
+        //		MKMapPoint point = MKMapPointForCoordinate(coordinate);
+        BMKMapPoint point = BMKMapPointForCoordinate(coordinate);
+		
+		// if it is the first point, just use them, since we have nothing to compare to yet.
+		if (idx == 0) {
+			northEastPoint = point;
+			southWestPoint = point;
+		} else {
+			if (point.x > northEastPoint.x)
+				northEastPoint.x = point.x;
+			if(point.y > northEastPoint.y)
+				northEastPoint.y = point.y;
+			if (point.x < southWestPoint.x)
+				southWestPoint.x = point.x;
+			if (point.y < southWestPoint.y)
+				southWestPoint.y = point.y;
+		}
+        
+		pointArray[idx] = point;
+	}
+	
+    if (self.routeLine)
+    {
+        [self.mView removeOverlay:self.routeLine];
+    }
+    
+    self.routeLine = [BMKPolyline polylineWithPoints:pointArray count:[arr count]];
+    
+    // add the overlay to the map
+	if (nil != self.routeLine)
+    {
+		[self.mView addOverlay:self.routeLine];
+	}
+    
+    // clear the memory allocated earlier for the points
+	free(pointArray);
+    
+    /*
+     double width = northEastPoint.x - southWestPoint.x;
+     double height = northEastPoint.y - southWestPoint.y;
+     
+     _routeRect = MKMapRectMake(southWestPoint.x, southWestPoint.y, width, height);
+     
+     // zoom in on the route.
+     [self.mapView setVisibleMapRect:_routeRect];
+     */
+}
+#pragma mark - 用户登录
+#pragma mark
+-(void)LoginModalPresent
+{
+    LoginController *objLogin = [[LoginController alloc] init];
+    objLogin.delegate = self;
+    CustomNavBarVC *navController = [[[CustomNavBarVC alloc] initWithRootViewController:objLogin] autorelease];
+    [self.tabBarController presentModalViewController:navController animated:YES];
+    [objLogin release];
+}
+
+-(void)LoginRecieved
+{
+    NSLog(@"登录成功!");
+    //    [self setupPage];
+    
 }
 @end
 

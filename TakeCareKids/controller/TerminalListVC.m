@@ -13,6 +13,7 @@
 @synthesize pageNo = _pageNo;
 @synthesize tbl = _tbl;
 @synthesize msgRouter = _msgRouter;
+@synthesize fnType = _fnType;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -27,7 +28,14 @@
     self.pageSize = 10;
     self.dataArr = [[NSMutableArray alloc] init];
 
-    self.tableView.backgroundColor = [UIColor colorWithRed:215/255.0f green:220/255.0f blue:220/255.0f alpha:1];
+//    self.tableView.backgroundColor = [UIColor colorWithRed:215/255.0f green:220/255.0f blue:220/255.0f alpha:1];
+    
+    UIImage *bgImg = [UIImage imageNamed:@"profile_bg.png"];
+    UIColor *color = [[UIColor alloc] initWithPatternImage:bgImg];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+    self.tableView.separatorColor = [UIColor grayColor];//colorWithRed:20.0f green:20.0f blue:20.0f alpha:1];
+    self.tableView.backgroundColor = color;
+    [color release];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
@@ -42,7 +50,8 @@
 	
 	//  update the last update date
 	[_refreshHeaderView refreshLastUpdatedDate];
-
+//    [self.tableView setContentOffset:CGPointMake(0, 120.0f)];
+    //scrollRectToVisible:CGRectMake(0, -65, 320, 460) animated:YES];
     [self reloadTableViewDataSource];
 }
 
@@ -110,11 +119,20 @@
 {
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-//    OtherProfileViewController *otherProfile = [[OtherProfileViewController alloc] init];
-//    otherProfile.userId = [[arr objectAtIndex:indexPath.row] objectForKey:@"taId"];
-//    [self.navigationController pushViewController:otherProfile animated:YES];
-//    [otherProfile release];
+
+    switch (self.fnType)
+    {
+        case FNTypeRouteLine:
+            {
+                NSDictionary *tmn = [self.dataArr objectAtIndex:indexPath.row];
+                RouteLineVC *rlVC = [[RouteLineVC alloc] initWithNibName:@"RouteLineVC" withInfo:tmn];
+                [self.navigationController pushViewController:rlVC animated:YES];
+                [rlVC release];
+                break;
+            }
+        default:
+            break;
+    }
 }
 
 
@@ -301,7 +319,6 @@
 #pragma mark - RequestFunction
 - (void)getTerminalList
 {
-    
     MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
 	[self.navigationController.view addSubview:HUD];
     HUD.delegate = self;
@@ -335,7 +352,7 @@
             [self.dataArr addObjectsFromArray:tms];
             [self saveTodb:tms];
         }
-        
+        [self performSelectorOnMainThread:@selector(doneLoadingTableViewData) withObject:nil waitUntilDone:YES];
         MBProgressHUD *hud = [MBProgressHUD HUDForView:self.navigationController.view];
         if (hud)
         {
@@ -343,10 +360,11 @@
             [hud hide:YES afterDelay:0.5f];
         }
         
-        [self performSelectorOnMainThread:@selector(doneLoadingMoreTableViewData) withObject:nil waitUntilDone:YES];
+
     }
     else
     {
+        [self performSelectorOnMainThread:@selector(doneLoadingTableViewData) withObject:nil waitUntilDone:YES];
         MBProgressHUD *hud = [MBProgressHUD HUDForView:self.navigationController.view];
         if (hud)
         {
@@ -360,6 +378,7 @@
 - (void)getTerminalListError:(NSDictionary *)errorInfo
 {
     DLog(@"errorInfo=%@", errorInfo);
+    [self performSelectorOnMainThread:@selector(doneLoadingTableViewData) withObject:nil waitUntilDone:YES];    
     MBProgressHUD *hud = [MBProgressHUD HUDForView:self.navigationController.view];
     if (hud)
     {
