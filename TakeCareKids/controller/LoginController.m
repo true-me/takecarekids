@@ -132,11 +132,11 @@
         return;
     }
     
-    HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-	[self.navigationController.view addSubview:HUD];
-    HUD.delegate = self;
-    HUD.labelText = @"正在登录";
-    [HUD show:YES];
+//HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+//	[self.navigationController.view addSubview:HUD];
+//    HUD.delegate = self;
+//    HUD.labelText = @"正在登录";
+//    [HUD show:YES];
 	
     
 //    [_msgRouter userLoginWithUserName:@"15829679903"
@@ -196,13 +196,13 @@
         [[NSUserDefaults standardUserDefaults] setObject:username forKey:@"username"];
         [[NSUserDefaults standardUserDefaults] setObject:pwd forKey:@"pwd"];
 
-        HUD.labelText = @"登录成功！";
-        [HUD hide:YES afterDelay:0.5f];
+//        HUD.labelText = @"登录成功！";
+//        [HUD hide:YES afterDelay:0.5f];
         if(self.delegate && [self.delegate respondsToSelector:@selector(LoginRecieved)])
         {
             [self.delegate performSelector:@selector(LoginRecieved) withObject:nil];
         }
-        [self dismissModalViewControllerAnimated:YES];
+//        [self dismissModalViewControllerAnimated:YES];
     }
     else
     {
@@ -210,8 +210,8 @@
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"username"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"pwd"];
 
-        HUD.labelText = @"登录失败！";
-        [HUD hide:YES afterDelay:0.5f];
+//        HUD.labelText = @"登录失败！";
+//        [HUD hide:YES afterDelay:0.5f];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
 }

@@ -38,9 +38,9 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    [self leftButtonWithImage:[UIImage imageNamed:@"topbar_menu.png"] withSelector:@selector(LeftButtonPress:) onTarget:self];
-    [self rightButtonWithTitle:@"定位" withSelector:@selector(RightButtonPress:) onTarget:self];
-    [self setupTitle:@"终端最后位置"];
+    [self leftButtonWithImage:[UIImage imageNamed:@"topbar_menu.png"] action:@selector(LeftButtonPress:) onTarget:self];
+    [self rightButtonWithTitle:@"定位" action:@selector(RightButtonPress:) onTarget:self];
+    [self setupTitle:@"终端最后位置" action:@selector(toggleMenu) target:self.navigationController];
     
     BMKMapView *mapv = [[BMKMapView alloc] initWithFrame:self.view.bounds];
     self.mpView = mapv;
@@ -54,11 +54,13 @@
     }
 }
 -(void)viewWillAppear:(BOOL)animated {
+//    [super viewWillAppear:animated];
     [_mpView viewWillAppear];
     _mpView.delegate = self; // 此处记得不用的时候需要置nil，否则影响内存的释放
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
+//    [super viewWillDisappear:animated];
     [_mpView viewWillDisappear];
     _mpView.delegate = nil; // 不用时，置nil
 }
@@ -73,11 +75,11 @@
 #pragma mark
 -(void)LoginModalPresent
 {
-    LoginController *objLogin = [[LoginController alloc] init];
-    objLogin.delegate = self;
-    CustomNavBarVC *navController = [[[CustomNavBarVC alloc] initWithRootViewController:objLogin] autorelease];
-    [self.tabBarController presentModalViewController:navController animated:YES];
-    [objLogin release];
+//    LoginController *objLogin = [[LoginController alloc] init];
+//    objLogin.delegate = self;
+//    CustomNavBarVC *navController = [[[CustomNavBarVC alloc] initWithRootViewController:objLogin] autorelease];
+//    [self.tabBarController presentModalViewController:navController animated:YES];
+//    [objLogin release];
 }
 
 -(void)LoginRecieved

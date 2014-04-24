@@ -24,7 +24,7 @@
     // 要使用百度地图,请先启动 BaiduMapManager
     _mapManager = [[BMKMapManager alloc] init] ;
     // 如果要关注网络及授权验证事件,请设定 generalDelegate 参 数
-    BOOL ret = [_mapManager start:@"2772BD5CAFF652491F65707D6D5E9ABEBF3639CC" generalDelegate:nil];
+    BOOL ret = [_mapManager start:@"9633029eb429aec9ff044d040541e2e4 " generalDelegate:self];
     if (!ret)
     {
         NSLog(@"manager start failed!");
@@ -43,14 +43,26 @@
 //    self.window.rootViewController = self.tabBarController;
     
     // 地图
-    self.customTabbarController = [[[CustomTabbarController alloc] init] autorelease];
-    //    self.customTabbarController.viewControllers = [NSArray arrayWithObjects:nav1, nav2,nav3,nav4,nav5,nil];
-    self.customTabbarController.selectedIndex = 0;
-    self.window.rootViewController = self.customTabbarController;
     
+    if(![GlobaMethods isUserAuth])
+    {
+        LoginController *objLogin = [[LoginController alloc] init];
+        objLogin.delegate = self;
+        self.window.rootViewController = objLogin;
+        [objLogin release];
+    }
+    else
+    {
+        self.customTabbarController = [[[CustomTabbarController alloc] init] autorelease];
+        //    self.customTabbarController.viewControllers = [NSArray arrayWithObjects:nav1, nav2,nav3,nav4,nav5,nil];
+        self.customTabbarController.selectedIndex = 0;
+        self.window.rootViewController = self.customTabbarController;
+    }
+
     [self.window makeKeyAndVisible];
     return YES;
 }
+
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
@@ -93,4 +105,22 @@
 }
 */
 
+
+- (void)onGetNetworkState:(int)iError
+{
+    NSLog(@"onGetNetworkState %d",iError);
+}
+
+- (void)onGetPermissionState:(int)iError
+{
+    NSLog(@"onGetPermissionState %d",iError);
+}
+
+-(void)LoginRecieved
+{
+    self.customTabbarController = [[[CustomTabbarController alloc] init] autorelease];
+    //    self.customTabbarController.viewControllers = [NSArray arrayWithObjects:nav1, nav2,nav3,nav4,nav5,nil];
+    self.customTabbarController.selectedIndex = 0;
+    self.window.rootViewController = self.customTabbarController;
+}
 @end

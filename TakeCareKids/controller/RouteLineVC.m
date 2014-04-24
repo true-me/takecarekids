@@ -69,8 +69,8 @@
 #pragma mark - View lifecycle
 -(void) setupPage
 {
-    [self leftButtonWithImage:[UIImage imageNamed:@"topbar_back.png"] withSelector:@selector(LeftButtonPress:) onTarget:self];
-    [self rightButtonWithTitle:@"设置日期" withSelector:@selector(RightButtonPress:) onTarget:self];
+    [self leftButtonWithImage:[UIImage imageNamed:@"topbar_back.png"] action:@selector(LeftButtonPress:) onTarget:self];
+    [self rightButtonWithTitle:@"设置日期" action:@selector(RightButtonPress:) onTarget:self];
     [self setupTitle:@"终端轨迹回放"];
     [self initToolbar];
     
@@ -99,14 +99,14 @@
     // e.g. self.myOutlet = nil;
 }
 
--(void)viewWillAppear:(BOOL)animated
-{
+-(void)viewWillAppear:(BOOL)animated {
+//    [super viewWillAppear:animated];
     [_mpView viewWillAppear];
     _mpView.delegate = self; // 此处记得不用的时候需要置nil，否则影响内存的释放
 }
 
--(void)viewWillDisappear:(BOOL)animated
-{
+-(void)viewWillDisappear:(BOOL)animated {
+//    [super viewWillDisappear:animated];
     [_mpView viewWillDisappear];
     _mpView.delegate = nil; // 不用时，置nil
 }

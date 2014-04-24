@@ -16,6 +16,7 @@
 
 @interface BaseViewController : UIViewController
 - (void) setupTitleView:(NSString*) title;
+- (void) setupTitle:(NSString *)title action:(SEL)selector target:(id) target;
 
 - (void) setupLeftButton:(UIButton*) btn;
 - (void) setupRightButton:(UIButton*) btn;
@@ -25,10 +26,15 @@
 - (void) setupTitleImageView:(NSString *)imageName;
 
 - (void )setupTitle:(NSString *)title;
-- (void )rightButtonWithTitle:(NSString *)title withSelector:(SEL) selector onTarget:(id) target;
-- (void )rightButtonWithImage:(UIImage *)image withSelector:(SEL) selector onTarget:(id) target;
+- (void )rightButtonWithTitle:(NSString *)title action:(SEL) selector onTarget:(id) target;
+- (void )rightButtonWithImage:(UIImage *)image action:(SEL) selector onTarget:(id) target;
 
-- (void )leftButtonWithTitle:(NSString *)title withSelector:(SEL) selector onTarget:(id) target;
-- (void )leftButtonWithImage:(UIImage *)image withSelector:(SEL) selector onTarget:(id) target;
+- (void )leftButtonWithTitle:(NSString *)title action:(SEL) selector onTarget:(id) target;
+- (void )leftButtonWithImage:(UIImage *)image action:(SEL) selector onTarget:(id) target;
+
+-(void) showHUD:(NSString *) text;
+-(void) hideHUD;
+-(void) showHUD:(NSString *) text afterDelay:(CGFloat) delay;
+-(void) hideHUD:(CGFloat) delay;
 
 @end

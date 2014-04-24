@@ -5,6 +5,7 @@
 //  Created by Jeffrey Ma on 6/16/13.
 //  Copyright (c) 2013 Jeffrey Ma. All rights reserved.
 //
+
 #ifndef MMPDLog
 #ifdef DEBUG
 #define MMPDLog(format, ...) NSLog((@"%s [Line %d] " format), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
@@ -22,7 +23,8 @@
 
 #define isRetina ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 960), [[UIScreen mainScreen] currentMode].size) : NO)
 
-#define REST_API_URL @"http://cdma.xadhgps.com/export/"
+//http://cdma.xadhgps.com:8080/export/login.php?pwd=E10ADC3949BA59ABBE56E057F20F883E&user=18161959820&
+#define REST_API_URL @"http://cdma.xadhgps.com:8080/export/"
 #define REST_API_HOST @"cdma.xadhgps.com"
 #define REST_API_KEY @"atestkey"
 
@@ -36,3 +38,5 @@ typedef enum
     FNTypeLockRect,
     FNTypeKeySetting,
 }FunctionType;
+
+#define IOS7_OR_LATER   ( [[[UIDevice currentDevice] systemVersion] compare:@"7.0"] != NSOrderedAscending )

@@ -48,8 +48,10 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 #pragma mark - 用户登录
 #pragma mark
+
 #pragma mark Init Tabbar item
 #pragma mark
 
@@ -64,6 +66,8 @@
     {
         [self.view setFrame:CGRectMake(0,0,320,480)];
     }
+    
+    
 //    LastPosVC *vc1 = [[LastPosVC alloc] initWithNibName:@"LastPosVC" bundle:nil];
     TRMLastPosVC *vc1 = [[TRMLastPosVC alloc] initWithNibName:@"TRMLastPosVC" bundle:nil];    
     [self setTabBarItemWithVC:vc1 withTitle:@"最后位置" withImage:[UIImage imageNamed:@"tab-home.png"] withHlImage:[UIImage imageNamed:@"tab-home.png"]];

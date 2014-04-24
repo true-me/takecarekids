@@ -380,8 +380,8 @@ BMKMapManager* _mapManager;
 #pragma mark - View lifecycle
 -(void) setupPage
 {
-    [self leftButtonWithImage:[UIImage imageNamed:@"topbar_menu.png"] withSelector:@selector(LeftButtonPress:) onTarget:self];
-    [self rightButtonWithTitle:@"定位" withSelector:@selector(RightButtonPress:) onTarget:self];
+    [self leftButtonWithImage:[UIImage imageNamed:@"topbar_menu.png"] action:@selector(LeftButtonPress:) onTarget:self];
+    [self rightButtonWithTitle:@"定位" action:@selector(RightButtonPress:) onTarget:self];
     [self setupTitle:@"终端最后位置"];
     [self initToolbar];
     
@@ -470,24 +470,23 @@ BMKMapManager* _mapManager;
     // e.g. self.myOutlet = nil;
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    self.mView.delegate = self;
-
+-(void)viewWillAppear:(BOOL)animated {
+//    [super viewWillAppear:animated];
+    [self.mView viewWillAppear];
+    self.mView.delegate = self; // 此处记得不用的时候需要置nil，否则影响内存的释放
 }
+
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-	[super viewWillDisappear:animated];
-    self.mView.delegate = nil;
+-(void)viewWillDisappear:(BOOL)animated {
+//    [super viewWillDisappear:animated];
+    [self.mView viewWillDisappear];
+    self.mView.delegate = nil; // 不用时，置nil
 }
-
 - (void)viewDidDisappear:(BOOL)animated
 {
 	[super viewDidDisappear:animated];

@@ -20,7 +20,7 @@
     self.msgRouter = [MessageRouter getInstance];
     self.view.backgroundColor = [UIColor blackColor];//[UIColor colorWithRed:223/255.0f green:225/255.0f blue:225/255.0f alpha:1];
     CustomNavBarVC *navc= (CustomNavBarVC *)self.navigationController;
-    [navc leftButtonWithImage:[UIImage imageNamed:@"topbar_menu.png"] withSelector:@selector(LeftButtonPress:) onTarget:self];
+    [navc leftButtonWithImage:[UIImage imageNamed:@"topbar_menu.png"] action:@selector(LeftButtonPress:) onTarget:self];
     
     [navc setupTitle:@"亲情号码"];
 

@@ -12,7 +12,7 @@
 #import "ViewController.h"
 #import "QieziViewController.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate,BMKGeneralDelegate, loginDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 

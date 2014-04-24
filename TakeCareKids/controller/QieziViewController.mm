@@ -328,8 +328,8 @@ BMKMapManager* _mapManager;
 #pragma mark - View lifecycle
 -(void) setupPage
 {
-    [self leftButtonWithImage:[UIImage imageNamed:@"topbar_menu.png"] withSelector:@selector(toggleToolbar:) onTarget:self];
-    [self rightButtonWithTitle:@"定位" withSelector:@selector(toUserLocation:) onTarget:self];
+    [self leftButtonWithImage:[UIImage imageNamed:@"topbar_menu.png"] action:@selector(toggleToolbar:) onTarget:self];
+    [self rightButtonWithTitle:@"定位" action:@selector(toUserLocation:) onTarget:self];
     [self setupTitle:@"GPS系统"];
     [self initToolbar];
     

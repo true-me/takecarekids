@@ -10,7 +10,6 @@
 
 
 @interface BaseViewController ()
--(void)customizeBackButton;
 @end
 
 @implementation BaseViewController
@@ -30,73 +29,16 @@
     // Do any additional setup after loading the view from its nib.
 //    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.png"]]];
     self.view.backgroundColor = [UIColor colorWithRed:223/255.0f green:225/255.0f blue:225/255.0f alpha:1];
-    
-}
-
--(void)customizeBackButton
-{
-    if(self.navigationController.viewControllers.count > 1) {
-        
-        UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        
-        [backButton setImage:[UIImage imageNamed:@"titbar_back"] forState:UIControlStateNormal];
-        [backButton setImage:[UIImage imageNamed:@"titbar_back_on"] forState:UIControlStateHighlighted];
-        [backButton addTarget:self action:@selector(didTapBackButton:) forControlEvents:UIControlEventTouchUpInside];
-        backButton.frame = CGRectMake(0.0f, 0.0f, 45.0f, 30.0f);
-        UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
-        
-        self.navigationItem.leftBarButtonItem = backButtonItem;
-        [backButtonItem release];
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000
+    if ( IOS7_OR_LATER )
+    {
+        self.automaticallyAdjustsScrollViewInsets = NO;
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+        self.extendedLayoutIncludesOpaqueBars = NO;
+        self.modalPresentationCapturesStatusBarAppearance = NO;
+        self.navigationController.navigationBar.translucent = NO;
     }
-}
-
--(void)customizeNowPlayingButton
-{
-    if(self.navigationController.viewControllers.count >= 1) {
-        
-        
-        UIImage* image = [UIImage imageNamed:@"titbar_con"];
-        CGRect frame = CGRectMake(0, -0, 68.0f, 30.0f);
-        UIButton *sendButton = [[UIButton alloc] initWithFrame:frame];
-//        sendButton.layer.borderWidth = 1.0f;
-//        sendButton.layer.borderColor = [[UIColor redColor] CGColor];
-        
-        UILabel * sendLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 68.0f, 30.0f)];
-        [sendLabel setFont:[UIFont fontWithName:@"STHeitiSC-Medium" size:13.0f]];
-        sendLabel.textColor = [UIColor whiteColor];
-        sendLabel.shadowColor = [UIColor colorWithRed:0.0f
-                                            green:0.0f
-                                             blue:0.0f
-                                            alpha:0.4f];
-        sendLabel.shadowOffset = CGSizeMake(0.0f, 0.9f);
-        sendLabel.backgroundColor = [UIColor clearColor];
-        sendLabel.textAlignment = UITextAlignmentCenter;
-        sendLabel.text = @"注册";
-        [sendButton addSubview:sendLabel];
-        [sendLabel release];
-        
-        [sendButton setImage:image forState:UIControlStateNormal];
-        [sendButton setImage:[UIImage imageNamed:@"titbar_con_on"] forState:UIControlStateHighlighted];
-        sendButton.titleLabel.font=[UIFont systemFontOfSize:13.0f];
-        [sendButton addTarget:self action:@selector(clickNowPlayingButton:) forControlEvents:UIControlEventTouchUpInside];
-        
-        UIBarButtonItem *sendButtonItem=[[UIBarButtonItem alloc] initWithCustomView:sendButton];
-        
-        self.navigationItem.rightBarButtonItem = sendButtonItem;
-        
-        CGRect vframe = self.navigationItem.rightBarButtonItem.customView.frame;
-        vframe.origin.y = 4.0f;
-        self.navigationItem.rightBarButtonItem.customView.frame = vframe;
-
-        [sendButton release];
-        [sendButtonItem release];
-    }
-}
-
-- (void) clickNowPlayingButton:(id)sender
-{
-    
-
+#endif
 }
 
 - (void) didTapBackButton:(id)sender {
@@ -186,27 +128,101 @@
     [navc setupTitle:title];
 }
 
-- (void )rightButtonWithTitle:(NSString *)title withSelector:(SEL) selector onTarget:(id) target
+- (void )setupTitle:(NSString *)title action:(SEL)selector target:(id)target
 {
     CustomNavBarVC *navc= (CustomNavBarVC *)self.navigationController;
-    [navc rightButtonWithTitle:title withSelector:selector onTarget:target];
+    [navc setupTitle:title action:selector target:target];
 }
 
-- (void )leftButtonWithImage:(UIImage *)image withSelector:(SEL) selector onTarget:(id) target
+
+- (void )rightButtonWithTitle:(NSString *)title action:(SEL) selector onTarget:(id) target
 {
     CustomNavBarVC *navc= (CustomNavBarVC *)self.navigationController;
-    [navc leftButtonWithImage:image withSelector:selector onTarget:target];
+    [navc rightButtonWithTitle:title action:selector onTarget:target];
 }
 
-- (void )rightButtonWithImage:(UIImage *)image withSelector:(SEL) selector onTarget:(id) target
+- (void )leftButtonWithImage:(UIImage *)image action:(SEL) selector onTarget:(id) target
 {
     CustomNavBarVC *navc= (CustomNavBarVC *)self.navigationController;
-    [navc rightButtonWithImage:image withSelector:selector onTarget:target];
+    [navc leftButtonWithImage:image action:selector onTarget:target];
 }
-- (void )leftButtonWithTitle:(NSString *)title withSelector:(SEL) selector onTarget:(id) target
+
+- (void )rightButtonWithImage:(UIImage *)image action:(SEL) selector onTarget:(id) target
 {
     CustomNavBarVC *navc= (CustomNavBarVC *)self.navigationController;
-    [navc leftButtonWithTitle:title withSelector:selector onTarget:target];
+    [navc rightButtonWithImage:image action:selector onTarget:target];
+}
+- (void )leftButtonWithTitle:(NSString *)title action:(SEL) selector onTarget:(id) target
+{
+    CustomNavBarVC *navc= (CustomNavBarVC *)self.navigationController;
+    [navc leftButtonWithTitle:title action:selector onTarget:target];
+}
+
+
+- (void) viewDidLayoutSubviews
+{
+
+    if ( IOS7_OR_LATER )
+    {
+        CGRect viewBounds = self.view.bounds;
+        CGFloat topBarOffset = self.topLayoutGuide.length;
+        viewBounds.origin.y = topBarOffset * -1;
+        self.view.bounds = viewBounds;
+    }
+    [super viewWillLayoutSubviews];
+    CustomNavBarVC *navc = (CustomNavBarVC *)self.navigationController;
+    [navc.terminalMenu setNeedsLayout];
+
+}
+
+#pragma mark -
+#pragma mark MBProgressHUDDelegate methods
+
+-(void) showHUD:(NSString *) text afterDelay:(CGFloat) delay
+{
+    [self showHUD:text];
+    [self hideHUD:delay];
+}
+
+-(void) showHUD:(NSString *) text
+{
+    CustomNavBarVC *navc = (CustomNavBarVC *) self.navigationController;
+    if (navc)
+    {
+        MBProgressHUD *hud = [MBProgressHUD HUDForView:navc.view];
+        if (!hud)
+        {
+            hud = [MBProgressHUD showHUDAddedTo:navc.view animated:YES];
+            //        hud.mode = MBProgressHUDModeText;
+            
+            hud.opaque = YES;
+            hud.dimBackground = YES;
+            hud.square = YES;
+            hud.removeFromSuperViewOnHide = YES;
+        }
+        
+        hud.labelText = text;
+        //        [hud show:YES];
+    }
+}
+
+-(void) hideHUD
+{
+    MBProgressHUD *hud = [MBProgressHUD HUDForView:self.navigationController.view];
+    if (hud)
+    {
+        [hud hide:YES];
+    }
+}
+
+-(void) hideHUD:(CGFloat) delay
+{
+    //    [MBProgressHUD hideHUDForView:self.navigationController.view animated:YES];
+    MBProgressHUD *hud = [MBProgressHUD HUDForView:self.navigationController.view];
+    if (hud)
+    {
+        [hud hide:YES afterDelay:delay];
+    }
 }
 
 @end
